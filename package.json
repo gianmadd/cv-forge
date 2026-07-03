@@ -1,0 +1,21 @@
+{
+  "name": "cv-forge",
+  "version": "0.1.0",
+  "description": "Build one structured source of truth for your career, then generate CVs tailored to each job. Distributed as agent skills for Claude Code and other AI coding agents.",
+  "keywords": [
+    "cv",
+    "resume",
+    "career",
+    "ats",
+    "skills",
+    "claude-code",
+    "ai-agents"
+  ],
+  "type": "module",
+  "author": "Gian Marco Addati",
+  "license": "MIT",
+  "scripts": {},
+  "engines": {
+    "node": ">=18"
+  }
+}

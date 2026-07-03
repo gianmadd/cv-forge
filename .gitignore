@@ -1,0 +1,22 @@
+# ============================================================
+#  cv-forge — .gitignore  (npm package / distribution repo)
+# ============================================================
+
+# --- Node / npm -------------------------------------------------------------
+node_modules/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+.env
+.env.local
+
+# --- Local tooling / editor cruft -------------------------------------------
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# NB: users' personal data (Career Profile, generated CVs) lives in the END
+# USER's own project, never in this repo — so there's nothing personal to ignore here.

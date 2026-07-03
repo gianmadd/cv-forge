@@ -2,7 +2,7 @@
 
 **Organize everything about your career once, then generate CVs that automated screening tools can actually read — tailored to each job.**
 
-`cv-forge` is a pair of [Claude Code](https://claude.com/claude-code) skills that turn the scattered story of your working life into structured, job-ready CVs — without ever inventing anything about you.
+`cv-forge` is a pair of skills for AI coding agents that turn the scattered story of your working life into structured, job-ready CVs — without ever inventing anything about you. It's built and tested first on Claude Code; the shared installer also symlinks the skills into other AI coding agents.
 
 ---
 
@@ -15,6 +15,18 @@ Applying for a job today runs into two hard problems:
 2. **Organizing your own story.** Pulling together everything you've done — roles, results, skills, projects, education — into one coherent, well-structured picture is genuinely hard to do alone, especially across a long or varied career. Most people never have it all in one place.
 
 `cv-forge` tackles both. First it helps you build a single, well-organized record of your career through a guided interview. Then it turns that record into CVs that are structured to be read cleanly by automated screening tools and tailored to each specific job — using only what you actually told it.
+
+---
+
+## Install
+
+`cv-forge` is distributed as agent skills, installed with the shared `skills` CLI:
+
+```bash
+npx skills@latest add gianmadd/cv-forge
+```
+
+This installs two skills — `cv-profiler` and `cv-tailor` — into your agent. In Claude Code, invoke them as `/cv-profiler` and `/cv-tailor`.
 
 ---
 
@@ -49,10 +61,27 @@ Give it your Career Profile plus a job posting, and it produces a CV (and, optio
 
 ## Privacy
 
-Your Career Profile contains personal information, and it stays **entirely on your machine**. Nothing is sent anywhere except explicit, transparent web searches — and those never include your personal data. You decide what to store, and you're responsible for deleting the file when you no longer need it. If you use git, a `.gitignore` keeps your profile and generated CVs out of your commits.
+Your Career Profile contains personal information, and it stays **entirely on your machine**. Nothing is sent anywhere except explicit, transparent web searches — and those never include your personal data. You decide what to store, and you're responsible for deleting the file when you no longer need it.
+
+---
+
+## Documentation
+
+- [`docs/architecture.md`](docs/architecture.md) — how the two skills fit together and how they're distributed.
+- [`docs/career-profile.md`](docs/career-profile.md) — the structure of the Career Profile document.
+- [`docs/principles.md`](docs/principles.md) — the rules both skills follow.
+- [`docs/decisions.md`](docs/decisions.md) — the design decisions behind the project, with rationale.
+- [`docs/roadmap.md`](docs/roadmap.md) — what's built, what's next, and open questions.
+- [`CONTEXT.md`](CONTEXT.md) — shared vocabulary.
 
 ---
 
 ## Status
 
-🚧 **In active development.** The skills are being written; this repository currently defines the project and its direction.
+🚧 **In active development.** The skills are being written; this repository currently defines the project, its structure, and its direction.
+
+---
+
+## License
+
+MIT — see [`LICENSE`](LICENSE).
