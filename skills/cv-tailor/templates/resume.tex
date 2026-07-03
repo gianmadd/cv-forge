@@ -1,0 +1,119 @@
+%% cv-forge — ATS-friendly CV template
+%%
+%% Engine: pdflatex (compiles on Overleaf out of the box — no XeLaTeX needed).
+%% Single-column, standard headings, real selectable text: built to parse cleanly
+%% in automated screening tools.
+%%
+%% Visual style adapted from Michael Lustfield's CV template (CC-BY-4.0).
+%%
+%% cv-tailor fills every <<PLACEHOLDER>> from the Career Profile, in the OUTPUT
+%% LANGUAGE, and adds or removes sections/entries to match what it selected for THIS
+%% job. Nothing here is invented: every filled value traces to the profile.
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}    % <<-- set to the output language: italian, french, ngerman, ...
+\usepackage[hmargin=1.6cm,vmargin=1.3cm]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fontawesome5}       % contact icons; the plain text label sits next to each icon
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+% Fonts (serif body, matching the reference style)
+\usepackage{CormorantGaramond}
+\usepackage{charter}
+
+% ATS readability: map glyphs to Unicode so copy/parse yields real text, not gibberish.
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+% Accent palette (from the reference style): green title/text, gold rules.
+\definecolor{accentTitle}{HTML}{0E6E55}
+\definecolor{accentText}{HTML}{0E6E55}
+\definecolor{accentLine}{HTML}{A16F0B}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\raggedright
+
+% Name + contact block, framed by two rules. Usage: \cvheader{Full Name}{contact line}
+\newcommand{\cvheader}[2]{%
+  \begin{center}
+    {\Huge\color{accentTitle} #1}\\[9pt]
+    {\color{accentLine}\hrule}
+    \vspace{4pt}
+    \footnotesize #2
+    \vspace{4pt}
+    {\color{accentLine}\hrule}
+  \end{center}
+  \vspace{4pt}
+}
+
+% Section heading with a rule. Usage: \section{Title}
+\titleformat{\section}{\large\bfseries\color{accentText}}{}{0em}{}[\color{accentLine}\titlerule]
+\titlespacing{\section}{0pt}{9pt}{4pt}
+
+% One experience/education entry.
+% Usage: \entry{Organisation}{Location}{Role or qualification}{Dates}
+\newcommand{\entry}[4]{%
+  \textbf{#1}\hfill #2\\%
+  \textit{#3}\hfill #4\par%
+}
+
+% Single-line entry (e.g. a certification or a compact education line).
+% Usage: \entryline{Left text}{Right text}
+\newcommand{\entryline}[2]{\textbf{#1}\hfill #2\par}
+
+% Achievement bullets.
+\newenvironment{bullets}
+  {\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt,parsep=0pt]}
+  {\end{itemize}}
+\renewcommand\labelitemi{--}
+
+\begin{document}
+
+% ---- Header: identity + contact --------------------------------------------
+\cvheader{<<FULL NAME>>}{%
+  <<TARGET ROLE / TITLE>> \quad\textbullet\quad
+  \faEnvelope\ \href{mailto:<<EMAIL>>}{<<EMAIL>>} \quad\textbullet\quad
+  \faPhone\ <<PHONE>> \quad\textbullet\quad
+  \faLinkedin\ \href{https://linkedin.com/in/<<LINKEDIN>>}{linkedin.com/in/<<LINKEDIN>>}%
+  % Add \faGithub / \faGlobe fields, or a photo, only as the profile and target market warrant.
+}
+
+% ---- Summary ----------------------------------------------------------------
+\section{Summary}
+<<2–4 line professional summary, tailored to the target role, drawn from the profile.>>
+
+% ---- Experience -------------------------------------------------------------
+\section{Experience}
+\entry{<<ORGANISATION>>}{<<LOCATION>>}{<<JOB TITLE>>}{<<START>> -- <<END>>}
+\begin{bullets}
+  \item <<Achievement starting with an action verb; include the metric if the profile has one.>>
+  \item <<Achievement ...>>
+\end{bullets}
+% Repeat one \entry + bullets per selected role, most recent first.
+% Honour any inline Agent Note attached to a role in the profile.
+
+% ---- Education --------------------------------------------------------------
+\section{Education}
+\entry{<<INSTITUTION>>}{<<LOCATION>>}{<<QUALIFICATION>>}{<<YEARS>>}
+
+% ---- Skills -----------------------------------------------------------------
+\section{Skills}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}l@{\hspace{12pt}}X@{}}
+<<CATEGORY>> & <<skill, skill, skill>> \\
+<<CATEGORY>> & <<skill, skill>> \\
+\end{tabularx}
+
+% ---- Languages (conditional) ------------------------------------------------
+% Include this section ONLY when the profile lists more than a native language.
+% \section{Languages}
+% <<Language (level), Language (level), ...>>
+
+\end{document}

@@ -56,11 +56,20 @@ CONTEXT.md              # shared vocabulary
 package.json            # metadata / versioning (no bin — no custom installer)
 docs/                   # this documentation
 skills/
-  cv-profiler/SKILL.md  # skill 1 (the interview)
-  cv-tailor/SKILL.md    # skill 2 (the generator)
-templates/              # CV / cover-letter templates used by cv-tailor
-examples/               # example Career Profiles (one technical, one non-technical)
+  cv-profiler/
+    SKILL.md            # skill 1 (the interview)
+    references/         # branch-specific reference disclosed from SKILL.md
+  cv-tailor/
+    SKILL.md            # skill 2 (the generator)
+    references/         # output-format reference disclosed from SKILL.md
+    templates/          # CV / cover-letter templates — inside the skill so they install with it
+examples/               # example Career Profiles (one technical, one non-technical) — dev-time reference
 ```
+
+Anything a skill needs **at runtime** lives inside its own folder, because the installer
+copies only `skills/<name>/`. Templates therefore sit under `skills/cv-tailor/templates/`,
+not at the repo root. `examples/` stays at the root: it is dev-time reference, not read by
+the skills while they run.
 
 Skills are authored as Markdown (`SKILL.md`), in English for portability; the
 *interview and output* are multilingual (see [`principles.md`](principles.md)).

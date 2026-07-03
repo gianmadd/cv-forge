@@ -10,34 +10,45 @@ What's decided, what's left to build, and what's deliberately deferred.
 - Distribution model chosen: shared `skills` installer, no custom installer.
 - Repo owner (`gianmadd`) and license (MIT, © Gian Marco Addati) decided.
 - Repository documentation and scaffold (this `docs/` set, `README.md`, `CONTEXT.md`, `CHANGELOG.md`, `package.json`).
+- `SKILL.md` conventions settled: frontmatter (`name` + `description`), invocation model, self-containment — see [`decisions.md`](decisions.md) §10.
+- **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication.
+- **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
 
 ## To build
 
-1. **`cv-profiler` (`skills/cv-profiler/SKILL.md`).** The interview: `Phase 0`
-   calibration → profile note; the phased interview; the core/conditional structure with
-   `PURPOSE` markers and their fixed authoring rule; the probe banks for early-career /
-   career changers; gap noticing; the conditional-proposal rubric; incremental saving and
-   the three-way dispatch; zero-fabrication and default rephrasing.
-2. **`cv-tailor` (`skills/cv-tailor/SKILL.md`).** The generator: reads the Career Profile
-   by the agreed section names, renders `Languages` as a conditional section, selects and
-   structures content per job posting, matches keywords across languages, uses
-   domain-adaptive verbs and localized section names, and compiles the output.
-3. **Templates & examples.** Rewrite the CV / cover-letter templates from scratch (single
-   neutral layout); add two example Career Profiles — one technical, one non-technical.
-4. **Verification.** Run the lightweight eval (non-technical personas + acceptance
+1. **Examples.** Add two example Career Profiles — one technical, one non-technical.
+   (The CV / cover-letter templates are done: single-column `pdflatex`, in
+   `skills/cv-tailor/templates/`, satisfying `references/output-format.md`.)
+2. **Verification.** Run the lightweight eval (non-technical personas + acceptance
    checklist) and one end-to-end test per profile type.
-5. **Cleanup before publishing.** Remove all baseline material and internal design notes;
-   ensure deliverables read as original work.
-6. **Publish.** Confirm the repo conforms to the `skills` convention, then publish and
+3. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
+   it runs cleanly at the operational level: file **permissions** for reading/writing the
+   profile and the output, whether any **helper scripts** are needed (e.g. a compile
+   wrapper, a setup/dependency check for `pdflatex`) or whether the skills stay
+   script-free, and that the compile hand-off (Overleaf / local `pdflatex`) is smooth. Fix
+   whatever trips the flow.
+   - **Local compilation — still to test.** Only the Overleaf path has been exercised so
+     far (a local TeX install was flaky this session). Verify the local route end to end:
+     `pdflatex resume.tex` run **twice** (for cross-references), then clean the aux files
+     (`*.aux *.log *.out *.toc *.fls *.fdb_latexmk`). Decide whether `cv-tailor` should
+     **auto-compile locally when `pdflatex` is present** (compile-twice + cleanup, as some
+     comparable agents do) rather than only handing off the `.tex`.
+4. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
+   clean and consistent.
+5. **Publish.** Confirm the repo conforms to the `skills` convention, then publish and
    verify installation on Claude Code — followed by incremental checks on other agents.
 
 ## Deferred / open questions
 
+- **Let the user choose among several templates.** Ship more than one CV layout and let
+  the user pick — ideally pointing them to a gallery/link where they can browse options,
+  then generating into the chosen one. For now there is a single template; this is the
+  path to multiple.
 - **Other agents beyond Claude Code** — handled by the shared installer; only
   *testing* remains, after the skills exist.
 
-## Content to produce during implementation
+## Content still to produce
 
-Decided as rules; exact text written when the skills are authored: the `PURPOSE` texts
-for every section, the probe-bank wording, the good/bad examples for the conditional
-rubric, and the two example Career Profiles.
+The skills author `PURPOSE` texts and probes at runtime (the rules and probe banks now
+live in the skills). What remains to write as repo assets: the CV / cover-letter
+templates and the two example Career Profiles — one technical, one non-technical.

@@ -32,8 +32,6 @@ with them.
 - **The Career Profile is the contract** between the two skills. If you rename a
   section, marker, or convention in one skill, update the other skill **and**
   `docs/career-profile.md` in the same change — a mismatch silently breaks the pipeline.
-- **Original work.** No references in the repo to any baseline material, other
-  repositories, or third-party works.
 - **Never commit personal data** — real Career Profiles, generated CVs, or `output/`.
 
 ## Keep in sync

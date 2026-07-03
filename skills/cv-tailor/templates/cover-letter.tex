@@ -1,0 +1,77 @@
+%% cv-forge — cover letter template (companion to resume.tex)
+%%
+%% Engine: pdflatex (Overleaf-ready). Same visual system as the CV.
+%% Produced ONLY when the user asks for a cover letter. cv-tailor fills every
+%% <<PLACEHOLDER>> from the Career Profile in the OUTPUT LANGUAGE; nothing is invented.
+%%
+%% Visual style adapted from Michael Lustfield's CV template (CC-BY-4.0).
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}    % <<-- set to the output language: italian, french, ngerman, ...
+\usepackage[hmargin=1.8cm,vmargin=1.6cm]{geometry}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\usepackage{fontawesome5}
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{CormorantGaramond}
+\usepackage{charter}
+
+\definecolor{accentTitle}{HTML}{0E6E55}
+\definecolor{accentLine}{HTML}{A16F0B}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+\begin{document}
+
+% ---- Sender header (mirrors the CV) ----------------------------------------
+\begin{center}
+  {\Huge\color{accentTitle} <<FULL NAME>>}\\[9pt]
+  {\color{accentLine}\hrule}
+  \vspace{4pt}
+  \footnotesize
+  \faEnvelope\ \href{mailto:<<EMAIL>>}{<<EMAIL>>} \quad\textbullet\quad
+  \faPhone\ <<PHONE>> \quad\textbullet\quad
+  \faMapMarker*\ <<CITY, COUNTRY>>
+  \vspace{4pt}
+  {\color{accentLine}\hrule}
+\end{center}
+
+\vspace{6pt}
+
+% ---- Date and recipient -----------------------------------------------------
+<<DATE>>
+\vspace{2pt}
+
+<<HIRING MANAGER / TEAM>>\\
+<<COMPANY>>\\
+<<COMPANY LOCATION>>
+
+% ---- Body -------------------------------------------------------------------
+\vspace{4pt}
+<<SALUTATION, e.g. "Dear Hiring Manager,">>
+
+\justifying
+
+<<Opening: connect the candidate's background to THIS role and company; name the job
+title and 1–2 things that make the role a genuine fit. Drawn from the profile.>>
+
+<<Body 1: 2–3 concrete accomplishments from the profile most relevant to this posting,
+with real detail and metrics where the profile has them.>>
+
+<<Body 2: address a specific requirement from the posting and connect the candidate's
+real experience to it.>>
+
+<<Closing: express genuine interest, note next steps, thank them.>>
+
+\vspace{10pt}
+<<CLOSING, e.g. "Yours sincerely,">>\\[6pt]
+\textbf{<<FULL NAME>>}
+
+\end{document}

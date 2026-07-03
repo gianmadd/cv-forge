@@ -34,14 +34,14 @@ This installs two skills — `cv-profiler` and `cv-tailor` — into your agent. 
 
 It runs in two stages, as a pipeline:
 
-### 1. `cv-profiler` — build your Career Profile
+### 1. [`cv-profiler`](skills/cv-profiler/SKILL.md) — build your Career Profile
 A guided interview that captures everything about your career in one structured document: roles, responsibilities, achievements and metrics, skills, education, languages, and more. This document is your **single source of truth** — you build it once and keep it.
 
 - Adapts its questions to your profession and background — it works for any field.
 - Saves incrementally, so you can stop and pick up where you left off.
 - Notices things worth clarifying (gaps, overlapping roles, transferable skills) and asks with tact — never assumes, never fills in blanks for you.
 
-### 2. `cv-tailor` — generate a CV for a specific job
+### 2. [`cv-tailor`](skills/cv-tailor/SKILL.md) — generate a CV for a specific job
 Give it your Career Profile plus a job posting, and it produces a CV (and, optionally, a cover letter) built for that role: structured so automated screening tools parse it correctly, and focused on the experience and keywords that fit the posting — drawing **only** from what's in your profile.
 
 - Surfaces the right experience and keywords for the posting.
@@ -78,7 +78,7 @@ Your Career Profile contains personal information, and it stays **entirely on yo
 
 ## Status
 
-🚧 **In active development.** The skills are being written; this repository currently defines the project, its structure, and its direction.
+🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`) are drafted; templates, example profiles, and end-to-end verification are still to come — see [`docs/roadmap.md`](docs/roadmap.md).
 
 ---
 

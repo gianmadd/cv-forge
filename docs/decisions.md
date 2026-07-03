@@ -158,9 +158,42 @@ interaction and output are multilingual.
 
 - **The repo uses a conventional skills-repository layout:** `skills/<name>/SKILL.md`,
   `docs/`, `CONTEXT.md`, `CHANGELOG.md`, `package.json` (metadata/versioning, no `bin`),
-  `templates/`, `examples/`. Skills use the **Skills feature (`SKILL.md`)**, not
-  subagents in `.claude/agents/`.
-- **The project is presented as original work.** Deliverables and documentation carry no
-  references to any baseline material, other repositories, or third-party works.
-- **Licensed under MIT** (© 2026 Gian Marco Addati). Templates are rewritten from
-  scratch, so there are no third-party attribution obligations.
+  `examples/`. Skills use the **Skills feature (`SKILL.md`)**, not subagents in
+  `.claude/agents/`.
+- **Runtime assets live inside the skill folder.** The installer copies only
+  `skills/<name>/`, so anything a skill reads while running ships with it: CV /
+  cover-letter templates live in `skills/cv-tailor/templates/`, not at the repo root.
+  `examples/` stays at the root because it is dev-time reference, not read at runtime.
+  *Why:* a repo-root `templates/` would simply not travel with the installed skill.
+- **`SKILL.md` frontmatter is `name` + `description` only.** These are the two fields
+  the shared `skills` installer requires; we deliberately add nothing else (no
+  `allowed-tools`, `license`, `version`) so the skills stay portable across every agent
+  the installer targets. No plugin manifest is needed — the installer discovers skills
+  by the `skills/<name>/SKILL.md` layout. *Why:* extra frontmatter fields are
+  agent-specific and would only risk breaking portability for no gain.
+- **Both skills are model-invoked via their `description`, and user-invokable** (in
+  Claude Code, `/cv-profiler` and `/cv-tailor`). Neither is hidden/`internal`. The
+  `description` is written trigger-rich so the model activates the skill on the right
+  intent and not otherwise. *Why:* the skills are user-facing workflows; there is no
+  reason to hide either, and a good description gives both discovery paths for free.
+- **Each `SKILL.md` is self-contained.** The installer copies only the skill folder, so
+  `docs/` is not present at runtime; every rule a skill needs while running is written
+  into its `SKILL.md` (docs remain the dev-time record and must stay consistent with it).
+  *Why:* a skill that referenced `docs/` would silently lose its rules once installed.
+- **The CV / cover-letter templates may be based on an existing template.** They need
+  not be written from scratch; a proven layout can be adapted.
+- **The template is a single-column LaTeX CV compiled with `pdflatex`.** A single neutral
+  layout (`article`-based, standard headings, real selectable text) serves every profile.
+  *Why:* `pdflatex` is universal and the Overleaf default (no XeLaTeX toolchain), a
+  single column parses cleanly in screening tools, and plain macros are trivial for
+  `cv-tailor` to fill. The glyph-to-Unicode map (`\input{glyphtounicode}`,
+  `\pdfgentounicode=1`) keeps the PDF's text extractable.
+- **`cv-tailor` emits the filled `.tex` (plus any assets); compiling to PDF is a separate
+  step.** The user compiles on **Overleaf** (cloud, zero local install) or with a local
+  `pdflatex`. *Why:* the skill runs on the user's machine and should not force a heavy
+  TeX install; the source it emits compiles anywhere, Overleaf included.
+- **Licensed under MIT** (© 2026 Gian Marco Addati).
+- **ATS-readability is a goal, owned at the template level.** The product's promise is
+  CVs that automated screening tools parse cleanly. `cv-tailor` renders faithfully into
+  the template; ensuring the template is itself AI-/ATS-readable is a property of the
+  template, verified when it's added — not a constraint `cv-tailor` re-derives.
