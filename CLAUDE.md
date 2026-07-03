@@ -12,10 +12,12 @@ posting into a tailored CV. Read `docs/architecture.md` for the big picture and
 
 ## Layout
 
-- `skills/<name>/SKILL.md` — the skills (`cv-profiler`, `cv-tailor`); one folder per skill.
+- `skills/<name>/SKILL.md` — the skills (`cv-profiler`, `cv-tailor`); one folder per skill,
+  with branch-specific reference under `skills/<name>/references/`.
+- `skills/cv-tailor/templates/` — CV / cover-letter templates, kept inside the skill so the
+  installer ships them with it.
 - `docs/` — project documentation.
-- `templates/` — CV / cover-letter templates used by `cv-tailor`.
-- `examples/` — example Career Profiles.
+- `examples/` — example Career Profiles (dev-time reference).
 - `CONTEXT.md` — shared vocabulary.
 
 ## Before changing a skill
@@ -41,9 +43,3 @@ with them.
   entry under `[Unreleased]`.
 - Complete or reshape planned work → update `docs/roadmap.md`.
 
-## To settle when authoring the skills
-
-- The exact `SKILL.md` frontmatter the shared `skills` installer expects, and whether a
-  plugin manifest is required.
-- Each skill's invocation model: user-invoked (reachable only by the human) vs
-  model-invoked.

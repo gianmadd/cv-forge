@@ -13,6 +13,7 @@ What's decided, what's left to build, and what's deliberately deferred.
 - `SKILL.md` conventions settled: frontmatter (`name` + `description`), invocation model, self-containment — see [`decisions.md`](decisions.md) §10.
 - **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication.
 - **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
+- **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
 
 ## To build
 
@@ -50,5 +51,5 @@ What's decided, what's left to build, and what's deliberately deferred.
 ## Content still to produce
 
 The skills author `PURPOSE` texts and probes at runtime (the rules and probe banks now
-live in the skills). What remains to write as repo assets: the CV / cover-letter
-templates and the two example Career Profiles — one technical, one non-technical.
+live in the skills). What remains to write as repo assets: the two example Career
+Profiles — one technical, one non-technical. (The CV / cover-letter templates are done.)
