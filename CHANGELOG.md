@@ -17,6 +17,10 @@ semantic versioning.
 - LaTeX special-character escaping rule for `cv-tailor` (SKILL.md + `references/output-format.md`): profile text with `& % $ # _ ~ ^ \ { }` is escaped when filling the template, so generated CVs compile. Surfaced by the first end-to-end test.
 - Two example Career Profiles under `skills/cv-profiler/references/`, wired into `cv-profiler` as disclosed few-shot: a senior AI/ML engineer (technical) and an experienced physician (non-technical).
 - `cv-tailor` general mode: with no job posting it produces a complete, high-quality general CV from the profile's own positioning; a job posting only sharpens it for a specific application (tailored mode).
+- Match-transparency report in `cv-tailor` (Step 3): each posting requirement is classified three ways — *covered* / *present but not yet surfaced* / *genuine gap* — with a plain count and **no match percentage or fit score**. Reframes "no silent failure" as an actionable split (surface existing content vs. a gap only the user can close). See `docs/decisions.md` §7.
+- Delivery-time self-check gate in `cv-tailor` (Step 7): an explicit zero-fabrication checklist (profile-only sourcing, no proxy metrics, nothing from Archived/Excluded, Agent Notes honoured, gaps reported, clean render) confirmed before handing over the CV.
+- Sharpened zero-fabrication wording in `cv-tailor`: names the evasion tactics it must avoid (no proxy metrics, never "estimate conservatively", unbacked keywords omitted not invented).
+- LaTeX template polish: `\urlstyle{same}` in `resume.tex` and `cover-letter.tex` (URLs in the body font, cleaner and parse-safe); and a `~`-as-"approximately" → `$\sim$` guidance added to the escaping rules in `references/output-format.md`.
 
 ### Decided
 - `SKILL.md` frontmatter is `name` + `description` only; both skills are model-invoked and user-invokable; each `SKILL.md` is self-contained (see `docs/decisions.md` §10).

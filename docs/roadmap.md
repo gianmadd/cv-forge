@@ -83,9 +83,44 @@ What's decided, what's left to build, and what's deliberately deferred.
   - *Length / format targets* — one-page vs two-page vs a long-form academic CV
     (publications-heavy). Today there is no length control.
   - *Batch* — one profile + N postings → N tailored CVs for an active job search.
-  - *Keyword-gap / improvement report* — given a posting, tell the user which
-    requirements the profile doesn't cover and how to strengthen it (coaching), beyond the
-    silent-failure flag.
+  - *Keyword-gap / improvement report* — `cv-tailor` now ships the base signal: a
+    three-way match report (covered / present-but-not-surfaced / genuine gap), see
+    `decisions.md` §7. What remains is the **coaching** extension: given a posting, tell
+    the user *how* to strengthen the profile against each gap, not just that it exists.
+
+- **Quality & transparency ideas (to discuss — grill pros/cons, concreteness, cost).**
+  A shortlist surfaced while reviewing comparable tools; each is deliberately *not* built
+  yet and wants a design pass before commitment.
+  - *Anti-AI-fingerprint / humanisation pass (multilingual).* A **polish-only** quality
+    gate so generated CVs don't read as machine-written: per-language banned-buzzword
+    lists, structural anti-patterns (bullets not all opening the same way, capped
+    em-dashes, varied sentence length), and believability checks ("credible at this
+    seniority?"). Concretely a checklist step in `cv-tailor` that touches *form only, never
+    facts*. **Tension/cost:** comparable tools' lists are English-only; the real work is
+    curating per-language buzzword sets and reconciling with multilingual rendering — not a
+    one-file edit. The most distinctive of these ideas (nothing does it multilingually),
+    but the least cheap.
+  - *Richer content-visibility taxonomy in the Career Profile.* Replace today's binary
+    (normal vs `Archived / Excluded from CV`) with levels such as always /
+    variant-specific / on-request / reference-only, enabling **named CV variants** (e.g. an
+    academic vs an industry CV) from one profile. **Tension/cost:** this changes the Career
+    Profile — the contract between the two skills — so it touches `cv-profiler`,
+    `cv-tailor` and `career-profile.md` together, and risks burdening the interview with
+    per-item tagging. Only worth it once named variants / multi-template land; note
+    `Notes for CV Customization` already covers part of this in prose.
+  - *Corrections log + output lineage header.* A persistent "never re-introduce this error"
+    ledger that survives regeneration (a fabrication ratchet), plus a provenance stamp on
+    each generated CV (source profile / template / posting / version) so "tweak this one"
+    is a zero-question op and applications are auditable. **Tension/cost:** small and
+    principle-aligned; the open question is *where the log lives* — in the profile (touches
+    the contract and `cv-profiler`) or as `cv-tailor`-side state. Pairs with *iterate on a
+    generated CV* above.
+  - *Optional multi-persona critique stage.* After generating, an optional pass that
+    reviews the CV through several reader lenses (ATS / recruiter / HR / hiring manager /
+    domain expert) and returns ranked, concrete fixes — coaching, not fabrication.
+    **Tension/cost:** scope-expanding (adds a mode to `cv-tailor`), best run with fresh
+    context; avoid any numeric /100 score for the same pseudo-precision reason the match
+    report has no percentage.
 - **Output & scope questions (to decide).**
   - *DOCX output* — the deliverable set is **PDF + DOCX**, with `.tex` as the source
     (Markdown excluded — decided). DOCX is not built yet: decide the **rendering

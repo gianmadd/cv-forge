@@ -28,6 +28,11 @@ only on request). Both are single-column, **`pdflatex`**-based, and ATS-oriented
    `40\%`, `$1.2M` → `\$1.2M`, `#2` → `\#2`, `C#/.NET` → `C\#/.NET`. This applies to every
    field — names, employers, bullets, skills. A single unescaped `%` silently eats the
    rest of its line; an unescaped `&`/`$`/`#` aborts compilation.
+
+   **The "approximately" trap.** When profile text uses `~` to mean *approximately*
+   (e.g. "~5 years", "~$2M"), escaping it to `\textasciitilde{}` renders a raised literal
+   tilde, which reads wrong. Use `$\sim$` instead: `~5 years` → `$\sim$5 years`. (A bare
+   `~` in raw LaTeX is a non-breaking space, so it must never be left unescaped either.)
 5. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
    compile it (see below) or tell them how.
 

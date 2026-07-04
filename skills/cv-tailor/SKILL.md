@@ -34,8 +34,10 @@ Follow these at every step. They override any instinct to be fast or agreeable.
 
 - **Zero fabrication.** Every fact, metric, responsibility, and keyword in the output
   comes from the profile. Never invent, estimate, infer, or embellish to fit the posting.
-  If the profile lacks something the posting asks for, **leave it out and tell the user** —
-  never fabricate a match.
+  Name the evasions so you avoid them: **no proxy metrics**, never ask the user to
+  "estimate conservatively," and a keyword with no backing in the profile is **omitted,
+  not invented**. If the profile lacks something the posting asks for, **leave it out and
+  tell the user** — never fabricate a match.
 - **Polish form, never facts.** Rephrase, retone, and restructure profile content freely
   to fit the role and the output language. Never change *the facts or their meaning*.
 - **Obey inline Agent Notes.** A `> Agent Note:` next to a profile entry is **binding**
@@ -86,11 +88,23 @@ Skip this step in general mode.
 - Map them to profile content **across languages**: a requirement in the posting's
   language is satisfied by profile content in another language when they mean the same
   thing. Match on meaning, not surface string.
-- **No silent failure.** Any posting keyword you cannot map to real profile content, list
-  explicitly for the user — never quietly drop it and never invent content to cover it.
+- **Report coverage, split three ways — no silent failure.** Before rewriting, show the
+  user a short, structured match report. Classify each significant requirement as:
+  - **Covered** — real profile content already maps to it; it will appear in the CV.
+  - **Present but not yet surfaced** — the profile *does* support it, but it was buried or
+    under-weighted; you will bring it forward. This is surfacing existing content, **not**
+    fabrication.
+  - **Genuine gap** — nothing in the profile supports it. Say so plainly; it **cannot** be
+    claimed. Never quietly drop it and never invent content to cover it.
 
-**Done when:** every significant posting requirement is either mapped to profile content
-or reported as unmatched.
+  Give the tally as a plain count — e.g. *"8 of 11 requirements covered, 2 to surface,
+  1 genuine gap."* **Never compute a match percentage or fit score:** a keyword % is
+  misleading across languages (your cross-language mapping breaks a surface-string count)
+  and invites gaming. The honest, actionable artifact is the three-way list — it also
+  tells the user exactly which gap they could close by adding content to their profile.
+
+**Done when:** every significant posting requirement is classified as covered, surfaceable,
+or a genuine gap, and the tally has been shown to the user.
 
 ## Step 4 — Select and structure content
 
@@ -133,6 +147,23 @@ the user asks**. Compiling to PDF is a separate step — the user compiles on **
 (no install) or with a local `pdflatex`; offer both.
 
 **Done when:** the filled `.tex` is written in the chosen language, no `<<...>>` remains,
-all special characters are escaped, every included fact traces to the profile, all Agent
-Notes are honoured, and — in tailored mode — any unmatched posting requirements have been
-reported to the user.
+and all special characters are escaped. The content-integrity gate is Step 7.
+
+## Step 7 — Before you deliver: self-check
+
+Before handing over the output, run this checklist and confirm it to the user — it is the
+final zero-fabrication gate, not a formality:
+
+- **Profile-only sourcing** — every fact, metric, date, and keyword traces to the Career
+  Profile; nothing came from the posting text, the web, or inference.
+- **No invented or estimated metrics** — no proxy numbers, no "approximate" figures the
+  profile doesn't state.
+- **Nothing excluded leaked** — no content from `Archived / Excluded from CV`.
+- **Agent Notes honoured** — every binding `> Agent Note:` was applied where its content
+  is used.
+- **Gaps reported** — in tailored mode, the Step 3 match report was shown and genuine gaps
+  were named, not papered over.
+- **Clean render** — all `<<...>>` replaced, all LaTeX special characters escaped, correct
+  output language and localised section names.
+
+If any item fails, fix it before delivering.

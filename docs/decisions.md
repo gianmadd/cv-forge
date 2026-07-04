@@ -137,12 +137,29 @@ interaction and output are multilingual.
 
 ## 7. Content integrity
 
-- **Zero fabrication** is absolute: no invented, estimated, or embellished facts.
+- **Zero fabrication** is absolute: no invented, estimated, or embellished facts. The
+  rule **names its evasions** so a model can't technically comply while drifting: no proxy
+  metrics, never "estimate conservatively", and a keyword with no profile backing is
+  omitted, not invented.
 - **Rephrasing is allowed by default** for form (tone, syntax, grammar, completeness,
   clarity) — a useful builder improves how things read. The invariant is that
   rephrasing never changes the facts or their meaning. *Why:* the original rule
   ("never edit the user's words without permission") was too strong; what must be
   protected is the content, not the exact words.
+- **Match transparency is a three-way report, never a score.** In tailored mode
+  `cv-tailor` classifies each posting requirement as *covered* / *present but not yet
+  surfaced* / *genuine gap*, with a plain count (e.g. "8 of 11 covered"). No match
+  percentage or fit score is computed. *Why:* a keyword % assumes same-language surface
+  matching, which is false under the cross-language mapping that differentiates us, and a
+  number invites gaming. The classified list is the honest artifact and reframes "no
+  silent failure" as an actionable split — surface content the user already has vs. a gap
+  they alone can close by editing the profile.
+- **A delivery-time self-check gate** (`cv-tailor` Step 7): before handing over, the skill
+  confirms an explicit checklist (profile-only sourcing, no proxy metrics, nothing from
+  Archived/Excluded leaked, Agent Notes honoured, gaps reported, clean render). *Why:* it
+  operationalises zero-fabrication as a gate rather than scattered prose. We stay
+  prompt-only by design (no deterministic linter, to keep the skills portable and
+  runtime-free), so a confirmed checklist is the portable form of enforcement.
 
 ## 8. Verification
 
