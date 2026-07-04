@@ -28,3 +28,9 @@ living in full in Work Experience.
 On a Re-Run, when a fact changes in Work Experience, **propagate** the change to every
 aggregate section that repeats it. (On a first build there is nothing to propagate — the
 aggregate sections are derived once at the end.)
+
+The finishing **consistency pass does not silently recompute or drop a user-stated
+aggregate figure** that has gone stale after an update — e.g. a user-given total ("~7
+years") the newly-updated dates no longer match. Only figures *you* derived are
+auto-corrected; a user-stated one is theirs, so **surface the mismatch and let the user
+decide** rather than overwriting it (consistent with the user-authority rule in SKILL.md).

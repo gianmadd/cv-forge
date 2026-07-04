@@ -74,13 +74,13 @@ Your Career Profile contains personal information, and it stays **entirely on yo
 - [`docs/decisions.md`](docs/decisions.md) — the design decisions behind the project, with rationale.
 - [`docs/roadmap.md`](docs/roadmap.md) — what's built, what's next, and open questions.
 - [`CONTEXT.md`](CONTEXT.md) — shared vocabulary.
-- [`skills/cv-profiler/references/`](skills/cv-profiler/references/) — worked example Career Profiles (technical + non-technical), shipped with the skill as few-shot.
+- [`skills/cv-profiler/references/`](skills/cv-profiler/references/) — four range-spanning worked example Career Profiles (tradesperson, recent graduate, teacher, data analyst), shipped with the skill as few-shot.
 
 ---
 
 ## Status
 
-🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and two example profiles are in place. Verification has passed: end-to-end runs (profile → tailored CV, and local PDF compilation with dependency self-heal) and a scripted, independently-graded interview eval of `cv-profiler`. Operational polish and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
+🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and four range-spanning example profiles are in place. Verification has passed: end-to-end runs (profile → tailored CV, and local PDF compilation with dependency self-heal) and a scripted, independently-graded interview eval of `cv-profiler`. Operational polish and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
 
 ---
 

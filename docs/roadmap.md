@@ -14,7 +14,7 @@ What's decided, what's left to build, and what's deliberately deferred.
 - **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication.
 - **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
 - **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
-- **Two example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a senior AI/ML engineer (technical) and an experienced physician (non-technical).
+- **Four range-spanning example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a skilled tradesperson (metric-light), a recent graduate (early-career), an experienced teacher (non-technical, with a career break), and a data analyst (technical, metric-rich, core-only). Deliberately mixes technical/non-technical, metric-rich/metric-light, senior/early-career, and every structural feature so the few-shot doesn't bias toward polished white-collar careers. (Replaced the earlier senior-AI-engineer + physician pair, which were both senior and metric-rich.)
 - **Verification passed (both skills).** Two `cv-tailor` end-to-ends: AI-engineer profile →
   tailored CV (surfaced the LaTeX-escaping fix) and an Italian literature-professor profile →
   PDF via TinyTeX (surfaced the currency-symbol fix; confirmed de-biasing on a humanities
@@ -26,7 +26,13 @@ What's decided, what's left to build, and what's deliberately deferred.
   which drove the **aggregate-derivation guard** plus smaller hardening fixes (target-title
   scope, language-scale faithful capture, "lead with honest phrasing", pertinence-trigger
   wording) and the user-authority clarification; a graded **re-run confirmed the guard holds**
-  (no recurrence, no new fabrication).
+  (no recurrence, no new fabrication). All three `cv-profiler` **dispatch modes** were then
+  independently verified PASS: New Build, **Resume Draft** (continues from the first
+  `[TO COMPLETE]`, never re-asks filled sections), and **Re-Run** (non-destructive old-format
+  migration via the alias map, no duplication, promotion applied and propagated to aggregates,
+  zero fabrication). The duration/count fabrication guard was also **mirrored into `cv-tailor`**
+  (parity: the same class can't reappear at generation time under job-posting pressure), and
+  the consistency pass was refined to never silently recompute a *user-stated* figure.
 - **Local-compile detect-and-offer wired into `cv-tailor`** and the dependency-structuring question settled: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`), and `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes, and **self-heals missing packages by offering the `tlmgr install` command for approval** (never installs silently) — the robust backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`.
 
 ## To build
@@ -112,13 +118,9 @@ What's decided, what's left to build, and what's deliberately deferred.
   reads the uploaded document (PDF / DOCX / plain text) — whether it needs a helper script
   or a parsing tool, which formats to support, and how extraction/review stay
   zero-fabrication. Ties into the flow/operability helper-scripts question.
-- **Broaden the example profiles' range.** The two shipped examples are both senior,
-  credentialed, metrics-rich professionals. Add at least one that stresses the de-biasing
-  edge the project targets — a trade / early-career / career-changer profile, deliberately
-  metric-light and leaning on transferable skills — so the few-shot (and the eval) cover
-  the harder case, not just polished white-collar careers. **Head start:** the persona eval
-  already produced two such profiles (an Italian metric-light career-changer and an English
-  early-career graduate); once reviewed and de-personalised they could seed shipped examples.
+- ~~**Broaden the example profiles' range.**~~ **Done** — the shipped few-shot is now four
+  range-spanning profiles (tradesperson · recent graduate · teacher · data analyst),
+  replacing the earlier senior-AI-engineer + physician pair. See **Done** above.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the
@@ -157,7 +159,9 @@ What's decided, what's left to build, and what's deliberately deferred.
     Profile — the contract between the two skills — so it touches `cv-profiler`,
     `cv-tailor` and `career-profile.md` together, and risks burdening the interview with
     per-item tagging. Only worth it once named variants / multi-template land; note
-    `Notes for CV Customization` already covers part of this in prose.
+    `Notes for CV Customization` already covers part of this in prose. **Decided post-v1:**
+    the v1 contract is frozen on the binary model (see `decisions.md` §10); this taxonomy is
+    a later, Re-Run-migratable change, not a v1 blocker.
   - *Corrections log + output lineage header.* A persistent "never re-introduce this error"
     ledger that survives regeneration (a fabrication ratchet), plus a provenance stamp on
     each generated CV (source profile / template / posting / version) so "tweak this one"
@@ -172,11 +176,10 @@ What's decided, what's left to build, and what's deliberately deferred.
     context; avoid any numeric /100 score for the same pseudo-precision reason the match
     report has no percentage.
 - **Output & scope questions (to decide).**
-  - *DOCX output* — the deliverable set is **PDF + DOCX**, with `.tex` as the source
-    (Markdown excluded — decided). DOCX is not built yet: decide the **rendering
-    architecture** — a separate `.docx` template vs a Pandoc/library conversion — bearing
-    in mind that **escaping is per-format** (the LaTeX `& % $ #` rule does not apply to
-    DOCX).
+  - *DOCX output* — **decided post-v1** (v1 is PDF-only; see `decisions.md` §10). `.tex` is
+    the source, Markdown excluded. When built, decide the **rendering architecture** — a
+    separate `.docx` template vs a Pandoc/library conversion — bearing in mind that
+    **escaping is per-format** (the LaTeX `& % $ #` rule does not apply to DOCX).
   - *Repurposing the profile into non-CV outputs* — LinkedIn "About", a short bio, an
     elevator pitch. Scope decision: §1 deliberately targets CVs only; broadening is a
     conscious choice, not a default.
@@ -198,6 +201,5 @@ What's decided, what's left to build, and what's deliberately deferred.
 
 The skills author `PURPOSE` texts and probes at runtime (the rules and probe banks live
 in the skills). The repo assets are in place: the CV / cover-letter templates
-(`skills/cv-tailor/templates/`) and the two example Career Profiles
-(`skills/cv-profiler/references/`). Broadening the examples' range is tracked under
-*Deferred / open questions*.
+(`skills/cv-tailor/templates/`) and the four range-spanning example Career Profiles
+(`skills/cv-profiler/references/`).

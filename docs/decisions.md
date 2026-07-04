@@ -173,13 +173,21 @@ interaction and output are multilingual.
 
 ## 9. Examples & few-shot
 
-- **Two example Career Profiles ship as disclosed few-shot — one technical, one
-  non-technical.** They live in `skills/cv-profiler/references/` (a senior AI/ML engineer
-  and an experienced physician) and are pointed at from `cv-profiler`'s `SKILL.md`, loaded
-  on demand. *Why:* a single technical example would re-bias the skills toward the exact
-  profile we're de-biasing away from; two examples of different range teach the intended
-  breadth — and keeping them inside the skill is what lets the agent actually use them at
-  runtime (the installer ships only the skill folder).
+- **Four example Career Profiles ship as disclosed few-shot, chosen to span the range.**
+  They live in `skills/cv-profiler/references/` and are pointed at from `cv-profiler`'s
+  `SKILL.md`, loaded on demand: a **skilled tradesperson** (metric-light, overlapping
+  employed/self-employed, an `Archived/Excluded` section), a **recent graduate**
+  (early-career, thin experience, an inline `Agent Note` on an unowned outcome, a
+  `Volunteer Work` conditional), an **experienced teacher** (non-technical, a documented
+  career break, a `Professional Development` conditional), and a **data analyst**
+  (technical, metric-rich, core-sections-only). *Why:* examples are the strongest bias
+  signal in the whole system — a set skewed toward polished, quantified, senior white-collar
+  careers would re-bias generation toward the exact profile the project de-biases *away*
+  from. The four deliberately mix technical/non-technical, metric-rich/metric-light,
+  senior/early-career, and every structural feature (conditionals, inline notes, career
+  gaps, archived content, overlapping roles) so the few-shot teaches breadth, not a
+  stereotype. Keeping them inside the skill is what lets the agent use them at runtime (the
+  installer ships only the skill folder).
 
 ## 10. Repository, packaging & authorship
 
@@ -246,11 +254,26 @@ interaction and output are multilingual.
     manifest is the fast path; the self-heal is the backstop that covers transitive-dep gaps
     (`cormorantgaramond` does not auto-pull `fontaxes`) and both error forms — missing
     `.sty` and missing font metric (`Metric (TFM) file not found`).
-- **Deliverable formats: PDF and DOCX, with `.tex` as the source.** PDF is the primary
-  submit format (via compile); **DOCX** is planned for the ATS/recruiter cases that want
-  Word. **Markdown output is excluded** — the Career Profile is already Markdown and no one
-  submits a `.md` CV. DOCX is not built yet; its rendering path is a roadmap decision.
-  *Why:* two formats cover real submission needs without maintaining formats nobody uses.
+- **Deliverable formats: PDF for v1; DOCX planned post-v1; `.tex` is the source.** PDF is
+  the primary submit format (via compile) and the **only** format v1 ships. **DOCX** is
+  planned for the ATS/recruiter cases that want Word, but is **explicitly out of v1** — it is
+  a separate build (rendering path undecided: Pandoc-from-`.tex` vs a native `.docx` template,
+  with per-format escaping distinct from LaTeX) and would delay publishing without
+  strengthening the core. The README does not promise DOCX, so shipping PDF-only breaks no
+  public commitment. **Markdown output is excluded** — the Career Profile is already Markdown
+  and no one submits a `.md` CV. *Why:* PDF covers the central "ATS-readable submit" promise
+  now; DOCX is real but niche and can follow.
+- **The v1 Career Profile contract is frozen as-is.** The published v1 commits to the current
+  structure: the **binary visibility model** (normal vs `Archived / Excluded from CV`), the
+  **nine core sections** + the conditional set, and the `PURPOSE`-marker / inline-`Agent
+  Note` conventions. A **richer visibility taxonomy** (always / variant-specific / on-request
+  / reference-only, enabling named CV variants) is deliberately **post-v1**: its real trigger
+  is named variants / multi-template, both deferred, and it would burden the interview with
+  per-item tagging. *Why it's low-risk to freeze:* the structure is proven (both skills
+  read/write it; verified end-to-end and across all three dispatch modes), and future
+  evolution is **non-destructively migratable** on Re-Run via the alias map in
+  `references/re-run.md` — so a later taxonomy is an additive, migratable change, not a break
+  for existing profiles.
 - **Licensed under MIT** (© 2026 Gian Marco Addati).
 - **ATS-readability is a goal, owned at the template level.** The product's promise is
   CVs that automated screening tools parse cleanly. `cv-tailor` renders faithfully into

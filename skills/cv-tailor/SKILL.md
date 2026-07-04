@@ -37,7 +37,11 @@ Follow these at every step. They override any instinct to be fast or agreeable.
   Name the evasions so you avoid them: **no proxy metrics**, never ask the user to
   "estimate conservatively," and a keyword with no backing in the profile is **omitted,
   not invented**. If the profile lacks something the posting asks for, **leave it out and
-  tell the user** — never fabricate a match.
+  tell the user** — never fabricate a match. **This includes durations and counts:** a
+  tenure, an "X years as Y", or a team size in the CV must be *stated in* or *directly
+  datable from* Work Experience. Never decompose a stated total into a per-role figure, and
+  never aggregate distinct roles to hit a number the posting asks for (e.g. folding
+  non-management years into "7+ years managing teams" because the posting wants seven).
 - **Polish form, never facts.** Rephrase, retone, and restructure profile content freely
   to fit the role and the output language. Never change *the facts or their meaning*.
 - **Obey inline Agent Notes.** A `> Agent Note:` next to a profile entry is **binding**
@@ -173,7 +177,8 @@ final zero-fabrication gate, not a formality:
 - **Profile-only sourcing** — every fact, metric, date, and keyword traces to the Career
   Profile; nothing came from the posting text, the web, or inference.
 - **No invented or estimated metrics** — no proxy numbers, no "approximate" figures the
-  profile doesn't state.
+  profile doesn't state, and no duration or count that isn't stated in or directly datable
+  from Work Experience (no decomposing a total, no aggregating roles to match the posting).
 - **Nothing excluded leaked** — no content from `Archived / Excluded from CV`.
 - **Agent Notes honoured** — every binding `> Agent Note:` was applied where its content
   is used.

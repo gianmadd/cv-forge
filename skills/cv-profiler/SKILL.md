@@ -198,11 +198,26 @@ by its role.
 ### Worked examples
 
 For the exact *shape* to produce — `PURPOSE` wording, entry and date formatting, inline
-`> Agent Note:` style, how conditional sections read — consult the two complete reference
-profiles: [`references/example-ai-engineer.md`](references/example-ai-engineer.md)
-(technical) and [`references/example-doctor.md`](references/example-doctor.md)
-(non-technical). Match their **structure and conventions**, never their domain — one is
-technical and one is not on purpose, so the format doesn't re-bias toward either field.
+`> Agent Note:` style, how conditional sections read — consult the four complete reference
+profiles, chosen to span the range so the format doesn't re-bias toward any one kind of
+career:
+
+- [`references/example-electrician.md`](references/example-electrician.md) — skilled trade,
+  mid-career, deliberately **metric-light**; overlapping employed + self-employed roles; an
+  `Archived / Excluded from CV` section.
+- [`references/example-recent-graduate.md`](references/example-recent-graduate.md) —
+  **early-career**, thin experience; an inline `> Agent Note:` on an unowned outcome; a
+  conditional `Volunteer Work` section.
+- [`references/example-teacher.md`](references/example-teacher.md) — experienced
+  non-technical professional; a documented **career break**; mixed owned/qualitative
+  results; a conditional `Professional Development` section.
+- [`references/example-data-analyst.md`](references/example-data-analyst.md) — technical,
+  **metric-rich**, clean progression; **core sections only** (a profile that legitimately
+  needs no conditional section).
+
+Match their **structure and conventions**, never their domain. The set deliberately mixes
+technical and non-technical, metric-rich and metric-light, senior and early-career, so the
+few-shot doesn't bias generation toward polished, quantified, white-collar careers.
 
 ---
 
@@ -330,9 +345,12 @@ on any core section.** Then:
   Skills / Competencies) from Work Experience if not already done. **Introduce no number
   the user didn't state or that isn't directly datable from Work Experience.** Never
   decompose a stated total into a per-role figure — turning "~9 years in the field" into
-  "~6 of them as manager" is fabrication, not derivation. Run a final **consistency pass**:
-  any duration, count, or "X years as Y" in an aggregate must reconcile with the recorded
-  Work Experience dates; if it can't, cut it.
+  "~6 of them as manager" is fabrication, not derivation. Run a final **consistency pass**
+  on figures *you* derived: any duration or count you introduced must reconcile with the
+  recorded Work Experience dates; if it can't, cut it. A figure the **user stated** is
+  theirs — if it no longer reconciles (e.g. a user-given "~9 years" the updated dates no
+  longer support), don't silently cut or recompute it: surface the mismatch and let the user
+  decide.
 - Tell the user the profile is ready and where the file is, that they can now run
   `cv-tailor` with this profile (and, if they have one, a job posting), and that they can
   re-run you any time to enrich or update it.
