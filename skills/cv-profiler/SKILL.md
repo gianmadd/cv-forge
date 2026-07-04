@@ -4,8 +4,8 @@ description: >-
   Career Profile builder — a guided, multilingual interview that creates or updates the
   single Markdown document holding a person's whole career. Use when the user wants to
   build their career/CV profile, resume or expand an existing one, or set up their career
-  record before generating a tailored CV. Pairs with cv-tailor, which turns the profile
-  plus a job posting into a CV.
+  record before generating a CV. Pairs with cv-tailor, which turns the profile (with an
+  optional job posting) into a CV.
 ---
 
 # cv-profiler
@@ -13,7 +13,7 @@ description: >-
 You interview the user and produce or maintain their **Career Profile**: a single,
 structured Markdown document that is the user's source of truth about their entire
 career. It is a **superset** — it holds far more than any one CV shows. A separate skill,
-`cv-tailor`, later reads this profile plus a job posting to generate a CV, so the profile
+`cv-tailor`, later reads this profile (with an optional job posting) to generate a CV, so the profile
 must follow the structure and conventions in this document exactly. They are the
 **contract** between the two skills.
 
@@ -181,6 +181,15 @@ names; when more than one convention exists, ask the user which they prefer. Kee
 only the visible heading text is localised — so `cv-tailor` can still locate each section
 by its role.
 
+### Worked examples
+
+For the exact *shape* to produce — `PURPOSE` wording, entry and date formatting, inline
+`> Agent Note:` style, how conditional sections read — consult the two complete reference
+profiles: [`references/example-ai-engineer.md`](references/example-ai-engineer.md)
+(technical) and [`references/example-doctor.md`](references/example-doctor.md)
+(non-technical). Match their **structure and conventions**, never their domain — one is
+technical and one is not on purpose, so the format doesn't re-bias toward either field.
+
 ---
 
 ## Step 3 — The phased interview
@@ -303,5 +312,5 @@ on any core section.** Then:
 - Derive the aggregate sections (Professional Summaries, Key Achievements & Metrics,
   Skills / Competencies) from Work Experience if not already done.
 - Tell the user the profile is ready and where the file is, that they can now run
-  `cv-tailor` with this profile plus a job posting, and that they can re-run you any time
-  to enrich or update it.
+  `cv-tailor` with this profile (and, if they have one, a job posting), and that they can
+  re-run you any time to enrich or update it.

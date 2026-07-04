@@ -5,8 +5,8 @@ all docs use these words with these meanings.
 
 - **Career Profile** — the single, structured, comprehensive document a user builds with `cv-profiler`. It is the **source of truth**: every CV is generated from it. It is *not* a CV — it holds far more than any single CV would show.
 - **`cv-profiler`** — the first skill. A guided interview that builds and maintains the Career Profile.
-- **`cv-tailor`** — the second skill. Reads a Career Profile plus a job posting and produces a CV (and optionally a cover letter) tailored to that role.
-- **Job posting** — the description of a specific role a user is applying for; the input that `cv-tailor` tailors against.
+- **`cv-tailor`** — the second skill. Reads a Career Profile — and, optionally, a job posting — and produces a CV (and optionally a cover letter): tailored to that role when a posting is given, otherwise a complete general CV.
+- **Job posting** — the description of a specific role a user is applying for; the **optional** input that `cv-tailor` tailors against. With one, `cv-tailor` runs in **tailored** mode; without one, in **general** mode (a baseline CV from the profile's own positioning).
 
 ### Career Profile structure
 - **Core section** — one of the fixed sections present in every Career Profile (see `docs/career-profile.md`).

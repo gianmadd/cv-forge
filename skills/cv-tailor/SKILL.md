@@ -1,22 +1,32 @@
 ---
 name: cv-tailor
 description: >-
-  Tailored CV generator — reads a Career Profile plus a job posting and produces a CV,
-  and on request a cover letter, built for that role using only what the profile
-  contains. Use when the user has a Career Profile and a job posting and wants a CV
-  tailored to it, or asks to generate or tailor a CV or cover letter for an application.
-  Reads the profile that cv-profiler builds.
+  CV generator — turns a Career Profile into a polished, ATS-ready CV (and, on request, a
+  cover letter), using only what the profile contains. Given a job posting it tailors the
+  CV to that role; without one it produces a general CV from the profile's own
+  positioning. Use when the user has a Career Profile and wants to generate, tailor, or
+  export a CV or cover letter. Reads the profile that cv-profiler builds.
 ---
 
 # cv-tailor
 
-You read a user's **Career Profile** plus a **job posting** and generate a CV tailored to
-that role — and, on request, a cover letter. The Career Profile is the document that
-`cv-profiler` builds; its structure and conventions are the **contract** you rely on to
-locate content. You draw **only** from the profile.
+You read a user's **Career Profile** and generate a CV from it — and, on request, a cover
+letter. The Career Profile is the document that `cv-profiler` builds; its structure and
+conventions are the **contract** you rely on to locate content. You draw **only** from the
+profile.
+
+You work in one of two modes:
+
+- **Tailored** — a job posting is given; you select and frame content to fit that role.
+- **General** — no posting; you produce a complete, polished, general-purpose CV from the
+  profile's own positioning, and offer to tailor it if the user later brings a posting.
+
+Both modes output a **finished, high-quality CV** — general mode is never a draft or a
+lesser version. A posting only makes the CV *more precise for that one application*; it
+does not raise the quality bar.
 
 You do not interview the user to gather new career facts — that is `cv-profiler`'s job. If
-the profile is missing something the posting needs, you say so; you never invent it.
+the profile is missing something a posting needs, you say so; you never invent it.
 
 ## Non-negotiable rules
 
@@ -39,18 +49,21 @@ Follow these at every step. They override any instinct to be fast or agreeable.
 - **Adapt to the field.** Action verbs and framing follow the profile's domain, not a
   fixed tech-flavoured list.
 
-## Step 1 — Gather inputs
+## Step 1 — Gather inputs and set the mode
 
 Confirm you have, asking only for what's missing:
 
-1. **The Career Profile** — its file path. Read it fully.
-2. **The job posting** — pasted text or a path/URL.
+1. **The Career Profile** — its file path. Read it fully. *(Required.)*
+2. **The job posting** — pasted text or a path/URL. *(Optional.)* If given, run in
+   **tailored** mode; if the user doesn't have one, run in **general** mode — never force
+   them to invent a posting.
 3. **The output language** — chosen now; it may differ from the profile's language. You
    render into this language.
 4. **The target market** — the country/market the CV is aimed at; it decides which
    personal fields are appropriate (below).
 
-**Done when:** all four are known and the profile and posting are read.
+**Done when:** the profile is read, the output language and target market are known, and
+the mode (tailored / general) is set.
 
 ## Step 2 — Read the profile by its contract
 
@@ -65,7 +78,9 @@ and role text to identify each section.
 - Note every inline **Agent Note** and the **Archived / Excluded** section so you honour
   them in Step 4.
 
-## Step 3 — Match the posting to the profile
+## Step 3 — Match the posting to the profile *(tailored mode only)*
+
+Skip this step in general mode.
 
 - Extract the posting's requirements and keywords.
 - Map them to profile content **across languages**: a requirement in the posting's
@@ -79,12 +94,17 @@ or reported as unmatched.
 
 ## Step 4 — Select and structure content
 
-- Select the profile content that best fits the posting; lead with what the posting
-  weights most. Omit what's irrelevant to this role — the profile is a superset.
+- **Choose the emphasis by mode:**
+  - *Tailored* — select the content that best fits the posting and lead with what the
+    posting weights most.
+  - *General* — take the emphasis from the profile's own **Professional Identity &
+    Positioning**, its most general **Professional Summary**, and **Notes for CV
+    Customization**; lead with the strongest, most broadly relevant experience.
+- Omit what's irrelevant — the profile is a superset; a CV is not.
 - Frame achievements with **domain-adaptive action verbs** drawn from the profile's
   field.
-- Place mapped keywords in context (in the relevant role or skills entry) — never stuff
-  or hide them.
+- In tailored mode, place mapped keywords in context (in the relevant role or skills
+  entry) — never stuff or hide them.
 - Apply every inline **Agent Note** to the content it governs; include nothing from
   **Archived / Excluded from CV**.
 
@@ -106,10 +126,13 @@ or reported as unmatched.
 
 Fill the `pdflatex` template in `templates/` following
 [`references/output-format.md`](references/output-format.md): replace every `<<PLACEHOLDER>>`,
-set the output language, and add/remove sections to match your selection. Produce a
-**cover letter only if the user asks**. Compiling to PDF is a separate step — the user
-compiles on **Overleaf** (no install) or with a local `pdflatex`; offer both.
+set the output language, add/remove sections to match your selection, and **escape LaTeX
+special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
+an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Produce a **cover letter only if
+the user asks**. Compiling to PDF is a separate step — the user compiles on **Overleaf**
+(no install) or with a local `pdflatex`; offer both.
 
 **Done when:** the filled `.tex` is written in the chosen language, no `<<...>>` remains,
-every included fact traces to the profile, all Agent Notes are honoured, and any unmatched
-posting requirements have been reported to the user.
+all special characters are escaped, every included fact traces to the profile, all Agent
+Notes are honoured, and — in tailored mode — any unmatched posting requirements have been
+reported to the user.

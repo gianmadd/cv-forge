@@ -13,7 +13,22 @@ only on request). Both are single-column, **`pdflatex`**-based, and ATS-oriented
 3. **Replace every `<<PLACEHOLDER>>`** with content selected from the profile, in the
    output language. Leave no `<<...>>` behind. Add or remove `\entry` blocks, bullets, and
    whole `\section`s to match what you selected for this job.
-4. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
+4. **Escape LaTeX special characters in every value you insert.** Profile text routinely
+   contains characters that break `pdflatex` or render wrong. Escape them as you fill:
+
+   | Char | Write as | | Char | Write as |
+   | --- | --- | --- | --- | --- |
+   | `&` | `\&` | | `~` | `\textasciitilde{}` |
+   | `%` | `\%` | | `^` | `\textasciicircum{}` |
+   | `$` | `\$` | | `\` | `\textbackslash{}` |
+   | `#` | `\#` | | `{` `}` | `\{` `\}` |
+   | `_` | `\_` | | | |
+
+   So `AT&T` → `AT\&T`, `Ben & Jerry's` → `Ben \& Jerry's`, `R&D` → `R\&D`, `40%` →
+   `40\%`, `$1.2M` → `\$1.2M`, `#2` → `\#2`, `C#/.NET` → `C\#/.NET`. This applies to every
+   field — names, employers, bullets, skills. A single unescaped `%` silently eats the
+   rest of its line; an unescaped `&`/`$`/`#` aborts compilation.
+5. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
    compile it (see below) or tell them how.
 
 ## Section mapping (profile → template)

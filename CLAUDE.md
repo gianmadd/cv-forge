@@ -13,11 +13,11 @@ posting into a tailored CV. Read `docs/architecture.md` for the big picture and
 ## Layout
 
 - `skills/<name>/SKILL.md` — the skills (`cv-profiler`, `cv-tailor`); one folder per skill,
-  with branch-specific reference under `skills/<name>/references/`.
+  with disclosed reference under `skills/<name>/references/` (including `cv-profiler`'s
+  worked example profiles, shipped as few-shot).
 - `skills/cv-tailor/templates/` — CV / cover-letter templates, kept inside the skill so the
   installer ships them with it.
 - `docs/` — project documentation.
-- `examples/` — example Career Profiles (dev-time reference).
 - `CONTEXT.md` — shared vocabulary.
 
 ## Before changing a skill

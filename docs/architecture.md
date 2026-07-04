@@ -15,7 +15,7 @@ distributed as agent skills, not as a standalone application.
 ```
 
 - **`cv-profiler`** interviews the user and produces/maintains the **Career Profile** — one structured Markdown document that is the single source of truth. It saves incrementally and can resume an interrupted session.
-- **`cv-tailor`** reads the Career Profile plus a job posting and generates a CV tailored to that role, drawing only from the profile.
+- **`cv-tailor`** reads the Career Profile — and, optionally, a job posting — and generates a CV drawing only from the profile: tailored to the role when a posting is given, otherwise a complete general CV.
 
 The Career Profile is the **contract** between the two skills: `cv-tailor` locates content by the section names and conventions that `cv-profiler` writes. That contract is specified in [`career-profile.md`](career-profile.md).
 
@@ -58,18 +58,18 @@ docs/                   # this documentation
 skills/
   cv-profiler/
     SKILL.md            # skill 1 (the interview)
-    references/         # branch-specific reference disclosed from SKILL.md
+    references/         # disclosed reference: probe banks, Re-Run migration, worked example profiles
   cv-tailor/
     SKILL.md            # skill 2 (the generator)
     references/         # output-format reference disclosed from SKILL.md
     templates/          # CV / cover-letter templates — inside the skill so they install with it
-examples/               # example Career Profiles (one technical, one non-technical) — dev-time reference
 ```
 
 Anything a skill needs **at runtime** lives inside its own folder, because the installer
-copies only `skills/<name>/`. Templates therefore sit under `skills/cv-tailor/templates/`,
-not at the repo root. `examples/` stays at the root: it is dev-time reference, not read by
-the skills while they run.
+copies only `skills/<name>/`. So the templates sit under `skills/cv-tailor/templates/` and
+the worked example profiles (used as disclosed few-shot) under
+`skills/cv-profiler/references/` — each ships with its skill. There is no repo-root
+`templates/` or `examples/`: anything the skills read while running must travel with them.
 
 Skills are authored as Markdown (`SKILL.md`), in English for portability; the
 *interview and output* are multilingual (see [`principles.md`](principles.md)).

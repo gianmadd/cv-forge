@@ -14,15 +14,16 @@ What's decided, what's left to build, and what's deliberately deferred.
 - **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication.
 - **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
 - **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
+- **Two example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a senior AI/ML engineer (technical) and an experienced physician (non-technical).
+- **First end-to-end passed**: AI-engineer profile → tailored CV; surfaced and fixed the LaTeX special-character escaping rule in `cv-tailor`.
 
 ## To build
 
-1. **Examples.** Add two example Career Profiles — one technical, one non-technical.
-   (The CV / cover-letter templates are done: single-column `pdflatex`, in
-   `skills/cv-tailor/templates/`, satisfying `references/output-format.md`.)
-2. **Verification.** Run the lightweight eval (non-technical personas + acceptance
-   checklist) and one end-to-end test per profile type.
-3. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
+1. **Verification.** Run the lightweight eval (non-technical personas + acceptance
+   checklist) and one end-to-end test per profile type. (A first end-to-end — the AI
+   engineer profile → tailored CV — already passed and surfaced the LaTeX-escaping fix; a
+   non-technical run and the scripted eval remain.)
+2. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
    it runs cleanly at the operational level: file **permissions** for reading/writing the
    profile and the output, whether any **helper scripts** are needed (e.g. a compile
    wrapper, a setup/dependency check for `pdflatex`) or whether the skills stay
@@ -34,22 +35,84 @@ What's decided, what's left to build, and what's deliberately deferred.
      (`*.aux *.log *.out *.toc *.fls *.fdb_latexmk`). Decide whether `cv-tailor` should
      **auto-compile locally when `pdflatex` is present** (compile-twice + cleanup, as some
      comparable agents do) rather than only handing off the `.tex`.
-4. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
+3. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
    clean and consistent.
-5. **Publish.** Confirm the repo conforms to the `skills` convention, then publish and
-   verify installation on Claude Code — followed by incremental checks on other agents.
+4. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
+   convention, then publish and verify installation on Claude Code — followed by
+   incremental checks on other agents. Alongside publishing, do the usual repo-launch
+   polish so it looks presentable:
+   - **README aesthetics** — clearer structure, badges (license, install), a preview
+     image of a generated CV, and a crisp install + usage walkthrough.
+   - **Release** — tag a version, promote `[Unreleased]` in `CHANGELOG.md` to a numbered
+     release, and cut a GitHub release.
+   - **Repo metadata** — description, topics/tags, social preview image.
+   - **Contributor basics** — check `CONTRIBUTING`/issue templates as needed; confirm
+     `LICENSE` and any third-party template credit are in order.
 
 ## Deferred / open questions
 
+- **Import & review an existing CV.** Let `cv-profiler` take a CV the user already has and
+  do two things that share one entry point:
+  1. **Review it** — a *disciplined* critique grounded in our principles: ATS-readability
+     and structure, weak or unquantified bullets, inconsistencies (dates, formats),
+     inflated claims, and (if a posting is given) coverage gaps against it. It **flags and
+     asks**, never invents fixes — this is the existing gap-noticing muscle applied to an
+     imported CV.
+  2. **Import it** — extract the content (zero-fabrication) to seed a Career Profile, then
+     interview to fill the gaps the review surfaced, and regenerate an improved CV.
+  The natural flow: *upload CV → review/flag → interview to fix → build/enrich profile →
+  regenerate*. This makes the two commonest cases work through the existing pipeline:
+  *adapt an existing CV to a posting* (import → `cv-tailor` tailored) and *revise one
+  without a posting* (import → `cv-tailor` general). **Evaluate first:** how the agent
+  reads the uploaded document (PDF / DOCX / plain text) — whether it needs a helper script
+  or a parsing tool, which formats to support, and how extraction/review stay
+  zero-fabrication. Ties into the flow/operability helper-scripts question.
+- **Broaden the example profiles' range.** The two shipped examples are both senior,
+  credentialed, metrics-rich professionals. Add at least one that stresses the de-biasing
+  edge the project targets — a trade / early-career / career-changer profile, deliberately
+  metric-light and leaning on transferable skills — so the few-shot (and the eval) cover
+  the harder case, not just polished white-collar careers.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the
   path to multiple.
+- **More generation options.** Enhancements to `cv-tailor` output, once the core is
+  stable:
+  - *Iterate on a generated CV* — tweak an already-produced CV ("shorten to one page",
+    "lead with leadership", "drop the 2016 role") without regenerating from scratch.
+  - *Length / format targets* — one-page vs two-page vs a long-form academic CV
+    (publications-heavy). Today there is no length control.
+  - *Batch* — one profile + N postings → N tailored CVs for an active job search.
+  - *Keyword-gap / improvement report* — given a posting, tell the user which
+    requirements the profile doesn't cover and how to strengthen it (coaching), beyond the
+    silent-failure flag.
+- **Output & scope questions (to decide).**
+  - *DOCX output* — the deliverable set is **PDF + DOCX**, with `.tex` as the source
+    (Markdown excluded — decided). DOCX is not built yet: decide the **rendering
+    architecture** — a separate `.docx` template vs a Pandoc/library conversion — bearing
+    in mind that **escaping is per-format** (the LaTeX `& % $ #` rule does not apply to
+    DOCX).
+  - *Repurposing the profile into non-CV outputs* — LinkedIn "About", a short bio, an
+    elevator pitch. Scope decision: §1 deliberately targets CVs only; broadening is a
+    conscious choice, not a default.
+  - *Tailoring to a company (no posting)* — sits between general and tailored: aim at an
+    organisation's domain/values without a specific opening.
+- **Revisit the skill decomposition.** Check that two skills is still the right number as
+  features land: that neither takes on too many responsibilities, and whether a more
+  natural separation emerges. The load-bearing seam to preserve is the **Career Profile as
+  the contract** between build and generate. Watch `cv-profiler` for accretion once
+  *import & review* arrive (interview / import / review become distinct on-ramps); a
+  review-only skill is the main candidate third seam if its trigger and output diverge
+  enough to earn its own always-loaded description. Do not split `cv-tailor`'s
+  tailored/general/cover-letter *modes* into separate skills — they share the same
+  profile-reading and rendering machinery, so splitting would only duplicate it.
 - **Other agents beyond Claude Code** — handled by the shared installer; only
   *testing* remains, after the skills exist.
 
-## Content still to produce
+## Content produced
 
-The skills author `PURPOSE` texts and probes at runtime (the rules and probe banks now
-live in the skills). What remains to write as repo assets: the two example Career
-Profiles — one technical, one non-technical. (The CV / cover-letter templates are done.)
+The skills author `PURPOSE` texts and probes at runtime (the rules and probe banks live
+in the skills). The repo assets are in place: the CV / cover-letter templates
+(`skills/cv-tailor/templates/`) and the two example Career Profiles
+(`skills/cv-profiler/references/`). Broadening the examples' range is tracked under
+*Deferred / open questions*.

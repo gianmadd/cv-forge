@@ -41,10 +41,11 @@ A guided interview that captures everything about your career in one structured 
 - Saves incrementally, so you can stop and pick up where you left off.
 - Notices things worth clarifying (gaps, overlapping roles, transferable skills) and asks with tact — never assumes, never fills in blanks for you.
 
-### 2. [`cv-tailor`](skills/cv-tailor/SKILL.md) — generate a CV for a specific job
-Give it your Career Profile plus a job posting, and it produces a CV (and, optionally, a cover letter) built for that role: structured so automated screening tools parse it correctly, and focused on the experience and keywords that fit the posting — drawing **only** from what's in your profile.
+### 2. [`cv-tailor`](skills/cv-tailor/SKILL.md) — generate a CV
+Give it your Career Profile — and, if you have one, a job posting — and it produces a complete CV (and, optionally, a cover letter), structured so automated screening tools parse it correctly and drawing **only** from what's in your profile.
 
-- Surfaces the right experience and keywords for the posting.
+- **With a job posting:** tailored to that role — the right experience and keywords surfaced.
+- **Without one:** a complete, high-quality general CV from your profile's positioning (not a draft — a posting only makes it more precise for a specific application).
 - Works in the language you choose.
 - Never fabricates or estimates: if it isn't in your profile, it doesn't appear.
 
@@ -73,12 +74,13 @@ Your Career Profile contains personal information, and it stays **entirely on yo
 - [`docs/decisions.md`](docs/decisions.md) — the design decisions behind the project, with rationale.
 - [`docs/roadmap.md`](docs/roadmap.md) — what's built, what's next, and open questions.
 - [`CONTEXT.md`](CONTEXT.md) — shared vocabulary.
+- [`skills/cv-profiler/references/`](skills/cv-profiler/references/) — worked example Career Profiles (technical + non-technical), shipped with the skill as few-shot.
 
 ---
 
 ## Status
 
-🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`) are drafted; templates, example profiles, and end-to-end verification are still to come — see [`docs/roadmap.md`](docs/roadmap.md).
+🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and two example profiles are in place, and a first end-to-end run has passed. Full verification and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
 
 ---
 

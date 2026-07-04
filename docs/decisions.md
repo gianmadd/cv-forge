@@ -19,6 +19,13 @@ interaction and output are multilingual.
 - **The two skills are one pipeline with a shared contract.** `cv-profiler`'s output
   section names and conventions are exactly what `cv-tailor` reads. They are designed
   and changed together, never in a way that leaves the pipeline half-updated.
+- **`cv-tailor` runs with or without a job posting.** With a posting it *tailors* (selects
+  and frames content to fit the role); without one it produces a *general* CV from the
+  profile's own positioning (Identity, default Summary, Notes for CV Customization).
+  Both modes output a **finished, high-quality CV** — general mode is not a draft; the
+  posting only makes the CV more precise for that one application. *Why:* people often
+  want a solid, complete CV before they have a specific opening — forcing a posting would
+  block an obvious use case.
 - **Distribution reuses the shared `skills` installer — we do not build our own.**
   The repo is a collection of `SKILL.md` skills installed via
   `npx skills add gianmadd/cv-forge`. The installer handles
@@ -149,22 +156,26 @@ interaction and output are multilingual.
 
 ## 9. Examples & few-shot
 
-- **Two example Career Profiles ship in the new structure — one technical, one
-  non-technical** (reusing the eval personas). *Why:* a single technical example would
-  re-bias the skills toward the exact profile we're de-biasing away from; two examples of
-  different range teach the intended breadth.
+- **Two example Career Profiles ship as disclosed few-shot — one technical, one
+  non-technical.** They live in `skills/cv-profiler/references/` (a senior AI/ML engineer
+  and an experienced physician) and are pointed at from `cv-profiler`'s `SKILL.md`, loaded
+  on demand. *Why:* a single technical example would re-bias the skills toward the exact
+  profile we're de-biasing away from; two examples of different range teach the intended
+  breadth — and keeping them inside the skill is what lets the agent actually use them at
+  runtime (the installer ships only the skill folder).
 
 ## 10. Repository, packaging & authorship
 
 - **The repo uses a conventional skills-repository layout:** `skills/<name>/SKILL.md`,
-  `docs/`, `CONTEXT.md`, `CHANGELOG.md`, `package.json` (metadata/versioning, no `bin`),
-  `examples/`. Skills use the **Skills feature (`SKILL.md`)**, not subagents in
+  `docs/`, `CONTEXT.md`, `CHANGELOG.md`, and `package.json` (metadata/versioning, no
+  `bin`). Skills use the **Skills feature (`SKILL.md`)**, not subagents in
   `.claude/agents/`.
 - **Runtime assets live inside the skill folder.** The installer copies only
   `skills/<name>/`, so anything a skill reads while running ships with it: CV /
-  cover-letter templates live in `skills/cv-tailor/templates/`, not at the repo root.
-  `examples/` stays at the root because it is dev-time reference, not read at runtime.
-  *Why:* a repo-root `templates/` would simply not travel with the installed skill.
+  cover-letter templates in `skills/cv-tailor/templates/`, and the worked example profiles
+  (disclosed few-shot) in `skills/cv-profiler/references/`. There is no repo-root
+  `templates/` or `examples/`. *Why:* a repo-root asset would simply not travel with the
+  installed skill.
 - **`SKILL.md` frontmatter is `name` + `description` only.** These are the two fields
   the shared `skills` installer requires; we deliberately add nothing else (no
   `allowed-tools`, `license`, `version`) so the skills stay portable across every agent
@@ -192,6 +203,11 @@ interaction and output are multilingual.
   step.** The user compiles on **Overleaf** (cloud, zero local install) or with a local
   `pdflatex`. *Why:* the skill runs on the user's machine and should not force a heavy
   TeX install; the source it emits compiles anywhere, Overleaf included.
+- **Deliverable formats: PDF and DOCX, with `.tex` as the source.** PDF is the primary
+  submit format (via compile); **DOCX** is planned for the ATS/recruiter cases that want
+  Word. **Markdown output is excluded** — the Career Profile is already Markdown and no one
+  submits a `.md` CV. DOCX is not built yet; its rendering path is a roadmap decision.
+  *Why:* two formats cover real submission needs without maintaining formats nobody uses.
 - **Licensed under MIT** (© 2026 Gian Marco Addati).
 - **ATS-readability is a goal, owned at the template level.** The product's promise is
   CVs that automated screening tools parse cleanly. `cv-tailor` renders faithfully into
