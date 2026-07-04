@@ -34,61 +34,27 @@ What's decided, what's left to build, and what's deliberately deferred.
   (parity: the same class can't reappear at generation time under job-posting pressure), and
   the consistency pass was refined to never silently recompute a *user-stated* figure.
 - **Local-compile detect-and-offer wired into `cv-tailor`** and the dependency-structuring question settled: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`), and `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes, and **self-heals missing packages by offering the `tlmgr install` command for approval** (never installs silently) — the robust backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`.
+- **Flow & operability check passed — installed-skill walk.** Walked the full pipeline as an
+  installed skill against a faithfully simulated layout (skill under `~/.agents/skills/`,
+  symlinked into the agent as the `skills` CLI does, made **read-only**), with the profile and
+  output in a separate writable working dir. Confirmed: the template resolves and is readable
+  via the installed (symlinked) path; the profile is read/written in the working dir; and a
+  full general-mode fill compiled to a clean 1-page A4 PDF with a real ATS text layer. The
+  walk surfaced **two operability fixes now in `cv-tailor`**: (1) the output step **writes the
+  filled `.tex` as a fresh file** rather than `cp`-then-edit — a `cp` of a read-only installed
+  template stays read-only, so filling it would fail with a permission error; and (2) the
+  self-heal now recognises a **third error form**, the file-less missing-`babel`-language
+  error (`Unknown option '<language>'`), mapped **by name** to `babel-<language>`. The compile
+  hand-off, local-compile route, and per-template dependency manifest were decided and verified
+  — see `decisions.md` §10 and `CHANGELOG.md`.
 
 ## To build
 
 *(Verification is complete — see **Done** above.)*
 
-1. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
-   it runs cleanly at the operational level. Fix whatever trips the flow.
-   - **Done — compile hand-off.** The compile hand-off (Overleaf / local `pdflatex`) is
-     wired and verified end-to-end, and the "helper scripts?" question is answered: the
-     skills stay **script-free** (detect-and-offer + self-heal, no wrapper) — see the
-     sub-bullets below.
-   - **Remaining — installed-skill walk.** Still to confirm: file **permissions** for
-     reading/writing the profile and the output when the skill runs as installed, and that
-     the profile → `cv-tailor` hand-off is smooth from the user's real file locations (not
-     just a scratch dir).
-   - **Local compilation — decided and now exercised.** The compile hand-off is decided
-     (see `decisions.md` §10): default to **Overleaf** (zero install), offer the local
-     route with its steps, and when a local `pdflatex` is present *offer* to compile and
-     hand over the PDF (never silently); the minimal install is scoped to the template,
-     with **TinyTeX** as the light route (**not** Tectonic — it runs XeTeX, which can't
-     compile the template's pdfTeX `glyphtounicode` primitives). The local path has now
-     been run end to end: TinyTeX (~300 MB) + the template's `tlmgr` packages compiled the
-     non-technical Italian profile to a clean 1-page PDF with `pdflatex`. **Done:** the
-     **detect-and-offer** behaviour is now wired into `cv-tailor` (Step 6 +
-     `references/output-format.md`) and **verified end-to-end** — a filled Italian
-     `resume.tex` compiled to a clean 1-page A4 PDF (real ATS text layer), and a
-     clean-machine simulation (7 template packages removed) drove the self-heal loop back to
-     a clean PDF. That run fixed two things now in the skill: the manifest must use `tlmgr`
-     package names (`tabularx`→`tools`, `textcomp` is base), and a missing *font* reports as
-     `I can't find file '...'` / `Metric (TFM) file not found`, not `File 'X.sty' not
-     found` — so self-heal catches both forms.
-   - **How to structure local-compile dependencies — decided.** The hands-on TinyTeX run
-     showed the install splits on two axes: **per-template** packages (fonts, icons,
-     layout — this template needs `fontawesome5`, `cormorantgaramond` + its transitive deps
-     `fontaxes`/`mweights`/`xkeyval`, `charter`, `titlesec`, `enumitem`, `microtype`) and
-     **per-language** packages (`babel-<output-language>`, chosen at generation). A
-     hardcoded package list is fragile — `cormorantgaramond`'s `fontaxes`/`mweights` deps
-     were **not** auto-pulled and surfaced as compile errors. **Chosen (option b + c):**
-     base TinyTeX for everyone + **each template owns its dependency manifest** (a
-     `--- Template dependencies ---` header in the `.tex`, maintained with its
-     `\usepackage` lines) that `cv-tailor` installs on offer, **plus the self-heal retry**
-     as the backstop — on a missing dependency (`File 'x.sty' not found`, or the font form
-     `I can't find file '...'` / `Metric (TFM) file not found`), `tlmgr search --file` →
-     propose the `tlmgr install` for approval → retry. The manifest is the fast path (one
-     install, captures transitive-dep gaps and tlmgr-name≠usepackage-name mismatches that
-     runtime discovery misses); self-heal guarantees convergence even if the manifest
-     drifts — verified: it caught the manifest's own tlmgr-name errors during the
-     clean-machine run. This
-     is script-free and consistent with "deps follow the template". (Note: a minimal
-     TinyTeX warns on missing non-English hyphenation patterns; harmless with the current
-     `\raggedright` template, but a justified template would want `fmtutil-sys --all` after
-     adding a language.)
-2. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
+1. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
    clean and consistent.
-3. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
+2. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
    convention, then publish and verify installation on Claude Code — followed by
    incremental checks on other agents. Alongside publishing, do the usual repo-launch
    polish so it looks presentable:

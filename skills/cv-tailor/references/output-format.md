@@ -6,8 +6,12 @@ only on request). Both are single-column, **`pdflatex`**-based, and ATS-oriented
 
 ## How to produce the output
 
-1. **Copy the template** into the user's output location — do not edit the file in the
-   skill folder. For a cover letter, also copy `cover-letter.tex`.
+1. **Write the filled `.tex` as a new file** in the user's output location, using the
+   template as your starting text — do not edit the template in the skill folder. Don't
+   rely on `cp`: an installed template can be read-only, and a plain copy keeps that mode,
+   so filling it would fail with a permission error. Reading the template and writing a
+   fresh output file sidesteps this regardless of how the skill was installed. For a cover
+   letter, do the same with `cover-letter.tex`.
 2. **Set the language.** Change the `babel` option (`\usepackage[english]{babel}`) to the
    output language: `italian`, `french`, `ngerman`, `spanish`, `portuguese`, …
 3. **Replace every `<<PLACEHOLDER>>`** with content selected from the profile, in the
@@ -84,8 +88,9 @@ you never install a package or run a compile they didn't agree to.
    - **`pdflatex` present** → offer to compile and hand over the PDF. Proceed only on yes.
 2. **Compile.** Run `latexmk -pdf <file>.tex` (or `pdflatex` twice), capturing the log.
 3. **Self-heal missing packages — by offering, not installing silently.** Scan the log for
-   a missing file, in **either** of its two forms (a missing *font* does **not** say
-   "File … not found"), and if `tlmgr` is available:
+   a missing dependency, in any of these forms (a missing *font* does **not** say
+   "File … not found", and a missing *babel language* names no file at all), and if `tlmgr`
+   is available:
    - **Missing style/class:** `! LaTeX Error: File 'X.sty' not found` (also `.cls`, `.fd`).
      The name is right there — search it: `tlmgr search --file '/X.sty'`.
    - **Missing font metric:** surfaces instead as `! I can't find file 'bchr8t'.` followed
@@ -93,6 +98,12 @@ you never install a package or run a compile they didn't agree to.
      and search: `tlmgr search --file '/bchr8t.tfm'` → `charter`. (This is a real case:
      `psnfss` provides `charter.sty` but the *font files* live in the `charter` package, so
      a machine can have the `.sty` and still miss the metrics.)
+   - **Missing babel language:** surfaces as `! Package babel Error: Unknown option
+     'english'.` — a babel error naming the language, **not** a file, so `tlmgr search
+     --file` won't help. Map it **by name**: the package is
+     `babel-<language>` (`babel-english`, `babel-italian`, …). Install that directly. This is
+     the per-language dependency the manifest lists; the self-heal catches it when the
+     manifest step was skipped or the wrong language was installed.
    - `tlmgr search --file` may list more than one package (e.g. a `*-dev` variant, or
      `pdftex`); pick the plain, non-`-dev` package.
    - **Tell the user what's missing and propose the install command** —

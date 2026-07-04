@@ -142,7 +142,8 @@ or a genuine gap, and the tally has been shown to the user.
 
 ## Step 6 — Produce the output
 
-Fill the `pdflatex` template in `templates/` following
+Fill the `pdflatex` template from `templates/`, writing the result as a new `.tex` in the
+user's output location (never editing the template in place), following
 [`references/output-format.md`](references/output-format.md): replace every `<<PLACEHOLDER>>`,
 set the output language, add/remove sections to match your selection, and **escape LaTeX
 special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
@@ -154,12 +155,13 @@ never compile, and never install anything, silently.**
   download — no install; the safe default, especially for a non-technical user) or **local
   compilation**.
 - **If a local `pdflatex` is present**, offer to compile and hand over the PDF.
-- **If a package is missing** — a `File 'X.sty' not found`, or a font error
+- **If a package is missing** — a `File 'X.sty' not found`, a font error
   (`I can't find file '...'` / `Metric (TFM) file not found`), which does *not* say "File
-  not found" — don't give up and don't install behind the user's back: identify the package
-  (`tlmgr search --file`) and **propose the install command for them to approve** — so they
-  can choose to download it and compile locally — then retry. This self-heal is offer-based
-  at every step.
+  not found", or a babel error (`Unknown option '<language>'`), which names no file at all —
+  don't give up and don't install behind the user's back: identify the package (via
+  `tlmgr search --file`, or for babel directly by name as `babel-<language>`) and
+  **propose the install command for them to approve** — so they can choose to download it
+  and compile locally — then retry. This self-heal is offer-based at every step.
 - The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't compile it. Its
   package list lives in the template's own `--- Template dependencies ---` header.
 

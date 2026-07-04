@@ -170,6 +170,10 @@ interaction and output are multilingual.
   and one non-technical profile: no section lost (Languages included), the PDF compiles,
   and the non-technical CV isn't tech-flavored. *Why:* the whole value is "does it
   really de-bias?" — that needs to be checked, not assumed.
+- *This section states the decided verification approach; it has since been carried out
+  (with different but range-equivalent personas and end-to-ends, plus the installed-skill
+  walk). For what was actually run and found, see `docs/roadmap.md` (§Done) and
+  `CHANGELOG.md`.*
 
 ## 9. Examples & few-shot
 
@@ -234,8 +238,14 @@ interaction and output are multilingual.
   often non-technical, so the choice is offered with instructions rather than assumed.
 - **Local compilation stays minimal, and its dependencies are scoped to the chosen
   template.** What a local install must provide is exactly the current template's package
-  set — today `CormorantGaramond`, `charter`, `fontawesome5`, `textcomp`, and the output
-  language's `babel`/hyphenation — and nothing more. The template is compiled with
+  set, and the **authoritative list is the template's own `--- Template dependencies ---`
+  manifest** (maintained alongside its `\usepackage` lines) — today the fonts
+  `CormorantGaramond`/`charter` (plus `cormorantgaramond`'s non-auto-pulled transitive deps
+  `fontaxes`/`mweights`/`xkeyval`), `fontawesome5`, the layout packages
+  `titlesec`/`enumitem`/`tools`/`geometry`/`xcolor`/`microtype`/`hyperref`/`latexmk`, and the
+  output language's `babel`/hyphenation — and nothing beyond that manifest. (`textcomp` is
+  **not** on the list: it ships in LaTeX base, always present, nothing to install.) The
+  template is compiled with
   **`pdflatex`** (it uses pdfTeX-only primitives, `\input{glyphtounicode}` +
   `\pdfgentounicode=1`, for an ATS-extractable text layer), so the local distribution must
   provide `pdflatex`. The recommended light route is **TinyTeX** (a minimal TeX Live that
@@ -252,8 +262,10 @@ interaction and output are multilingual.
     and on a missing dependency, map the file to its package with `tlmgr search --file`,
     **propose** the `tlmgr install` for the user to approve (never silent), and retry. The
     manifest is the fast path; the self-heal is the backstop that covers transitive-dep gaps
-    (`cormorantgaramond` does not auto-pull `fontaxes`) and both error forms — missing
-    `.sty` and missing font metric (`Metric (TFM) file not found`).
+    (`cormorantgaramond` does not auto-pull `fontaxes`) and all three error forms — missing
+    `.sty`, missing font metric (`Metric (TFM) file not found`), and a missing `babel`
+    language (`Unknown option '<language>'`, which names no file, mapped by name to
+    `babel-<language>`).
 - **Deliverable formats: PDF for v1; DOCX planned post-v1; `.tex` is the source.** PDF is
   the primary submit format (via compile) and the **only** format v1 ships. **DOCX** is
   planned for the ATS/recruiter cases that want Word, but is **explicitly out of v1** — it is
