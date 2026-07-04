@@ -20,21 +20,44 @@ What's decided, what's left to build, and what's deliberately deferred.
 ## To build
 
 1. **Verification.** Run the lightweight eval (non-technical personas + acceptance
-   checklist) and one end-to-end test per profile type. (A first end-to-end — the AI
-   engineer profile → tailored CV — already passed and surfaced the LaTeX-escaping fix; a
-   non-technical run and the scripted eval remain.)
+   checklist) and one end-to-end test per profile type. (Two end-to-ends have now passed:
+   the AI-engineer profile → tailored CV, which surfaced the LaTeX-escaping fix; and a
+   non-technical one — an Italian literature-professor profile → `cv-tailor` → PDF compiled
+   locally via TinyTeX — which surfaced the currency-symbol fix and confirmed the
+   de-biasing on a humanities profile. The scripted persona eval, which exercises
+   `cv-profiler`'s interview, still remains.)
 2. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
    it runs cleanly at the operational level: file **permissions** for reading/writing the
    profile and the output, whether any **helper scripts** are needed (e.g. a compile
    wrapper, a setup/dependency check for `pdflatex`) or whether the skills stay
    script-free, and that the compile hand-off (Overleaf / local `pdflatex`) is smooth. Fix
    whatever trips the flow.
-   - **Local compilation — still to test.** Only the Overleaf path has been exercised so
-     far (a local TeX install was flaky this session). Verify the local route end to end:
-     `pdflatex resume.tex` run **twice** (for cross-references), then clean the aux files
-     (`*.aux *.log *.out *.toc *.fls *.fdb_latexmk`). Decide whether `cv-tailor` should
-     **auto-compile locally when `pdflatex` is present** (compile-twice + cleanup, as some
-     comparable agents do) rather than only handing off the `.tex`.
+   - **Local compilation — decided and now exercised.** The compile hand-off is decided
+     (see `decisions.md` §10): default to **Overleaf** (zero install), offer the local
+     route with its steps, and when a local `pdflatex` is present *offer* to compile and
+     hand over the PDF (never silently); the minimal install is scoped to the template,
+     with **TinyTeX** as the light route (**not** Tectonic — it runs XeTeX, which can't
+     compile the template's pdfTeX `glyphtounicode` primitives). The local path has now
+     been run end to end: TinyTeX (~300 MB) + the template's `tlmgr` packages compiled the
+     non-technical Italian profile to a clean 1-page PDF with `pdflatex`. Remaining: wire
+     the **detect-and-offer** (plus dependency install) behaviour into `cv-tailor`, and
+     settle the dependency-structuring question below.
+   - **How to structure local-compile dependencies (open).** The hands-on TinyTeX run
+     showed the install splits on two axes: **per-template** packages (fonts, icons,
+     layout — this template needs `fontawesome5`, `cormorantgaramond` + its transitive deps
+     `fontaxes`/`mweights`/`xkeyval`, `charter`, `titlesec`, `enumitem`, `microtype`) and
+     **per-language** packages (`babel-<output-language>`, chosen at generation). A
+     hardcoded package list is fragile — `cormorantgaramond`'s `fontaxes`/`mweights` deps
+     were **not** auto-pulled and surfaced as compile errors. Options: (a) an install
+     script per template; (b) each template *declares* its dependency list (maintained with
+     it) and `cv-tailor` offers to `tlmgr install` template-deps + the language pack, then
+     compiles; (c) `cv-tailor` **self-heals** — compile, and on `File \`x.sty' not found`
+     map the file to its package (`tlmgr search --file`), install, retry. **Leaning:** base
+     TinyTeX for everyone + each template owns its dependency list + install-on-offer with
+     the self-heal retry — robust to transitive-dep gaps, script-free, and consistent with
+     "deps follow the template". (Note: a minimal TinyTeX warns on missing non-English
+     hyphenation patterns; harmless with the current `\raggedright` template, but a
+     justified template would want `fmtutil-sys --all` after adding a language.)
 3. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
    clean and consistent.
 4. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
@@ -75,7 +98,10 @@ What's decided, what's left to build, and what's deliberately deferred.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the
-  path to multiple.
+  path to multiple. **Each template carries its own dependency/install note**, since its
+  fonts and packages determine the minimal local install (see `decisions.md` §10) — a
+  lighter-dependency layout (default fonts, no icon package) is one axis of choice worth
+  offering.
 - **More generation options.** Enhancements to `cv-tailor` output, once the core is
   stable:
   - *Iterate on a generated CV* — tweak an already-produced CV ("shorten to one page",

@@ -21,11 +21,13 @@ semantic versioning.
 - Delivery-time self-check gate in `cv-tailor` (Step 7): an explicit zero-fabrication checklist (profile-only sourcing, no proxy metrics, nothing from Archived/Excluded, Agent Notes honoured, gaps reported, clean render) confirmed before handing over the CV.
 - Sharpened zero-fabrication wording in `cv-tailor`: names the evasion tactics it must avoid (no proxy metrics, never "estimate conservatively", unbacked keywords omitted not invented).
 - LaTeX template polish: `\urlstyle{same}` in `resume.tex` and `cover-letter.tex` (URLs in the body font, cleaner and parse-safe); and a `~`-as-"approximately" → `$\sim$` guidance added to the escaping rules in `references/output-format.md`.
+- Currency/non-ASCII symbol handling: templates load `textcomp`, and `references/output-format.md` maps common symbols to safe macros (`€` → `\texteuro`, `£` → `\textsterling`, `±` → `$\pm$`, …). Surfaced by the non-technical (Italian, humanities) end-to-end test, where a bare `\euro` would have failed to compile.
 
 ### Decided
 - `SKILL.md` frontmatter is `name` + `description` only; both skills are model-invoked and user-invokable; each `SKILL.md` is self-contained (see `docs/decisions.md` §10).
 - Output stack: single-column `pdflatex` template; `cv-tailor` emits the filled `.tex` and the user compiles on Overleaf or locally (see `docs/decisions.md` §10). Target deliverable formats: PDF + DOCX, with `.tex` as source (Markdown excluded); DOCX rendering is a roadmap item.
+- Compile hand-off decided (see `docs/decisions.md` §10): `cv-tailor` offers both routes and explains each — **Overleaf** (zero-install default, realistic for non-technical users) or **local compilation** — and, when a local `pdflatex` is present, offers to compile and hand over the PDF rather than compiling silently. Local dependencies are **scoped to the chosen template** (TinyTeX as the light route; `texlive-latex-base` alone is insufficient because of the template's fonts and icons, and Tectonic is off-target because its XeTeX engine can't compile the template's pdfTeX `glyphtounicode` primitives).
 
 ### Notes
-- Full verification (scripted eval + non-technical end-to-end) and publishing are still to come — see `docs/roadmap.md`.
-- Local `pdflatex` compilation is not yet tested (only Overleaf) — tracked in `docs/roadmap.md`.
+- A non-technical end-to-end has now passed (Italian literature-professor profile → `cv-tailor` → PDF), surfacing the currency-symbol fix and confirming de-biasing on a humanities profile; the scripted persona eval (exercising `cv-profiler`'s interview) and publishing remain — see `docs/roadmap.md`.
+- Local `pdflatex` compilation now exercised via TinyTeX (~300 MB) on the non-technical profile — clean 1-page PDF; wiring the detect-and-offer behaviour into `cv-tailor` and the dependency-structuring approach remain — see `docs/roadmap.md`.

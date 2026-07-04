@@ -143,8 +143,14 @@ Fill the `pdflatex` template in `templates/` following
 set the output language, add/remove sections to match your selection, and **escape LaTeX
 special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
 an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Produce a **cover letter only if
-the user asks**. Compiling to PDF is a separate step — the user compiles on **Overleaf**
-(no install) or with a local `pdflatex`; offer both.
+the user asks**. Compiling to PDF is a separate step: **offer the user both routes and
+explain each** — **Overleaf** (upload the `.tex`, recompile, download — no install; the
+safe default, especially for a non-technical user) or **local compilation**. If a local
+`pdflatex` is present, offer to compile it for them and hand over the PDF — never compile
+silently. (The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't
+compile it.) See
+[`references/output-format.md`](references/output-format.md) for the exact steps and the
+minimal local install (scoped to this template).
 
 **Done when:** the filled `.tex` is written in the chosen language, no `<<...>>` remains,
 and all special characters are escaped. The content-integrity gate is Step 7.

@@ -217,9 +217,26 @@ interaction and output are multilingual.
   `cv-tailor` to fill. The glyph-to-Unicode map (`\input{glyphtounicode}`,
   `\pdfgentounicode=1`) keeps the PDF's text extractable.
 - **`cv-tailor` emits the filled `.tex` (plus any assets); compiling to PDF is a separate
-  step.** The user compiles on **Overleaf** (cloud, zero local install) or with a local
-  `pdflatex`. *Why:* the skill runs on the user's machine and should not force a heavy
-  TeX install; the source it emits compiles anywhere, Overleaf included.
+  step, and the user chooses how.** At the end `cv-tailor` presents the two routes and
+  explains the procedure for each: **Overleaf** (cloud, zero local install — the universal
+  default, and the only realistic route for a non-technical user) or **local
+  compilation**. If a local `pdflatex` is already present, it *offers* to compile and hand
+  over the finished PDF directly — it does not compile silently. *Why:* the skill runs on the user's machine and must not force a heavy TeX
+  install; the source it emits compiles anywhere, Overleaf included, and the audience is
+  often non-technical, so the choice is offered with instructions rather than assumed.
+- **Local compilation stays minimal, and its dependencies are scoped to the chosen
+  template.** What a local install must provide is exactly the current template's package
+  set — today `CormorantGaramond`, `charter`, `fontawesome5`, `textcomp`, and the output
+  language's `babel`/hyphenation — and nothing more. The template is compiled with
+  **`pdflatex`** (it uses pdfTeX-only primitives, `\input{glyphtounicode}` +
+  `\pdfgentounicode=1`, for an ATS-extractable text layer), so the local distribution must
+  provide `pdflatex`. The recommended light route is **TinyTeX** (a minimal TeX Live that
+  still ships `pdflatex`, with `tlmgr` to add only the packages the template needs); a bare
+  `texlive-latex-base` is **not** enough because of the template's fonts and icons, and
+  **Tectonic is off-target** because it runs the XeTeX engine, under which those pdfTeX
+  primitives are undefined. When a different template with different dependencies is later
+  chosen (a roadmap item), that template carries its own install note — the requirement
+  follows the template, never a fixed global TeX install.
 - **Deliverable formats: PDF and DOCX, with `.tex` as the source.** PDF is the primary
   submit format (via compile); **DOCX** is planned for the ATS/recruiter cases that want
   Word. **Markdown output is excluded** — the Career Profile is already Markdown and no one

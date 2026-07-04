@@ -33,6 +33,14 @@ only on request). Both are single-column, **`pdflatex`**-based, and ATS-oriented
    (e.g. "~5 years", "~$2M"), escaping it to `\textasciitilde{}` renders a raised literal
    tilde, which reads wrong. Use `$\sim$` instead: `~5 years` → `$\sim$5 years`. (A bare
    `~` in raw LaTeX is a non-breaking space, so it must never be left unescaped either.)
+
+   **Currency and other non-ASCII symbols.** The table above covers the characters that
+   *break* compilation, but common CV symbols beyond accented letters also need a macro —
+   a bare `\euro` is undefined, and a literal glyph may not exist in the font. The template
+   loads `textcomp`, so use: `€` → `\texteuro`, `£` → `\textsterling`, `¥` → `\textyen`,
+   `¤` → `\textcurrency`; and for maths-like symbols `±` → `$\pm$`, `×` → `$\times$`,
+   `№` → `No.`. So `90.000 €` → `90.000~\texteuro`. When unsure a symbol will render,
+   fall back to the word ("euro").
 5. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
    compile it (see below) or tell them how.
 
@@ -52,12 +60,39 @@ Honour every inline `> Agent Note:` on the content it governs, and include nothi
 
 ## Compiling to PDF
 
-The output is a standard `pdflatex` document, so:
+Compiling is a separate step and the user chooses how — **offer both routes and explain
+each**, then, if a local toolchain is present, offer to run it for them (never compile
+silently).
 
-- **Overleaf (no local install):** upload the `.tex` (plus a photo if used) to a blank
-  Overleaf project and compile — the menu's default `pdfLaTeX` works as-is.
-- **Locally:** run `pdflatex` twice (`pdflatex resume.tex`) if a local TeX distribution is
-  installed. Needs the `fontawesome5`, `cormorantgaramond`, and `charter` packages.
+- **Overleaf (no install — the default, and the realistic route for a non-technical
+  user):** upload the `.tex` (plus a photo if used) to a blank Overleaf project and press
+  *Recompile* — the menu's default `pdfLaTeX` works as-is. Nothing to install.
+- **Locally:** run `pdflatex resume.tex` **twice** (for cross-references), or
+  `latexmk -pdf resume.tex` which handles that; then clean the aux files (`latexmk -c`, or
+  remove `*.aux *.log *.out *.fls *.fdb_latexmk`).
+
+### Minimal local install (scoped to this template)
+
+The template is compiled with **`pdflatex`** — it uses pdfTeX-only primitives
+(`\input{glyphtounicode}`, `\pdfgentounicode=1`) for an ATS-extractable text layer, so the
+distribution must provide `pdflatex`. **Tectonic will not work**: it runs the XeTeX engine,
+under which those primitives are undefined.
+
+A local build needs only what *this* template uses — nothing more: the fonts
+`CormorantGaramond` and `charter`, the `fontawesome5` icons, `textcomp`, and the output
+language's `babel`/hyphenation. A bare `texlive-latex-base` is **not** enough (it lacks the
+fonts and icons). Two routes:
+
+- **TinyTeX (lightest — a minimal TeX Live with a real `pdflatex`, no sudo):** install it,
+  then `tlmgr install fontawesome5 cormorantgaramond charter titlesec enumitem tabularx
+  microtype hyperref geometry xcolor babel-<language> latexmk`.
+- **TeX Live via a system package manager (Debian/Ubuntu example):**
+  `texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+  texlive-fonts-extra texlive-lang-european`. The bulk is `texlive-fonts-extra`, where the
+  template's font and icons live.
+
+If a different template is chosen later with different dependencies, that template carries
+its own install note — the requirement follows the template, not a fixed global install.
 
 ## Staying ATS-readable when filling
 
