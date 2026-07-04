@@ -80,7 +80,7 @@ Your Career Profile contains personal information, and it stays **entirely on yo
 
 ## Status
 
-🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and two example profiles are in place, and a first end-to-end run has passed. Full verification and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
+🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and two example profiles are in place; end-to-end runs have passed (profile → tailored CV, and local PDF compilation with dependency self-heal). The scripted interview eval and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
 
 ---
 

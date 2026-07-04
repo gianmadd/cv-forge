@@ -237,6 +237,15 @@ interaction and output are multilingual.
   primitives are undefined. When a different template with different dependencies is later
   chosen (a roadmap item), that template carries its own install note — the requirement
   follows the template, never a fixed global TeX install.
+  - **Mechanism (implemented and verified).** Each template *declares its own dependency
+    manifest* (a `--- Template dependencies ---` header in the `.tex`, in `tlmgr` package
+    names), and `cv-tailor` runs a **detect → offer → self-heal** flow: detect
+    `pdflatex`/`tlmgr`; offer both routes (and offer to set up TinyTeX when no `pdflatex`);
+    and on a missing dependency, map the file to its package with `tlmgr search --file`,
+    **propose** the `tlmgr install` for the user to approve (never silent), and retry. The
+    manifest is the fast path; the self-heal is the backstop that covers transitive-dep gaps
+    (`cormorantgaramond` does not auto-pull `fontaxes`) and both error forms — missing
+    `.sty` and missing font metric (`Metric (TFM) file not found`).
 - **Deliverable formats: PDF and DOCX, with `.tex` as the source.** PDF is the primary
   submit format (via compile); **DOCX** is planned for the ATS/recruiter cases that want
   Word. **Markdown output is excluded** — the Career Profile is already Markdown and no one

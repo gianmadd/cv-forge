@@ -5,6 +5,18 @@
 %% <<PLACEHOLDER>> from the Career Profile in the OUTPUT LANGUAGE; nothing is invented.
 %%
 %% Visual style adapted from Michael Lustfield's CV template (CC-BY-4.0).
+%%
+%% --- Template dependencies (cv-tailor reads this to install & self-heal a local build) ---
+%% Engine: pdflatex.
+%% tlmgr packages (template-scoped):
+%%   fontawesome5 cormorantgaramond fontaxes mweights xkeyval charter ragged2e
+%%   microtype hyperref geometry xcolor latexmk
+%% Per-language (add at generation): babel-<output-language>
+%% Notes:
+%%   - cormorantgaramond needs fontaxes + mweights + xkeyval, which tlmgr does NOT
+%%     auto-pull; they are listed explicitly so the install doesn't fail mid-build.
+%%   - These are tlmgr PACKAGE names: textcomp.sty is in LaTeX base (always present,
+%%     nothing to install). `tlmgr search --file '/NAME.sty'` maps a file to its pkg.
 
 \documentclass[a4paper,11pt]{article}
 

@@ -60,9 +60,8 @@ Honour every inline `> Agent Note:` on the content it governs, and include nothi
 
 ## Compiling to PDF
 
-Compiling is a separate step and the user chooses how — **offer both routes and explain
-each**, then, if a local toolchain is present, offer to run it for them (never compile
-silently).
+Compiling is a separate step and the user chooses how. **Detect what's on the machine,
+then offer — never compile, and never install anything, silently.** The two routes:
 
 - **Overleaf (no install — the default, and the realistic route for a non-technical
   user):** upload the `.tex` (plus a photo if used) to a blank Overleaf project and press
@@ -71,28 +70,74 @@ silently).
   `latexmk -pdf resume.tex` which handles that; then clean the aux files (`latexmk -c`, or
   remove `*.aux *.log *.out *.fls *.fdb_latexmk`).
 
-### Minimal local install (scoped to this template)
+### Detect-and-offer flow (local compilation)
+
+Run this after the `.tex` is written. At every branch you *offer* and wait for the user;
+you never install a package or run a compile they didn't agree to.
+
+1. **Detect the toolchain.** Check for a local `pdflatex` (e.g. `pdflatex --version`) and
+   for `tlmgr` (`tlmgr --version`).
+   - **No `pdflatex`** → point the user to **Overleaf** (zero-install). *Also* mention the
+     local route exists and offer to set it up if they want it — install **TinyTeX** (a
+     minimal TeX Live with a real `pdflatex`, no sudo), then install this template's
+     packages (next step). Don't push it; Overleaf is the safe default.
+   - **`pdflatex` present** → offer to compile and hand over the PDF. Proceed only on yes.
+2. **Compile.** Run `latexmk -pdf <file>.tex` (or `pdflatex` twice), capturing the log.
+3. **Self-heal missing packages — by offering, not installing silently.** Scan the log for
+   a missing file, in **either** of its two forms (a missing *font* does **not** say
+   "File … not found"), and if `tlmgr` is available:
+   - **Missing style/class:** `! LaTeX Error: File 'X.sty' not found` (also `.cls`, `.fd`).
+     The name is right there — search it: `tlmgr search --file '/X.sty'`.
+   - **Missing font metric:** surfaces instead as `! I can't find file 'bchr8t'.` followed
+     by `Font … not loadable: Metric (TFM) file not found`. Take that base name, add `.tfm`,
+     and search: `tlmgr search --file '/bchr8t.tfm'` → `charter`. (This is a real case:
+     `psnfss` provides `charter.sty` but the *font files* live in the `charter` package, so
+     a machine can have the `.sty` and still miss the metrics.)
+   - `tlmgr search --file` may list more than one package (e.g. a `*-dev` variant, or
+     `pdftex`); pick the plain, non-`-dev` package.
+   - **Tell the user what's missing and propose the install command** —
+     `tlmgr install <package>` — and wait for approval. This is the crucial point: when a
+     package is absent, you *offer to download it* with the command ready, so the user can
+     choose to install and compile locally; you do not install behind their back.
+   - On approval, install, then **retry the compile.** Repeat for the next missing file.
+     Bound the loop (a handful of rounds); if failures keep coming, offer the whole
+     template dependency list in one go (next step), or fall back to Overleaf.
+   - A compile error that is **not** a missing file (a real LaTeX error) is not a
+     dependency problem — report it, don't loop.
+   - If `tlmgr` is absent (a system TeX Live without it, or no TeX at all), you can't
+     self-heal package-by-package: offer the system-package route below, or Overleaf.
+
+### This template's dependencies
+
+The package list lives **in the template itself** — the `--- Template dependencies ---`
+comment block at the top of `resume.tex` / `cover-letter.tex`. Read it there and install
+from it; it is the single source of truth, maintained alongside the template's
+`\usepackage` lines. Install the **template-scoped** packages plus `babel-<output-language>`
+for the language you generated in.
 
 The template is compiled with **`pdflatex`** — it uses pdfTeX-only primitives
 (`\input{glyphtounicode}`, `\pdfgentounicode=1`) for an ATS-extractable text layer, so the
 distribution must provide `pdflatex`. **Tectonic will not work**: it runs the XeTeX engine,
-under which those primitives are undefined.
+under which those primitives are undefined. A bare `texlive-latex-base` is also **not**
+enough (it lacks the fonts and icons). Two ways to install the template's dependencies:
 
-A local build needs only what *this* template uses — nothing more: the fonts
-`CormorantGaramond` and `charter`, the `fontawesome5` icons, `textcomp`, and the output
-language's `babel`/hyphenation. A bare `texlive-latex-base` is **not** enough (it lacks the
-fonts and icons). Two routes:
-
-- **TinyTeX (lightest — a minimal TeX Live with a real `pdflatex`, no sudo):** install it,
-  then `tlmgr install fontawesome5 cormorantgaramond charter titlesec enumitem tabularx
-  microtype hyperref geometry xcolor babel-<language> latexmk`.
+- **TinyTeX (lightest, no sudo) — install the manifest with `tlmgr`:** e.g. for `resume.tex`
+  `tlmgr install fontawesome5 cormorantgaramond fontaxes mweights xkeyval charter titlesec
+  enumitem tools microtype hyperref geometry xcolor latexmk babel-<language>`.
+  Two things the manifest encodes that you can't get by reading `\usepackage` lines:
+  `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval` deps are **not** auto-pulled; and
+  the install list uses **tlmgr package names, not `.sty` names** — `tabularx.sty` ships in
+  the `tools` package, and `textcomp.sty` is in LaTeX base (always present, nothing to
+  install). This name mismatch is exactly why the self-heal retry above is the robust
+  backstop: `tlmgr search --file '/NAME.sty'` resolves any file to its real package.
 - **TeX Live via a system package manager (Debian/Ubuntu example):**
   `texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
   texlive-fonts-extra texlive-lang-european`. The bulk is `texlive-fonts-extra`, where the
-  template's font and icons live.
+  template's fonts and icons live.
 
-If a different template is chosen later with different dependencies, that template carries
-its own install note — the requirement follows the template, not a fixed global install.
+If a different template is chosen later, its dependencies travel in *its* manifest — read
+that template's comment block; the requirement follows the template, not a fixed global
+install.
 
 ## Staying ATS-readable when filling
 

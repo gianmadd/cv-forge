@@ -9,6 +9,20 @@
 %% cv-tailor fills every <<PLACEHOLDER>> from the Career Profile, in the OUTPUT
 %% LANGUAGE, and adds or removes sections/entries to match what it selected for THIS
 %% job. Nothing here is invented: every filled value traces to the profile.
+%%
+%% --- Template dependencies (cv-tailor reads this to install & self-heal a local build) ---
+%% Engine: pdflatex (NOT xetex/tectonic — this template uses the pdfTeX-only
+%%   glyphtounicode primitives for an ATS-extractable text layer).
+%% tlmgr packages (template-scoped):
+%%   fontawesome5 cormorantgaramond fontaxes mweights xkeyval charter titlesec
+%%   enumitem tools microtype hyperref geometry xcolor latexmk
+%% Per-language (add at generation): babel-<output-language>
+%% Notes:
+%%   - cormorantgaramond needs fontaxes + mweights + xkeyval, which tlmgr does NOT
+%%     auto-pull; they are listed explicitly so the install doesn't fail mid-build.
+%%   - These are tlmgr PACKAGE names, not \usepackage/.sty names: tabularx.sty ships in
+%%     the `tools` package; textcomp.sty is in LaTeX base (always present, nothing to
+%%     install). When in doubt, `tlmgr search --file '/NAME.sty'` maps a file to its pkg.
 
 \documentclass[a4paper,10pt]{article}
 

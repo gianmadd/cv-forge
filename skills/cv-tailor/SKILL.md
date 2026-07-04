@@ -143,14 +143,24 @@ Fill the `pdflatex` template in `templates/` following
 set the output language, add/remove sections to match your selection, and **escape LaTeX
 special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
 an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Produce a **cover letter only if
-the user asks**. Compiling to PDF is a separate step: **offer the user both routes and
-explain each** — **Overleaf** (upload the `.tex`, recompile, download — no install; the
-safe default, especially for a non-technical user) or **local compilation**. If a local
-`pdflatex` is present, offer to compile it for them and hand over the PDF — never compile
-silently. (The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't
-compile it.) See
-[`references/output-format.md`](references/output-format.md) for the exact steps and the
-minimal local install (scoped to this template).
+the user asks**. Compiling to PDF is a separate step: **detect the toolchain, then offer —
+never compile, and never install anything, silently.**
+
+- **Offer both routes and explain each** — **Overleaf** (upload the `.tex`, recompile,
+  download — no install; the safe default, especially for a non-technical user) or **local
+  compilation**.
+- **If a local `pdflatex` is present**, offer to compile and hand over the PDF.
+- **If a package is missing** — a `File 'X.sty' not found`, or a font error
+  (`I can't find file '...'` / `Metric (TFM) file not found`), which does *not* say "File
+  not found" — don't give up and don't install behind the user's back: identify the package
+  (`tlmgr search --file`) and **propose the install command for them to approve** — so they
+  can choose to download it and compile locally — then retry. This self-heal is offer-based
+  at every step.
+- The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't compile it. Its
+  package list lives in the template's own `--- Template dependencies ---` header.
+
+See [`references/output-format.md`](references/output-format.md) for the exact detect →
+offer → self-heal flow and the template-scoped install.
 
 **Done when:** the filled `.tex` is written in the chosen language, no `<<...>>` remains,
 and all special characters are escaped. The content-integrity gate is Step 7.
