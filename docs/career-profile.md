@@ -16,7 +16,7 @@ default; they may be removed or restructured **only at the user's explicit reque
 never on the skill's initiative.
 
 1. **Contact Information**
-2. **Professional Identity & Positioning** — target titles + value proposition (not a summary of experience)
+2. **Professional Identity & Positioning** — target titles + value proposition (not a summary of experience; target titles stay within the roles/level the user named — broadening needs their confirmation)
 3. **Professional Summaries** — a few genuinely different summary angles
 4. **Skills / Competencies** — capability categories adapted to the user's field
 5. **Work Experience** — the canonical source for all role detail
@@ -90,6 +90,11 @@ Competencies restate things that live in full in Work Experience) — these aggr
 views are useful to `cv-tailor`.
 
 - **Work Experience is the primary source** for role detail.
+- **Aggregates add no number that isn't in Work Experience.** A derived section may
+  restate and reframe, but must introduce no duration, count, or "X years as Y" that the
+  user didn't state or that isn't directly datable from the recorded Work Experience dates.
+  Decomposing a stated total into a per-role figure (e.g. "~9 years in the field" → "~6 of
+  them as manager") is fabrication, not derivation, and would propagate into every CV.
 - When a fact changes in Work Experience on an existing profile, the skill propagates
   the change to the summary sections that repeat it. This propagation applies at
   **edit / Re-Run time**; during a first build the summary sections are simply
@@ -136,5 +141,8 @@ the new structure.
 
 Every user is asked for their languages and a self-assessed level (CEFR A1–C2, or
 native / fluent / intermediate / basic). The level is descriptive and self-assessed —
-**no certification is required** (one may be mentioned if held). A Languages section
-appears in a generated CV only when there is something beyond the native language.
+**no certification is required** (one may be mentioned if held). One scale is preferred,
+but **faithful capture of the user's own words wins**: a CEFR grade for one language
+alongside "native"/"fluent" for another is kept as stated, not force-converted and not
+treated as an inconsistency. A Languages section appears in a generated CV only when there
+is something beyond the native language.

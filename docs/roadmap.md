@@ -16,17 +16,30 @@ What's decided, what's left to build, and what's deliberately deferred.
 - **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
 - **Two example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a senior AI/ML engineer (technical) and an experienced physician (non-technical).
 - **First end-to-end passed**: AI-engineer profile → tailored CV; surfaced and fixed the LaTeX special-character escaping rule in `cv-tailor`.
+- **Scripted persona interview eval of `cv-profiler` run** (independent grader, 24-item
+  checklist, fabrication trace) on two de-biasing-edge personas; caught a real fabrication
+  (aggregate duration) and drove the aggregate-derivation guard plus smaller hardening fixes.
 - **Local-compile detect-and-offer wired into `cv-tailor`** and the dependency-structuring question settled: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`), and `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes, and **self-heals missing packages by offering the `tlmgr install` command for approval** (never installs silently) — the robust backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`.
 
 ## To build
 
-1. **Verification.** Run the lightweight eval (non-technical personas + acceptance
-   checklist) and one end-to-end test per profile type. (Two end-to-ends have now passed:
-   the AI-engineer profile → tailored CV, which surfaced the LaTeX-escaping fix; and a
-   non-technical one — an Italian literature-professor profile → `cv-tailor` → PDF compiled
-   locally via TinyTeX — which surfaced the currency-symbol fix and confirmed the
-   de-biasing on a humanities profile. The scripted persona eval, which exercises
-   `cv-profiler`'s interview, still remains.)
+1. **Verification — done.** Two `cv-tailor` end-to-ends passed (AI-engineer profile →
+   tailored CV, surfacing the LaTeX-escaping fix; and an Italian literature-professor
+   profile → `cv-tailor` → PDF via TinyTeX, surfacing the currency-symbol fix and confirming
+   de-biasing on a humanities profile). The **scripted persona eval of `cv-profiler`'s
+   interview** has now also run: two personas on the de-biasing edge (an Italian metric-light
+   career-changer, an English early-career graduate), each interviewed by an agent running
+   the real skill and graded by an **independent** evaluator against a 24-item checklist with
+   an objective fabrication trace. Early-career: 0 FAIL. Career-changer: 1 FAIL — a fabricated
+   "~6 years as manager" (a stated 9-year total decomposed into a per-role figure) — which
+   drove a new **aggregate-derivation guard** in `cv-profiler` (no aggregate number that
+   isn't stated or datable from Work Experience; a final consistency pass). Smaller findings
+   (target-title scope, language-scale faithful capture, "lead with honest phrasing" for
+   asked-for embellishment, pertinence-trigger wording) were folded into the skill and
+   `docs/`. The hardened skill was then **re-verified**: the career-changer persona re-run,
+   graded independently, confirmed the aggregate-derivation guard holds — the fabrication
+   does not recur, no new fabrication was introduced, and all four traps + the contract
+   passed. **Item 1 closed.**
 2. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
    it runs cleanly at the operational level. Fix whatever trips the flow.
    - **Done — compile hand-off.** The compile hand-off (Overleaf / local `pdflatex`) is
@@ -110,7 +123,9 @@ What's decided, what's left to build, and what's deliberately deferred.
   credentialed, metrics-rich professionals. Add at least one that stresses the de-biasing
   edge the project targets — a trade / early-career / career-changer profile, deliberately
   metric-light and leaning on transferable skills — so the few-shot (and the eval) cover
-  the harder case, not just polished white-collar careers.
+  the harder case, not just polished white-collar careers. **Head start:** the persona eval
+  already produced two such profiles (an Italian metric-light career-changer and an English
+  early-career graduate); once reviewed and de-personalised they could seed shipped examples.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the
