@@ -15,32 +15,25 @@ What's decided, what's left to build, and what's deliberately deferred.
 - **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
 - **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
 - **Two example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a senior AI/ML engineer (technical) and an experienced physician (non-technical).
-- **First end-to-end passed**: AI-engineer profile → tailored CV; surfaced and fixed the LaTeX special-character escaping rule in `cv-tailor`.
-- **Scripted persona interview eval of `cv-profiler` run** (independent grader, 24-item
-  checklist, fabrication trace) on two de-biasing-edge personas; caught a real fabrication
-  (aggregate duration) and drove the aggregate-derivation guard plus smaller hardening fixes.
+- **Verification passed (both skills).** Two `cv-tailor` end-to-ends: AI-engineer profile →
+  tailored CV (surfaced the LaTeX-escaping fix) and an Italian literature-professor profile →
+  PDF via TinyTeX (surfaced the currency-symbol fix; confirmed de-biasing on a humanities
+  profile). Plus a **scripted persona interview eval of `cv-profiler`** — two de-biasing-edge
+  personas (Italian metric-light career-changer, English early-career graduate), each
+  interviewed by an agent running the real skill and graded by an **independent** evaluator
+  against a 24-item checklist with an objective fabrication trace. It caught a real
+  fabrication (a stated 9-year total decomposed into an invented "~6 years as manager"),
+  which drove the **aggregate-derivation guard** plus smaller hardening fixes (target-title
+  scope, language-scale faithful capture, "lead with honest phrasing", pertinence-trigger
+  wording) and the user-authority clarification; a graded **re-run confirmed the guard holds**
+  (no recurrence, no new fabrication).
 - **Local-compile detect-and-offer wired into `cv-tailor`** and the dependency-structuring question settled: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`), and `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes, and **self-heals missing packages by offering the `tlmgr install` command for approval** (never installs silently) — the robust backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`.
 
 ## To build
 
-1. **Verification — done.** Two `cv-tailor` end-to-ends passed (AI-engineer profile →
-   tailored CV, surfacing the LaTeX-escaping fix; and an Italian literature-professor
-   profile → `cv-tailor` → PDF via TinyTeX, surfacing the currency-symbol fix and confirming
-   de-biasing on a humanities profile). The **scripted persona eval of `cv-profiler`'s
-   interview** has now also run: two personas on the de-biasing edge (an Italian metric-light
-   career-changer, an English early-career graduate), each interviewed by an agent running
-   the real skill and graded by an **independent** evaluator against a 24-item checklist with
-   an objective fabrication trace. Early-career: 0 FAIL. Career-changer: 1 FAIL — a fabricated
-   "~6 years as manager" (a stated 9-year total decomposed into a per-role figure) — which
-   drove a new **aggregate-derivation guard** in `cv-profiler` (no aggregate number that
-   isn't stated or datable from Work Experience; a final consistency pass). Smaller findings
-   (target-title scope, language-scale faithful capture, "lead with honest phrasing" for
-   asked-for embellishment, pertinence-trigger wording) were folded into the skill and
-   `docs/`. The hardened skill was then **re-verified**: the career-changer persona re-run,
-   graded independently, confirmed the aggregate-derivation guard holds — the fabrication
-   does not recur, no new fabrication was introduced, and all four traps + the contract
-   passed. **Item 1 closed.**
-2. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
+*(Verification is complete — see **Done** above.)*
+
+1. **Flow & operability check.** Walk the full pipeline as an installed skill and confirm
    it runs cleanly at the operational level. Fix whatever trips the flow.
    - **Done — compile hand-off.** The compile hand-off (Overleaf / local `pdflatex`) is
      wired and verified end-to-end, and the "helper scripts?" question is answered: the
@@ -87,9 +80,9 @@ What's decided, what's left to build, and what's deliberately deferred.
      TinyTeX warns on missing non-English hyphenation patterns; harmless with the current
      `\raggedright` template, but a justified template would want `fmtutil-sys --all` after
      adding a language.)
-3. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
+2. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
    clean and consistent.
-4. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
+3. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
    convention, then publish and verify installation on Claude Code — followed by
    incremental checks on other agents. Alongside publishing, do the usual repo-launch
    polish so it looks presentable:
