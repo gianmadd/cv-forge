@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[paperwidth=1280bp,paperheight=640bp,margin=0bp]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{CormorantGaramond}
+\usepackage{charter}
+\usepackage{xcolor}
+
+\definecolor{gr}{HTML}{0E6E55}       % brand green (top band)
+\definecolor{gd}{HTML}{A16F0B}       % brand gold (arrows on light area)
+\definecolor{goldlt}{HTML}{D9B36A}   % lighter gold rule (on green band)
+\definecolor{cream}{HTML}{F6F2E7}
+\definecolor{creamsoft}{HTML}{BFD8CE}
+\definecolor{tint}{HTML}{ECF3F1}
+\definecolor{ink}{HTML}{22302B}
+\definecolor{soft}{HTML}{5A6B64}
+\definecolor{bg}{HTML}{FBFDFC}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\noindent\begin{tikzpicture}[
+    x=1bp, y=1bp,
+    stage/.style={draw=gr, line width=1pt, rounded corners=7pt, fill=tint,
+                  text width=46mm, align=center, minimum height=27mm, inner sep=6pt,
+                  font=\fontsize{16}{19}\selectfont\color{ink}},
+    arr/.style={-{Stealth[length=4.5mm,width=4mm]}, draw=gd, line width=1.6pt},
+    over/.style={midway, above=1.4mm, align=center, font=\itshape\fontsize{15}{17}\selectfont\color{gr}},
+    under/.style={midway, below=1.4mm, align=center, font=\fontsize{11}{13}\selectfont\color{soft}},
+  ]
+  \useasboundingbox (0,0) rectangle (1280,640);
+  % --- backgrounds ---
+  \fill[bg] (0,0) rectangle (1280,640);
+  \fill[gr] (0,376) rectangle (1280,640);
+
+  % --- top band: wordmark + tagline ---
+  \node[anchor=north, text=cream, font=\fontsize{82}{88}\selectfont] at (640,590) {cv-forge};
+  \node at (640,486) {\color{goldlt}\rule{7cm}{1.6pt}};
+  \node[anchor=north, text=cream, font=\fontsize{23}{28}\selectfont] at (640,470)
+        {Build your career once — then generate ATS-ready CVs tailored to each job.};
+  \node[anchor=north, text=creamsoft, font=\fontsize{15}{19}\selectfont] at (640,430)
+        {AI agent skills for Claude Code \;\textbullet\; zero fabrication \;\textbullet\; multilingual};
+
+  % --- lower area: the pipeline ---
+  \node[stage] (b) at (640,206) {\textbf{Career Profile}\\[3pt]{\scriptsize\color{soft}one structured source of truth}};
+  \node[stage, left=118bp of b] (a) {\textbf{Your career}\\[3pt]{\scriptsize\color{soft}everything you've done}};
+  \node[stage, right=118bp of b] (c) {\textbf{Tailored CV}\\[3pt]{\scriptsize\color{soft}+ cover letter · ATS-ready}};
+  \draw[arr] (a) -- node[over]{cv-profiler} node[under]{guided interview} (b);
+  \draw[arr] (b) -- node[over]{cv-tailor} node[under]{+ optional job posting} (c);
+
+  % --- install line ---
+  \node[anchor=south, font=\ttfamily\fontsize{15}{18}\selectfont, text=gr] at (640,42)
+        {npx skills add gianmadd/cv-forge};
+\end{tikzpicture}
+\end{document}

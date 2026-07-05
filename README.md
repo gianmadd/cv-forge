@@ -4,15 +4,9 @@
 [![Install](https://img.shields.io/badge/install-npx%20skills%20add-black.svg)](#quickstart)
 [![Made for Claude Code](https://img.shields.io/badge/made%20for-Claude%20Code-6E56CF.svg)](https://claude.com/claude-code)
 
-> **Organize your whole career once — then generate CVs that automated screening tools can actually read, tailored to each job, without ever inventing anything about you.**
-
 <p align="center">
-  <img src="docs/assets/preview-cv.png" alt="Example generated CV — single-column, ATS-readable" width="46%">
-  &nbsp;&nbsp;
-  <img src="docs/assets/preview-cover-letter.png" alt="Example generated cover letter" width="46%">
+  <img src="docs/assets/social-preview.png" alt="cv-forge — build your career once, then generate ATS-ready CVs tailored to each job. A pipeline of two AI agent skills: cv-profiler (a guided interview) builds your Career Profile; cv-tailor generates a tailored CV and cover letter." width="100%">
 </p>
-
-<p align="center"><sub>Sample CV and cover letter generated from a fictional profile (Michael Scott, <em>The Office</em>) in general mode — single-column, ATS-readable, with a real selectable text layer.</sub></p>
 
 `cv-forge` is a pair of skills for AI coding agents. You build **one** structured record of your career, then generate a tailored CV for any job from it. It runs first on Claude Code; the shared installer also brings the skills to other AI agents.
 
@@ -31,11 +25,13 @@ Job hunting has two hidden hard parts:
 
 ## Quickstart
 
-Install the skills with the shared `skills` CLI:
+Install both skills with the shared `skills` CLI:
 
 ```bash
-npx skills@latest add gianmadd/cv-forge
+npx skills@latest add gianmadd/cv-forge -s '*'
 ```
+
+`-s '*'` takes both skills at once — they're a pipeline, so you'll want both — and you're still asked which agent(s) to install into. Omit it to pick skills interactively.
 
 Then, in your agent (e.g. Claude Code):
 
@@ -69,6 +65,18 @@ Give it your profile — and, optionally, a job posting — and it produces a co
 - **Without one:** a complete, high-quality general CV from your profile's own positioning — not a draft.
 - Renders in the language you choose and compiles to a clean PDF (Overleaf, or locally with a guided setup).
 - Never fabricates: if it isn't in your profile, it doesn't appear.
+
+---
+
+## Preview
+
+An example CV and cover letter, generated in **general mode** (no job posting) from a fictional Career Profile — Michael Scott of *The Office*. Single-column, ATS-readable, with a real selectable text layer; the cover letter shares the same visual system.
+
+<p align="center">
+  <img src="docs/assets/preview-cv.png" alt="Example generated CV — single-column, ATS-readable" width="46%">
+  &nbsp;&nbsp;
+  <img src="docs/assets/preview-cover-letter.png" alt="Example generated cover letter" width="46%">
+</p>
 
 ---
 

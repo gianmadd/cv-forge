@@ -18,5 +18,10 @@ Thumbs.db
 .idea/
 .vscode/
 
+# --- skills CLI install artifacts (present only if the skills are installed INTO this repo) ---
+.agents/
+.claude/skills/
+skills-lock.json
+
 # NB: users' personal data (Career Profile, generated CVs) lives in the END
 # USER's own project, never in this repo — so there's nothing personal to ignore here.

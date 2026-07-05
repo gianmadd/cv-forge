@@ -36,24 +36,28 @@ What's decided, what's left to build, and what's deliberately deferred.
   Changed / Decided) and the verbose §Done condensed — checked against factual loss, with the
   verification record consolidated here and a stale cross-reference (`decisions.md` §8) repaired.
   Confirmed the shipped skills carry no dev-time leaks and stay consistent with `docs/`.
+- **v1.0.0 published.** Committed and pushed to `main`, tagged `v1.0.0` with a GitHub
+  release (notes from the `CHANGELOG`). README reworked for launch — an **app-flow banner**
+  hero (also set as the GitHub **social preview**), a **Preview** section with an example CV +
+  cover letter from a fictional profile, badges, and a clearer problem → quickstart → pipeline
+  structure, plus a Credits section. Repo **description and topics** set, and install from the
+  published repo verified on Claude Code (`skills list` shows both skills). Confirmed the repo
+  conforms to the `skills` layout and the third-party template credit (Michael Lustfield,
+  CC-BY-4.0) is in order. Delivery decisions: **manual versioning** (hand-maintained
+  `CHANGELOG.md`, no changesets/CI) and **`skills`-CLI-only distribution** (no
+  `.claude-plugin/plugin.json`, per `decisions.md` §10). A shipped cover-letter template bug
+  was also fixed in the process (the accent rule crossed the name; `\hrule` → `\rule`).
 
 ## To build
 
-*(Verification and pre-publish cleanup are complete — see **Done** above.)*
+One optional, low-priority follow-up remains:
 
-1. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
-   convention, then publish and verify installation on Claude Code — followed by
-   incremental checks on other agents. Two delivery decisions taken: **manual versioning**
-   (a hand-maintained `CHANGELOG.md`, no changesets/CI) and **`skills`-CLI-only distribution**
-   (no `.claude-plugin/plugin.json`, per `decisions.md` §10).
-   Alongside publishing, do the usual repo-launch polish:
-   - **README aesthetics** — badges (license, install), a preview image of a generated CV,
-     and a crisp install + usage walkthrough.
-   - **Release** — tag `v1.0.0`, promote `[Unreleased]` in `CHANGELOG.md` to the numbered
-     release, and cut a GitHub release.
-   - **Repo metadata** — description, topics/tags, social preview image.
-   - **Contributor basics** — check `CONTRIBUTING`/issue templates as needed; confirm
-     `LICENSE` and the third-party template credit (Michael Lustfield, CC-BY-4.0) are in order.
+1. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
+   the shared installer also symlinks the skills into other agents (Gemini CLI, GitHub
+   Copilot, OpenClaw, …). Run the full pipeline on each as capacity allows and fix any
+   agent-specific quirks (skill discovery, invocation, multi-turn interview, file I/O), rather
+   than assuming untested multi-agent support. Agents that only accept passive "rules" (no
+   invokable skills) are best-effort — see [`architecture.md`](architecture.md).
 
 ## Deferred / open questions
 
