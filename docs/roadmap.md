@@ -11,42 +11,27 @@ What's decided, what's left to build, and what's deliberately deferred.
 - Repo owner (`gianmadd`) and license (MIT, © Gian Marco Addati) decided.
 - Repository documentation and scaffold (this `docs/` set, `README.md`, `CONTEXT.md`, `CHANGELOG.md`, `package.json`).
 - `SKILL.md` conventions settled: frontmatter (`name` + `description`), invocation model, self-containment — see [`decisions.md`](decisions.md) §10.
-- **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication.
-- **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, ATS-readable compilation.
-- **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`); preview verified on Overleaf.
-- **Four range-spanning example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a skilled tradesperson (metric-light), a recent graduate (early-career), an experienced teacher (non-technical, with a career break), and a data analyst (technical, metric-rich, core-only). Deliberately mixes technical/non-technical, metric-rich/metric-light, senior/early-career, and every structural feature so the few-shot doesn't bias toward polished white-collar careers. (Replaced the earlier senior-AI-engineer + physician pair, which were both senior and metric-rich.)
-- **Verification passed (both skills).** Two `cv-tailor` end-to-ends: AI-engineer profile →
-  tailored CV (surfaced the LaTeX-escaping fix) and an Italian literature-professor profile →
-  PDF via TinyTeX (surfaced the currency-symbol fix; confirmed de-biasing on a humanities
-  profile). Plus a **scripted persona interview eval of `cv-profiler`** — two de-biasing-edge
-  personas (Italian metric-light career-changer, English early-career graduate), each
-  interviewed by an agent running the real skill and graded by an **independent** evaluator
-  against a 24-item checklist with an objective fabrication trace. It caught a real
-  fabrication (a stated 9-year total decomposed into an invented "~6 years as manager"),
-  which drove the **aggregate-derivation guard** plus smaller hardening fixes (target-title
-  scope, language-scale faithful capture, "lead with honest phrasing", pertinence-trigger
-  wording) and the user-authority clarification; a graded **re-run confirmed the guard holds**
-  (no recurrence, no new fabrication). All three `cv-profiler` **dispatch modes** were then
-  independently verified PASS: New Build, **Resume Draft** (continues from the first
-  `[TO COMPLETE]`, never re-asks filled sections), and **Re-Run** (non-destructive old-format
-  migration via the alias map, no duplication, promotion applied and propagated to aggregates,
-  zero fabrication). The duration/count fabrication guard was also **mirrored into `cv-tailor`**
-  (parity: the same class can't reappear at generation time under job-posting pressure), and
-  the consistency pass was refined to never silently recompute a *user-stated* figure.
-- **Local-compile detect-and-offer wired into `cv-tailor`** and the dependency-structuring question settled: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`), and `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes, and **self-heals missing packages by offering the `tlmgr install` command for approval** (never installs silently) — the robust backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`.
-- **Flow & operability check passed — installed-skill walk.** Walked the full pipeline as an
-  installed skill against a faithfully simulated layout (skill under `~/.agents/skills/`,
-  symlinked into the agent as the `skills` CLI does, made **read-only**), with the profile and
-  output in a separate writable working dir. Confirmed: the template resolves and is readable
-  via the installed (symlinked) path; the profile is read/written in the working dir; and a
-  full general-mode fill compiled to a clean 1-page A4 PDF with a real ATS text layer. The
-  walk surfaced **two operability fixes now in `cv-tailor`**: (1) the output step **writes the
-  filled `.tex` as a fresh file** rather than `cp`-then-edit — a `cp` of a read-only installed
-  template stays read-only, so filling it would fail with a permission error; and (2) the
-  self-heal now recognises a **third error form**, the file-less missing-`babel`-language
-  error (`Unknown option '<language>'`), mapped **by name** to `babel-<language>`. The compile
-  hand-off, local-compile route, and per-template dependency manifest were decided and verified
-  — see `decisions.md` §10 and `CHANGELOG.md`.
+- **`cv-profiler` written** (`skills/cv-profiler/SKILL.md` + `references/`): dispatch, Phase 0 calibration, core/conditional structure with `PURPOSE` markers, probe banks, gap noticing, conditional-proposal rubric, incremental saving, zero-fabrication, and the eval-driven hardening (aggregate-derivation guard, target-title scope, language-scale, user-authority clarification).
+- **`cv-tailor` written** (`skills/cv-tailor/SKILL.md` + `references/`): reads the profile by its contract, cross-language keyword matching, domain-adaptive selection, localized rendering, market fields, three-way match report, delivery-time self-check, and the duration/count guard mirrored from `cv-profiler`.
+- **CV / cover-letter templates written** (`skills/cv-tailor/templates/`): single-column `pdflatex`, ATS-oriented (`glyphtounicode`), each carrying its own dependency manifest; preview verified on Overleaf.
+- **Four range-spanning example Career Profiles written**, wired into `cv-profiler` as disclosed few-shot (`skills/cv-profiler/references/`): a skilled tradesperson (metric-light), a recent graduate (early-career), an experienced teacher (non-technical, with a career break), and a data analyst (technical, metric-rich, core-only). Deliberately mixes technical/non-technical, metric-rich/metric-light, senior/early-career, and every structural feature so the few-shot doesn't bias toward polished white-collar careers. See [`decisions.md`](decisions.md) §9.
+- **Local-compile detect → offer → self-heal wired into `cv-tailor`**: each template **owns its dependency manifest** (a `--- Template dependencies ---` header in the `.tex`); `cv-tailor` detects `pdflatex`/`tlmgr`, offers both routes (Overleaf / local), and self-heals missing packages by **proposing the `tlmgr install` command for approval** (never installs silently) — the backstop for transitive-dep gaps like `cormorantgaramond`'s `fontaxes`/`mweights`/`xkeyval`, covering the `.sty`, font-metric, and `babel`-language error forms.
+- **Verification complete (both skills).** Two `cv-tailor` end-to-ends — an AI-engineer
+  profile → tailored CV (surfaced the LaTeX-escaping fix) and an Italian literature-professor
+  profile → PDF via TinyTeX (surfaced the currency-symbol fix; confirmed de-biasing on a
+  humanities profile). An independently-graded **scripted persona interview eval of
+  `cv-profiler`** caught a real fabrication — a stated 9-year total silently decomposed into an
+  invented "~6 years as manager" — which **drove the aggregate-derivation guard** (plus
+  target-title scope, language-scale, honest-phrasing, and pertinence-trigger fixes, and the
+  user-authority clarification); a graded re-run confirmed the guard holds. The duration/count
+  guard was **mirrored into `cv-tailor`**, and the consistency pass refined to never silently
+  recompute a *user-stated* figure. All three **dispatch modes** verified PASS (New Build,
+  Resume Draft, Re-Run — non-destructive old-format migration via the alias map). Finally, an
+  **installed-skill walk** (skill symlinked read-only under `~/.agents/skills/`, profile/output
+  in a separate writable dir) confirmed the template resolves via the installed path and a full
+  fill compiles to a clean 1-page A4 PDF with a real ATS text layer; it drove two operability
+  fixes now in `cv-tailor` — fresh-file fill (never `cp`-then-edit, which would inherit a
+  read-only template's mode) and the `babel`-language self-heal form. See [`CHANGELOG.md`](../CHANGELOG.md).
 
 ## To build
 
@@ -85,8 +70,8 @@ What's decided, what's left to build, and what's deliberately deferred.
   or a parsing tool, which formats to support, and how extraction/review stay
   zero-fabrication. Ties into the flow/operability helper-scripts question.
 - ~~**Broaden the example profiles' range.**~~ **Done** — the shipped few-shot is now four
-  range-spanning profiles (tradesperson · recent graduate · teacher · data analyst),
-  replacing the earlier senior-AI-engineer + physician pair. See **Done** above.
+  range-spanning profiles (tradesperson · recent graduate · teacher · data analyst). See
+  §Done above and [`decisions.md`](decisions.md) §9.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the

@@ -170,10 +170,8 @@ interaction and output are multilingual.
   and one non-technical profile: no section lost (Languages included), the PDF compiles,
   and the non-technical CV isn't tech-flavored. *Why:* the whole value is "does it
   really de-bias?" — that needs to be checked, not assumed.
-- *This section states the decided verification approach; it has since been carried out
-  (with different but range-equivalent personas and end-to-ends, plus the installed-skill
-  walk). For what was actually run and found, see `docs/roadmap.md` (§Done) and
-  `CHANGELOG.md`.*
+- *This states the decided verification approach; what was actually run — and what it
+  found — is recorded in [`roadmap.md`](roadmap.md) (§Done).*
 
 ## 9. Examples & few-shot
 
