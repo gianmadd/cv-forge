@@ -1,53 +1,74 @@
 # cv-forge
 
-**Organize everything about your career once, then generate CVs that automated screening tools can actually read — tailored to each job.**
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Install](https://img.shields.io/badge/install-npx%20skills%20add-black.svg)](#quickstart)
+[![Made for Claude Code](https://img.shields.io/badge/made%20for-Claude%20Code-6E56CF.svg)](https://claude.com/claude-code)
 
-`cv-forge` is a pair of skills for AI coding agents that turn the scattered story of your working life into structured, job-ready CVs — without ever inventing anything about you. It's built and tested first on Claude Code; the shared installer also symlinks the skills into other AI coding agents.
+> **Organize your whole career once — then generate CVs that automated screening tools can actually read, tailored to each job, without ever inventing anything about you.**
+
+<p align="center">
+  <img src="docs/assets/preview-cv.png" alt="Example generated CV — single-column, ATS-readable" width="46%">
+  &nbsp;&nbsp;
+  <img src="docs/assets/preview-cover-letter.png" alt="Example generated cover letter" width="46%">
+</p>
+
+<p align="center"><sub>Sample CV and cover letter generated from a fictional profile (Michael Scott, <em>The Office</em>) in general mode — single-column, ATS-readable, with a real selectable text layer.</sub></p>
+
+`cv-forge` is a pair of skills for AI coding agents. You build **one** structured record of your career, then generate a tailored CV for any job from it. It runs first on Claude Code; the shared installer also brings the skills to other AI agents.
 
 ---
 
-## Why
+## The problem it solves
 
-Applying for a job today runs into two hard problems:
+Job hunting has two hidden hard parts:
 
-1. **Getting past the machines.** More and more applications are read first by automated, AI-powered screening tools. Writing a CV that these tools parse correctly — the right structure, the right keywords, no formatting that trips them up — is far from obvious, and getting it wrong can quietly sink a strong candidate.
+- **Getting past the machines.** Applications are increasingly read first by automated, AI-powered screening (ATS). A CV that parses cleanly — right structure, right keywords, no layout traps — is hard to get right, and getting it wrong quietly sinks strong candidates.
+- **Organizing your own story.** Pulling every role, result, skill, and qualification into one coherent picture is genuinely hard to do alone — especially across a long or varied career. Most people never have it all in one place.
 
-2. **Organizing your own story.** Pulling together everything you've done — roles, results, skills, projects, education — into one coherent, well-structured picture is genuinely hard to do alone, especially across a long or varied career. Most people never have it all in one place.
-
-`cv-forge` tackles both. First it helps you build a single, well-organized record of your career through a guided interview. Then it turns that record into CVs that are structured to be read cleanly by automated screening tools and tailored to each specific job — using only what you actually told it.
+`cv-forge` handles both: it interviews you to build that single record, then turns it into clean, ATS-readable CVs tailored to each job — using only what you actually told it.
 
 ---
 
-## Install
+## Quickstart
 
-`cv-forge` is distributed as agent skills, installed with the shared `skills` CLI:
+Install the skills with the shared `skills` CLI:
 
 ```bash
 npx skills@latest add gianmadd/cv-forge
 ```
 
-This installs two skills — `cv-profiler` and `cv-tailor` — into your agent. In Claude Code, invoke them as `/cv-profiler` and `/cv-tailor`.
+Then, in your agent (e.g. Claude Code):
+
+1. **`/cv-profiler`** — answer the guided interview to build your **Career Profile**.
+2. **`/cv-tailor`** — hand it that profile (and a job posting, if you have one) to generate a CV.
 
 ---
 
 ## How it works
 
-It runs in two stages, as a pipeline:
+Two skills, one pipeline. The **Career Profile** you build once is the single source of truth every CV is generated from:
+
+```
+      interview                    profile  (+ optional job posting)
+You ─────────────▶ cv-profiler ──▶ Career Profile ──▶ cv-tailor ──▶ CV (+ cover letter)
+```
 
 ### 1. [`cv-profiler`](skills/cv-profiler/SKILL.md) — build your Career Profile
-A guided interview that captures everything about your career in one structured document: roles, responsibilities, achievements and metrics, skills, education, languages, and more. This document is your **single source of truth** — you build it once and keep it.
 
-- Adapts its questions to your profession and background — it works for any field.
-- Saves incrementally, so you can stop and pick up where you left off.
-- Notices things worth clarifying (gaps, overlapping roles, transferable skills) and asks with tact — never assumes, never fills in blanks for you.
+A guided interview that captures your whole career in one structured document: roles, achievements and metrics, skills, education, languages, and more. Build it once and keep it.
+
+- Adapts its questions to your profession — works for **any** field, not just tech.
+- Saves as it goes, so you can stop and resume anytime.
+- Notices things worth clarifying (gaps, overlapping roles, transferable skills) and asks with tact — it never assumes or fills in blanks for you.
 
 ### 2. [`cv-tailor`](skills/cv-tailor/SKILL.md) — generate a CV
-Give it your Career Profile — and, if you have one, a job posting — and it produces a complete CV (and, optionally, a cover letter), structured so automated screening tools parse it correctly and drawing **only** from what's in your profile.
 
-- **With a job posting:** tailored to that role — the right experience and keywords surfaced.
-- **Without one:** a complete, high-quality general CV from your profile's positioning (not a draft — a posting only makes it more precise for a specific application).
-- Works in the language you choose.
-- Never fabricates or estimates: if it isn't in your profile, it doesn't appear.
+Give it your profile — and, optionally, a job posting — and it produces a complete CV (and, on request, a cover letter), structured to parse cleanly and drawing **only** from your profile.
+
+- **With a job posting:** tailored to the role, with the right experience and keywords surfaced.
+- **Without one:** a complete, high-quality general CV from your profile's own positioning — not a draft.
+- Renders in the language you choose and compiles to a clean PDF (Overleaf, or locally with a guided setup).
+- Never fabricates: if it isn't in your profile, it doesn't appear.
 
 ---
 
@@ -55,14 +76,15 @@ Give it your Career Profile — and, if you have one, a job posting — and it p
 
 - **Zero fabrication.** Every fact, metric, and claim comes from you — nothing is invented, embellished, or estimated.
 - **Polished, never invented.** Your wording gets refined where it helps — tone, clarity, grammar, structure — but the facts underneath always stay yours.
-- **Works for any field.** The interview and the output adapt to your profession rather than forcing a single template.
-- **Multilingual.** The interview and the generated CV can be in the language you choose.
+- **Works for any field.** The interview and the output adapt to your profession rather than forcing a single mould.
+- **Multilingual.** The interview and the generated CV can each be in the language you choose.
+- **Local and private.** Your profile never leaves your machine — see below.
 
 ---
 
 ## Privacy
 
-Your Career Profile contains personal information, and it stays **entirely on your machine**. Nothing is sent anywhere except explicit, transparent web searches — and those never include your personal data. You decide what to store, and you're responsible for deleting the file when you no longer need it.
+Your Career Profile holds personal information and stays **entirely on your machine**. Nothing is sent anywhere except explicit, transparent web searches — and those never include your personal data. You decide what to store, and you delete the file whenever you no longer need it.
 
 ---
 
@@ -80,9 +102,13 @@ Your Career Profile contains personal information, and it stays **entirely on yo
 
 ## Status
 
-🚧 **In active development.** Both skills (`cv-profiler`, `cv-tailor`), the CV / cover-letter templates, and four range-spanning example profiles are in place. Verification has passed: end-to-end runs (profile → tailored CV, and local PDF compilation with dependency self-heal) and a scripted, independently-graded interview eval of `cv-profiler`. Operational polish and publishing remain — see [`docs/roadmap.md`](docs/roadmap.md).
+**v1.0.0 — first public release.** Both skills, the CV / cover-letter templates, and four range-spanning example profiles are in place and verified end-to-end (profile → CV → PDF, plus an independently-graded interview eval of `cv-profiler`). See [`CHANGELOG.md`](CHANGELOG.md) for what shipped and [`docs/roadmap.md`](docs/roadmap.md) for what's next.
 
 ---
+
+## Credits
+
+The CV and cover-letter templates' visual style is adapted from Michael Lustfield's CV template, used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## License
 

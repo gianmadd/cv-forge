@@ -1,0 +1,140 @@
+%% cv-forge — ATS-friendly CV template (filled preview: fictional profile "Michael Scott")
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage[hmargin=1.6cm,vmargin=1.3cm]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
+
+% Fonts (serif body, matching the reference style)
+\usepackage{CormorantGaramond}
+\usepackage{charter}
+
+% ATS readability: map glyphs to Unicode so copy/parse yields real text, not gibberish.
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+% Accent palette (from the reference style): green title/text, gold rules.
+\definecolor{accentTitle}{HTML}{0E6E55}
+\definecolor{accentText}{HTML}{0E6E55}
+\definecolor{accentLine}{HTML}{A16F0B}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\raggedright
+
+\newcommand{\cvheader}[2]{%
+  \begin{center}
+    {\Huge\color{accentTitle} #1}\\[9pt]
+    {\color{accentLine}\hrule}
+    \vspace{4pt}
+    \footnotesize #2
+    \vspace{4pt}
+    {\color{accentLine}\hrule}
+  \end{center}
+  \vspace{4pt}
+}
+
+\titleformat{\section}{\large\bfseries\color{accentText}}{}{0em}{}[\color{accentLine}\titlerule]
+\titlespacing{\section}{0pt}{10pt}{4pt}
+
+\newcommand{\entry}[4]{%
+  \textbf{#1}\hfill #2\\%
+  \textit{#3}\hfill #4\par%
+}
+
+\newcommand{\entryline}[2]{\textbf{#1}\hfill #2\par}
+
+\newenvironment{bullets}
+  {\begin{itemize}[leftmargin=1.4em,itemsep=1.5pt,topsep=2pt,parsep=0pt]}
+  {\end{itemize}}
+\renewcommand\labelitemi{--}
+
+\begin{document}
+
+% ---- Header: identity + contact --------------------------------------------
+\cvheader{Michael Gary Scott}{%
+  Regional Manager \quad\textbullet\quad
+  \faEnvelope\ \href{mailto:michael.scott@example.com}{michael.scott@example.com} \quad\textbullet\quad
+  \faPhone\ +1 (570) 555-0142 \quad\textbullet\quad
+  \faLinkedin\ \href{https://linkedin.com/in/michaelscott}{linkedin.com/in/michaelscott}%
+}
+
+% ---- Summary ----------------------------------------------------------------
+\section{Summary}
+Award-winning Regional Manager and salesman with over 15 years at Dunder Mifflin Paper
+Company. Rose from entry-level sales representative to lead the Scranton branch, which he
+grew into the company's top-performing region and kept open and profitable through
+company-wide consolidation. Founder of the Michael Scott Paper Company, acquired by Dunder
+Mifflin within months of launch. Leads through relationships --- with clients he keeps for
+decades and with a team he treats as family --- and is happiest closing a sale and making
+people laugh in the same afternoon.
+
+% ---- Experience -------------------------------------------------------------
+\section{Experience}
+\entry{Dunder Mifflin Paper Company}{Scranton, PA}{Regional Manager}{2006 -- Present}
+\begin{bullets}
+  \item Lead the Scranton branch, consistently the highest-performing sales region in the
+    company.
+  \item Kept the branch open and growing through company-wide consolidation, absorbing the
+    staff and accounts of the closed Stamford office with minimal client loss.
+  \item Retained major accounts for years through personal, long-term client relationships
+    across the Northeast Pennsylvania paper market.
+  \item Built and mentored a sales team that produced several of the company's top
+    salespeople.
+  \item Founded the annual ``Dundie Awards'' employee-recognition program to drive team
+    morale and retention.
+\end{bullets}
+
+\vspace{5pt}
+\entry{Michael Scott Paper Company}{Scranton, PA}{Founder \& President}{2009}
+\begin{bullets}
+  \item Founded a paper company from scratch, competing on service and personal attention
+    rather than price alone.
+  \item Won back key clients so effectively that Dunder Mifflin acquired the company within
+    months and reabsorbed its accounts.
+\end{bullets}
+
+\vspace{5pt}
+\entry{Dunder Mifflin Paper Company}{Scranton, PA}{Sales Representative}{1992 -- 2006}
+\begin{bullets}
+  \item Consistently a top-performing salesman, earning promotion to Regional Manager.
+  \item Grew and retained a personal client base through relentless customer service and
+    follow-up.
+\end{bullets}
+
+% ---- Key Achievements -------------------------------------------------------
+\section{Key Achievements}
+\begin{bullets}
+  \item Grew the Scranton branch into the highest-performing region in the company.
+  \item Founded the Michael Scott Paper Company, acquired by Dunder Mifflin within months
+    of launch.
+  \item Kept the Scranton branch open through consolidation while other branches closed.
+  \item Wrote, produced, directed, and starred in \textit{Threat Level Midnight}, a
+    feature-length film completed over 11 years.
+\end{bullets}
+
+% ---- Education --------------------------------------------------------------
+\section{Education}
+\entryline{Sales \& management training --- Dale Carnegie; improv comedy workshops}{}
+
+% ---- Skills -----------------------------------------------------------------
+\section{Skills}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}l@{\hspace{12pt}}X@{}}
+Sales & prospecting, closing, account retention, client relationships \\
+Leadership & team motivation, mentoring, recruiting, conflict resolution \\
+Communication & public speaking, presentations, improv comedy, Microsoft PowerPoint \\
+Other & event planning, screenwriting, brand of relentless optimism \\
+\end{tabularx}
+
+\end{document}

@@ -32,24 +32,28 @@ What's decided, what's left to build, and what's deliberately deferred.
   fill compiles to a clean 1-page A4 PDF with a real ATS text layer; it drove two operability
   fixes now in `cv-tailor` — fresh-file fill (never `cp`-then-edit, which would inherit a
   read-only template's mode) and the `babel`-language self-heal form. See [`CHANGELOG.md`](../CHANGELOG.md).
+- **Pre-publish cleanup done.** `CHANGELOG.md` restructured into standard sections (Added /
+  Changed / Decided) and the verbose §Done condensed — checked against factual loss, with the
+  verification record consolidated here and a stale cross-reference (`decisions.md` §8) repaired.
+  Confirmed the shipped skills carry no dev-time leaks and stay consistent with `docs/`.
 
 ## To build
 
-*(Verification is complete — see **Done** above.)*
+*(Verification and pre-publish cleanup are complete — see **Done** above.)*
 
-1. **Cleanup before publishing.** Tidy internal design notes so the deliverables are
-   clean and consistent.
-2. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
+1. **Publish & make the repo presentable.** Confirm the repo conforms to the `skills`
    convention, then publish and verify installation on Claude Code — followed by
-   incremental checks on other agents. Alongside publishing, do the usual repo-launch
-   polish so it looks presentable:
-   - **README aesthetics** — clearer structure, badges (license, install), a preview
-     image of a generated CV, and a crisp install + usage walkthrough.
-   - **Release** — tag a version, promote `[Unreleased]` in `CHANGELOG.md` to a numbered
+   incremental checks on other agents. Two delivery decisions taken: **manual versioning**
+   (a hand-maintained `CHANGELOG.md`, no changesets/CI) and **`skills`-CLI-only distribution**
+   (no `.claude-plugin/plugin.json`, per `decisions.md` §10).
+   Alongside publishing, do the usual repo-launch polish:
+   - **README aesthetics** — badges (license, install), a preview image of a generated CV,
+     and a crisp install + usage walkthrough.
+   - **Release** — tag `v1.0.0`, promote `[Unreleased]` in `CHANGELOG.md` to the numbered
      release, and cut a GitHub release.
    - **Repo metadata** — description, topics/tags, social preview image.
    - **Contributor basics** — check `CONTRIBUTING`/issue templates as needed; confirm
-     `LICENSE` and any third-party template credit are in order.
+     `LICENSE` and the third-party template credit (Michael Lustfield, CC-BY-4.0) are in order.
 
 ## Deferred / open questions
 

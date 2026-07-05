@@ -7,6 +7,11 @@ semantic versioning.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-05
+
+First public release. Both skills, the CV / cover-letter templates, and the four
+range-spanning example profiles are in place and verified end-to-end.
+
 ### Added
 - Project scaffold and documentation set under `docs/` (architecture, Career Profile spec, principles, decisions, roadmap), plus `package.json` and `CONTEXT.md`.
 - **`cv-profiler` skill** (`skills/cv-profiler/SKILL.md`) — the interview: three-way dispatch (New Build / Resume Draft / Re-Run), Phase 0 calibration, nine core sections + conditionals with `PURPOSE` markers, gap noticing, incremental saving, internationalisation, and zero-fabrication rules. Branch-specific reference (probe banks, Re-Run migration) disclosed under `references/`.
@@ -24,6 +29,12 @@ semantic versioning.
 - **Zero-fabrication vs. user authority clarified** (`cv-profiler` SKILL.md + `docs/principles.md`) — the rule constrains the *tool*, not the user; when the user asks to record something they themselves flagged as untrue, the tool offers honest framing **once**, then respects their decision — no lecture, no silent known-false claim.
 - **`cv-profiler` interview refinements** — target-title scope stays within the roles/level the user named (broadening needs confirmation); language-scale capture keeps the user's own words (a CEFR grade beside "native"/"fluent" is not force-converted); asked-for-embellishment leads with honest phrasing, not a refusal; the conditional `PURPOSE` pertinence-trigger names the *kind* of profile generically. The Re-Run consistency pass never silently recomputes a user-stated figure — only tool-derived figures are auto-corrected.
 - **Installed-skill operability** (`cv-tailor` SKILL.md + `references/output-format.md`) — the fill step writes the filled `.tex` as a **fresh file** in the user's output location, explicitly not `cp`-then-edit, because an installed skill's template can be read-only and a copied file would inherit that mode and fail to fill.
+
+### Fixed
+- Cover-letter template header (`skills/cv-tailor/templates/cover-letter.tex`): the name and
+  contact rules now use `\rule` instead of `\hrule`. With `\parskip` set, `\hrule` forced a
+  vertical-mode switch that swallowed the gap above it, letting the gold rule cross the
+  applicant's name; `\rule` respects the line break and keeps the gap.
 
 ### Decided
 - **v1 ships PDF-only; DOCX is post-v1** — a planned separate build (rendering path undecided). `.tex` is the source; Markdown output is excluded. The README promises no DOCX, so PDF-only breaks no public commitment.

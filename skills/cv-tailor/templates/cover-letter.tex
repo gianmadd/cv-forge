@@ -45,16 +45,16 @@
 \begin{document}
 
 % ---- Sender header (mirrors the CV) ----------------------------------------
+% Rules use \rule (not \hrule): with \parskip set, \hrule forces a vertical-mode
+% switch that swallows the gap above it, letting the rule cross the name.
 \begin{center}
-  {\Huge\color{accentTitle} <<FULL NAME>>}\\[9pt]
-  {\color{accentLine}\hrule}
-  \vspace{4pt}
+  {\Huge\color{accentTitle} <<FULL NAME>>}\\[10pt]
+  {\color{accentLine}\rule{\linewidth}{0.4pt}}\\[6pt]
   \footnotesize
   \faEnvelope\ \href{mailto:<<EMAIL>>}{<<EMAIL>>} \quad\textbullet\quad
   \faPhone\ <<PHONE>> \quad\textbullet\quad
-  \faMapMarker*\ <<CITY, COUNTRY>>
-  \vspace{4pt}
-  {\color{accentLine}\hrule}
+  \faMapMarker*\ <<CITY, COUNTRY>>\\[6pt]
+  {\color{accentLine}\rule{\linewidth}{0.4pt}}
 \end{center}
 
 \vspace{6pt}
