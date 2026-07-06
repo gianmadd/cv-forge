@@ -61,8 +61,8 @@ One optional, low-priority follow-up remains:
 
 ## Deferred / open questions
 
-- **Import & review an existing CV — _in progress_ (branch `feat/import-review`; verified &
-  merged → moves to §Done).** `cv-profiler` can seed a Career Profile from a CV the user
+- **Import & review an existing CV — _verified, pending merge_ (branch `feat/import-review`;
+  moves to §Done on merge).** `cv-profiler` can seed a Career Profile from a CV the user
   already has, then review and interview to confirm/fill. Built as **on-ramps inside
   `cv-profiler`, not a third skill**: **Import → New** (no profile) and **Import → Enrich**
   (reconcile into an existing profile — dedup, flag conflicts, never silent-merge); a CV in
@@ -74,7 +74,10 @@ One optional, low-priority follow-up remains:
   profile can be generated immediately. This makes the two commonest cases flow through the
   pipeline: *adapt an existing CV to a posting* (import → `cv-tailor` tailored) and *revise
   one without a posting* (import → `cv-tailor` general). See [`decisions.md`](decisions.md)
-  §11. Remaining: end-to-end verification + an eval on the extraction/inflated-claims edge.
+  §11. **Verified end-to-end** by walkthrough (dispatch → seed → review → generate; draft
+  guard confirmed to leak no marker, neutral gap-noticing exercised). Optional follow-ups: a
+  fully independent cold-agent run + a graded extraction/inflated-claims eval, and a
+  `writing-great-skills` quality pass over both skills — all post-merge.
 - **Format/ATS critique of an _external_ CV (watch — deliberately not built).** Import &
   review deliberately scope review to *content*; a Career Profile has no document-layout to
   critique, and `cv-tailor` reads only the profile, so no one critiques an external CV's
