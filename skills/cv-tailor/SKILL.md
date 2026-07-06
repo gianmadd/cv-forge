@@ -4,8 +4,10 @@ description: >-
   CV generator — turns a Career Profile into a polished, ATS-ready CV (and, on request, a
   cover letter), using only what the profile contains. Given a job posting it tailors the
   CV to that role; without one it produces a general CV from the profile's own
-  positioning. Use when the user has a Career Profile and wants to generate, tailor, or
-  export a CV or cover letter. Reads the profile that cv-profiler builds.
+  positioning. Use when the user already has a Career Profile and wants to generate,
+  tailor, or export a CV or cover letter — the CV it produces is ATS-checked before
+  delivery. If the user only has a raw CV and no profile yet, that is cv-profiler's import
+  job, not this skill. Reads the profile that cv-profiler builds.
 ---
 
 # cv-tailor
@@ -49,9 +51,9 @@ Follow these at every step. They override any instinct to be fast or agreeable.
   used.
 - **Never surface `Archived / Excluded from CV`.** That section carries a binding
   exclusion — skip it entirely.
-- **Privacy.** Nothing leaves the machine except web searches the user approves. Searches
-  are for language/market conventions only, **never contain personal data, and never seek
-  metrics or facts** to put in the CV.
+- **Privacy.** Nothing leaves the machine except web access the user approves — fetching a
+  job-posting URL they provide, or searches for language/market conventions. It **never
+  contains the user's personal data and never seeks metrics or facts** to put in the CV.
 - **Adapt to the field.** Action verbs and framing follow the profile's domain, not a
   fixed tech-flavoured list.
 
@@ -60,6 +62,13 @@ Follow these at every step. They override any instinct to be fast or agreeable.
 Confirm you have, asking only for what's missing:
 
 1. **The Career Profile** — its file path. Read it fully. *(Required.)*
+   - **Draft guard.** A profile may still be a draft — it can carry `[TO COMPLETE]`
+     (empty section) or `[TO CONFIRM]` (content seeded from an imported CV, not yet
+     confirmed) markers. If any are present, tell the user the profile is incomplete, then:
+     **skip** every `[TO COMPLETE]` section; **use** `[TO CONFIRM]` content but caveat the
+     result ("generated from unconfirmed imported content — please review it"); and **never
+     render the literal `[TO COMPLETE]`/`[TO CONFIRM]` strings** into the CV. You still never
+     invent content to fill a skipped section.
 2. **The job posting** — pasted text or a path/URL. *(Optional.)* If given, run in
    **tailored** mode; if the user doesn't have one, run in **general** mode — never force
    them to invent a posting.
@@ -135,8 +144,11 @@ or a genuine gap, and the tally has been shown to the user.
 - **Languages section** appears only when the profile lists more than a native language.
 - **Market-appropriate personal fields.** Include optional fields (photo, date of birth,
   nationality, marital status, a data-processing consent line) **only** where the target
-  market customarily expects them and the profile provides them. A **photo** comes from
-  the path/note in the profile and is placed at generation time.
+  market customarily expects them and the profile provides them. A **photo** is a
+  **per-template capability**: it is rendered only if the chosen template provides a photo
+  slot. The current single-column template has **none**, so a photo path in the profile is
+  simply not placed — don't improvise `graphicx`/`\includegraphics` outside the template's
+  dependency manifest. The other fields are plain text and always renderable.
 - If you need a language/market convention you're unsure of, a web search is allowed —
   for conventions only, never for the user's facts or metrics.
 
@@ -182,6 +194,8 @@ final zero-fabrication gate, not a formality:
   profile doesn't state, and no duration or count that isn't stated in or directly datable
   from Work Experience (no decomposing a total, no aggregating roles to match the posting).
 - **Nothing excluded leaked** — no content from `Archived / Excluded from CV`.
+- **No draft marker leaked** — no literal `[TO COMPLETE]` or `[TO CONFIRM]` string appears
+  in the output; if the profile was a draft, the incompleteness was flagged to the user.
 - **Agent Notes honoured** — every binding `> Agent Note:` was applied where its content
   is used.
 - **Gaps reported** — in tailored mode, the Step 3 match report was shown and genuine gaps

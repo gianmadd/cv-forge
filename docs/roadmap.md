@@ -61,22 +61,27 @@ One optional, low-priority follow-up remains:
 
 ## Deferred / open questions
 
-- **Import & review an existing CV.** Let `cv-profiler` take a CV the user already has and
-  do two things that share one entry point:
-  1. **Review it** — a *disciplined* critique grounded in our principles: ATS-readability
-     and structure, weak or unquantified bullets, inconsistencies (dates, formats),
-     inflated claims, and (if a posting is given) coverage gaps against it. It **flags and
-     asks**, never invents fixes — this is the existing gap-noticing muscle applied to an
-     imported CV.
-  2. **Import it** — extract the content (zero-fabrication) to seed a Career Profile, then
-     interview to fill the gaps the review surfaced, and regenerate an improved CV.
-  The natural flow: *upload CV → review/flag → interview to fix → build/enrich profile →
-  regenerate*. This makes the two commonest cases work through the existing pipeline:
-  *adapt an existing CV to a posting* (import → `cv-tailor` tailored) and *revise one
-  without a posting* (import → `cv-tailor` general). **Evaluate first:** how the agent
-  reads the uploaded document (PDF / DOCX / plain text) — whether it needs a helper script
-  or a parsing tool, which formats to support, and how extraction/review stay
-  zero-fabrication. Ties into the flow/operability helper-scripts question.
+- **Import & review an existing CV — _in progress_ (branch `feat/import-review`; verified &
+  merged → moves to §Done).** `cv-profiler` can seed a Career Profile from a CV the user
+  already has, then review and interview to confirm/fill. Built as **on-ramps inside
+  `cv-profiler`, not a third skill**: **Import → New** (no profile) and **Import → Enrich**
+  (reconcile into an existing profile — dedup, flag conflicts, never silent-merge); a CV in
+  the directory triggers **one soft offer**, never an auto-extract. **Review** is one shared
+  content-gap-noticing muscle (`references/review.md`) run after an import and as an
+  on-request Re-Run **audit**; it flags and asks, never invents fixes. Extraction is verbatim
+  (`pdftotext`/`pandoc`, detect-offer-propose, scans best-effort+flag, local-only); seeded
+  content is marked **`[TO CONFIRM]`** and `cv-tailor` gained a draft guard so an imported
+  profile can be generated immediately. This makes the two commonest cases flow through the
+  pipeline: *adapt an existing CV to a posting* (import → `cv-tailor` tailored) and *revise
+  one without a posting* (import → `cv-tailor` general). See [`decisions.md`](decisions.md)
+  §11. Remaining: end-to-end verification + an eval on the extraction/inflated-claims edge.
+- **Format/ATS critique of an _external_ CV (watch — deliberately not built).** Import &
+  review deliberately scope review to *content*; a Career Profile has no document-layout to
+  critique, and `cv-tailor` reads only the profile, so no one critiques an external CV's
+  *format*. The chosen answer is *"import it and we generate an ATS-correct CV"*. **Revisit the
+  invariant that `cv-tailor` reads only the Career Profile** (never a raw document — see
+  [`architecture.md`](architecture.md)) only if a real use case demands format critique of a
+  CV the user won't regenerate. See [`decisions.md`](decisions.md) §11.
 - ~~**Broaden the example profiles' range.**~~ **Done** — the shipped few-shot is now four
   range-spanning profiles (tradesperson · recent graduate · teacher · data analyst). See
   §Done above and [`decisions.md`](decisions.md) §9.

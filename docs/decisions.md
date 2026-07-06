@@ -240,8 +240,10 @@ interaction and output are multilingual.
   manifest** (maintained alongside its `\usepackage` lines) — today the fonts
   `CormorantGaramond`/`charter` (plus `cormorantgaramond`'s non-auto-pulled transitive deps
   `fontaxes`/`mweights`/`xkeyval`), `fontawesome5`, the layout packages
-  `titlesec`/`enumitem`/`tools`/`geometry`/`xcolor`/`microtype`/`hyperref`/`latexmk`, and the
-  output language's `babel`/hyphenation — and nothing beyond that manifest. (`textcomp` is
+  `titlesec`/`enumitem`/`tools`/`geometry`/`xcolor`/`microtype`/`hyperref`/`latexmk` (this
+  set is the `resume.tex` manifest; the cover-letter template additionally needs
+  `ragged2e`), and the output language's `babel`/hyphenation — and nothing beyond each
+  template's own manifest. (`textcomp` is
   **not** on the list: it ships in LaTeX base, always present, nothing to install.) The
   template is compiled with
   **`pdflatex`** (it uses pdfTeX-only primitives, `\input{glyphtounicode}` +
@@ -289,3 +291,79 @@ interaction and output are multilingual.
   CVs that automated screening tools parse cleanly. `cv-tailor` renders faithfully into
   the template; ensuring the template is itself AI-/ATS-readable is a property of the
   template, verified when it's added — not a constraint `cv-tailor` re-derives.
+- **A photo is a per-template capability** — like dependencies, whether a CV can carry a
+  photo is a property of the chosen template, not a universal feature. `cv-profiler` may
+  still capture a photo path (the profile is a superset), but `cv-tailor` places a photo
+  only when the template provides a slot for one. The current single-column template is
+  deliberately **photo-less**; a photo-bearing layout is a later template choice (a
+  multi-template item in `roadmap.md`). *Why:* baking a photo slot into a template the many
+  markets that reject photos would then have to strip is worse than adding it to a template
+  built for photo-expecting markets.
+
+## 11. Import & review (post-v1 feature)
+
+Letting `cv-profiler` **import an existing CV** and **review** it — turning the two
+commonest starting points ("adapt my existing CV to a posting", "revise my CV") into
+first-class on-ramps of the pipeline. Design decisions (grilled, and audited by three
+independent lenses — boundary/ownership, user mental-model, contract integrity):
+
+- **Import & review stay inside `cv-profiler` — no third skill.** They are on-ramps and
+  behaviours, not a new tool: import *produces a Career Profile* (the same artifact New
+  Build produces) and review *is* the existing gap-noticing muscle pointed at imported
+  content. The decomposition test (a review-only skill earns its own description only if
+  its trigger *and* output diverge) fails once you notice that splitting review would, by
+  the same logic, force splitting import/resume/re-run too — they are all facets of one
+  intent ("get my career into a profile"). *Why:* two skills, two verbs stays legible to
+  the user; the Career Profile remains the single contract.
+- **A distinct `[TO CONFIRM]` marker for extracted-but-unconfirmed content** (not a reuse
+  of `[TO COMPLETE]`). Three section states now exist — empty, extracted-unconfirmed,
+  confirmed — and the middle one needs its own token. *Why a new marker beats reusing
+  `[TO COMPLETE]`:* reuse would force the "confirm vs fill" distinction to be *inferred*
+  from whether content sits under the marker (fragile), would contradict the written rule
+  "remove `[TO COMPLETE]` once it holds real content", and — decisively — would collide
+  with `cv-tailor`'s draft guard, which must **skip empty sections but use extracted
+  content**: one token cannot mean both "skip" and "use". A distinct marker makes both
+  behaviours clean and keeps `[TO COMPLETE]`'s meaning unchanged. Both markers are now
+  **shared contract tokens** documented in `career-profile.md` and read by both skills.
+- **`cv-tailor` gains a draft guard.** It may be handed a still-incomplete profile (import
+  → generate immediately, the "adapt an existing CV" path). It skips `[TO COMPLETE]`
+  sections, uses `[TO CONFIRM]` content with an "unconfirmed — review it" caveat, and never
+  renders either literal marker into the CV. *Why:* this makes the fast import→generate
+  path work, and closes a **latent existing bug** — before the guard, a drafted profile fed
+  to `cv-tailor` would leak the literal `[TO COMPLETE]` string into the output. This is a
+  real (small) `cv-tailor` change, so the marker convention is mirrored into
+  `career-profile.md` per the keep-in-sync invariant.
+- **One review muscle, two call sites.** "Review" is content-gap-noticing (weak/unquantified
+  bullets, vague positioning, a skill not evidenced, profile-internal consistency), defined
+  once in `references/review.md` and invoked both after an import and as an on-request Re-Run
+  **audit** of an existing profile. *Why one definition:* two copies would drift. *Why
+  on-request for the audit:* a proactive critique on every Re-Run would break Re-Run's "you
+  tell me what to change" character and the probe-once/user-authority rules.
+- **Consistency vs formatting — a deliberate split.** *Profile-internal consistency* (dates,
+  language-level scale, metric units) is the review muscle's job in `cv-profiler`;
+  *CV-document formatting* (ATS-readability, layout, parseability) stays owned by `cv-tailor`
+  alone. The word "format" was covering two different things; they are separated so neither
+  skill critiques what it can't see. A Career Profile is not a CV, so it has no document-layout
+  to critique — the honest answer to "is my layout ATS-friendly?" is to generate a CV.
+- **Import is a dispatch on-ramp, offered not grabbed.** Two sub-flows: **Import → New**
+  (no profile → seed a new one) and **Import → Enrich** (existing profile → reconcile in,
+  under Re-Run). Dispatch stays file-based for the *mode*; a light pre-step notices a CV in
+  the directory and makes **one soft offer** — never auto-extracting a stray file. The flow
+  is always extract → seed → review → interview, so review-only is just an early stop, not a
+  separate mode. `cv-profiler` becomes the **only raw-CV reader** (one-time source);
+  `cv-tailor` still reads only the profile, so the single-contract model holds.
+- **Extraction prefers a verbatim text layer over model vision.** `pdftotext -layout` /
+  `pandoc` are more faithful than re-typing a document by sight (which can hallucinate).
+  Dependencies use the same **detect → offer → propose-install** flow as `cv-tailor`'s
+  `tlmgr` (never silent), with a gentle native-read fallback. Scanned/no-text-layer PDFs are
+  read by sight **best-effort, with an explicit flag**; all tooling stays **local** (no cloud
+  OCR — privacy). Extraction is verbatim and the duration/count guard applies.
+- **GAP — format critique of an *external* CV has no owner (decided: don't build it).**
+  `cv-profiler` reviews content only; `cv-tailor` won't read a raw CV. Rather than reopen
+  that invariant, the product answer is *"import it and we generate an ATS-correct CV"* — we
+  replace the layout, we don't critique it. **Watch:** a real demand for external-CV format
+  critique is the trigger to revisit this (a Deferred item in `roadmap.md`).
+- **GAP — anti-nag memory (decided: no dedicated state file).** The soft offer's outcome
+  (imported / declined) is recorded in the provenance HTML comment *once a profile exists*.
+  Before a profile exists there's nowhere to record it and re-offering next session is
+  acceptable — not worth a dotfile (clutter, fragile across agents, a second state store).

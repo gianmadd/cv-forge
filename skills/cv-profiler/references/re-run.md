@@ -1,8 +1,21 @@
 # Re-Run details — migration and keeping duplicated facts in sync
 
-Reach for this on the **Re-Run** branch (a complete profile, no `[TO COMPLETE]`). Read
-the file fully, preserve everything, and ask what to add or change — never rebuild from
-scratch.
+Reach for this on the **Re-Run** branch (a complete profile — no `[TO COMPLETE]` or
+`[TO CONFIRM]` marker). Read the file fully, preserve everything, and ask what to add or
+change — never rebuild from scratch.
+
+## Three intents within Re-Run — routed by the user, not the file
+
+A complete profile can be revisited for three reasons; the *mode* is file-based, but which
+of these you do follows what the user asks:
+
+- **Plain enrich (default)** — "you tell me what to change", the behaviour below.
+- **Audit on-request** — the user asks you to review/critique the profile: run the shared
+  review muscle ([`review.md`](review.md)) over the existing content. **On-request only** —
+  never audit automatically on a plain update — and content + profile-internal consistency
+  only (document/ATS formatting is `cv-tailor`'s). Respect probe-once memory.
+- **Import → Enrich** — the user brings an existing CV to fold into the profile: see
+  [`import.md`](import.md) (extract, dedup/reconcile, flag conflicts).
 
 ## Old-format migration
 

@@ -33,4 +33,5 @@ lives in each `SKILL.md`, and the reasoning behind these choices is in
 - The Career Profile contains personal information and stays **entirely on the user's machine**.
 - Before storing sensitive information (e.g. health-related reasons for a career gap, immigration status), the skill asks for explicit consent and offers a neutral version or omission.
 - **Nothing is sent externally** except explicit, transparent web searches — which never include the user's personal data.
+- **Imported documents are read locally.** When `cv-profiler` imports an existing CV, the file is extracted and parsed **on the user's machine** (local tools such as `pdftotext`/`pandoc`); it is never uploaded to a cloud OCR or parsing service.
 - These protections do **not** depend on git or a `.gitignore`; they hold regardless of how (or whether) the user version-controls their files.

@@ -1,5 +1,5 @@
-<!-- PROFILE NOTE: Experienced secondary science educator (~14 yrs), now Head of Science
-     leading a department (~15 yrs); teacher-leadership track. Emphasise curriculum design, results,
+<!-- PROFILE NOTE: Experienced secondary science educator (~15 yrs), now Head of Science
+     leading a department; teacher-leadership track. Emphasise curriculum design, results,
      and people development. Example/mock profile — not a real person. -->
 
 <!-- PURPOSE: [CORE] How to reach the person and where they are based. Holds contact

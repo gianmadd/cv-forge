@@ -1,5 +1,5 @@
 <!-- PROFILE NOTE: Data analyst (~9 yrs, since 2017), clean linear progression from junior
-     to senior in financial services; strong BI, reporting automation, and stakeholder work.
+     to senior across financial services and retail; strong BI, reporting automation, and stakeholder work.
      Emphasise quantified impact and the technical/BI toolchain. Example/mock profile — not a real person. -->
 
 <!-- PURPOSE: [CORE] How to reach the person and where they are based. Holds contact channels

@@ -107,17 +107,49 @@ views are useful to `cv-tailor`.
 - After calibration it creates the file with the **skeleton of the nine core
   sections** and the profile note at the top.
 - It updates the file **after each phase** and **after each role** in Work Experience.
-- Unfinished **core** sections are marked `[TO COMPLETE]`. Conditional sections are
-  **not** pre-stubbed — they appear only once proposed and accepted, so nothing marks
-  a section that may never exist.
+- Unfinished **core** sections are marked `[TO COMPLETE]` (empty — to fill).
+  Conditional sections are **not** pre-stubbed — they appear only once proposed and
+  accepted, so nothing marks a section that may never exist.
+- Core sections **seeded from an imported CV** (see Import, in `cv-profiler`) are marked
+  `[TO CONFIRM]`: the section already holds extracted content, but it **awaits the user's
+  confirmation** — it is shown for review, not asked from scratch. The marker is removed
+  once the user confirms the content.
+
+## Draft markers — read by both skills
+
+Two markers describe a section's readiness. Both are **shared contract tokens**: they are
+written by `cv-profiler` and also recognised by `cv-tailor`.
+
+| Marker | Meaning | `cv-tailor` behaviour |
+| --- | --- | --- |
+| `[TO COMPLETE]` | empty — no real content yet | **skip** the section |
+| `[TO CONFIRM]` | extracted from an imported CV, present but unconfirmed | **use** the content, with a caveat that it is unconfirmed |
+| *(none)* | confirmed content | render normally |
+
+`cv-tailor` **never renders either literal marker** into a CV, and warns the user when it
+generates from a draft (any marker still present). This lets an imported profile be turned
+into a CV immediately, before the interview confirms every section.
+
+## Provenance comment (documentary only)
+
+When a profile is seeded from an imported CV, `cv-profiler` records the source in a
+**separate HTML comment** (distinct from the calibration profile note), e.g.
+`<!-- SOURCE: seeded from cv.pdf on 2026-05-01 -->`, and records declined import offers
+there once a profile exists. This line is **documentary metadata**: `cv-tailor` ignores it,
+and the recorded path is never treated as a live input (it is not a second source of truth).
 
 ## Session modes (dispatch)
 
 Decided purely from the file, no validation:
 
-- **No file** → **New Build** (start from calibration).
-- **File contains `[TO COMPLETE]`** → **Resume Draft** (re-read, recover the profile note, continue from the first placeholder).
-- **File with no `[TO COMPLETE]`** → **Re-Run** (enrich/update a complete profile, preserving existing content).
+- **No file** → **New Build** (start from calibration; or **Import → New** if the user
+  accepts an offer to seed from a CV in the directory).
+- **File contains `[TO COMPLETE]` or `[TO CONFIRM]`** → **Resume Draft** (unfinished *or*
+  unconfirmed content remains — re-read, recover the profile note, continue from the first
+  placeholder; a `[TO CONFIRM]` section is shown for confirmation, not asked from scratch).
+- **File with neither marker** → **Re-Run** (enrich/update a complete profile, preserving
+  existing content). Within Re-Run the *intent* follows the user's request: plain enrich,
+  an on-request **audit**, or **Import → Enrich** when a CV is accepted against the profile.
 
 A complete file later hand-edited to reintroduce `[TO COMPLETE]` is treated as a
 draft again — which is the intended behavior.

@@ -154,8 +154,9 @@ install.
 
 The template is built to parse cleanly; keep it that way while filling:
 
-- Real text only — never bake text into an image. A **photo** goes in only where the
-  target market expects one, from the path in the profile, and never carries text.
+- Real text only — never bake text into an image. A **photo** is placed only if the chosen
+  template provides a photo slot (the current single-column template does not) and the target
+  market expects one; it comes from the path in the profile and never carries text.
 - Put mapped keywords in context (in the relevant role or skill line), never stuffed.
 - Keep the single-column flow; don't add multi-column blocks, text boxes, or headers/
   footers that hold real content.
