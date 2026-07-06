@@ -61,7 +61,7 @@ One optional, low-priority follow-up remains:
 
 ## Deferred / open questions
 
-- **Import & review an existing CV — _verified, pending merge_ (branch `feat/import-review`;
+- **Import & review an existing CV — _§Done_ (branch `feat/import-review`;
   moves to §Done on merge).** `cv-profiler` can seed a Career Profile from a CV the user
   already has, then review and interview to confirm/fill. Built as **on-ramps inside
   `cv-profiler`, not a third skill**: **Import → New** (no profile) and **Import → Enrich**
