@@ -7,8 +7,8 @@ semantic versioning.
 
 ## [Unreleased]
 
-Work in progress: **import & review an existing CV** in `cv-profiler` (see
-`docs/decisions.md` §11).
+Merged to `main`, not yet in a tagged release. Headline: **import & review an existing CV**
+in `cv-profiler` (see `docs/decisions.md` §11).
 
 ### Added
 - **Draft-readiness contract** (`docs/career-profile.md`) — two shared markers describe a
