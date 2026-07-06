@@ -19,8 +19,14 @@ all docs use these words with these meanings.
 ### Interview flow
 - **Calibration** — the opening `Phase 0` question ("describe the career path you want to document") that adapts the interview's tone, examples, and later section proposals.
 - **Profile note** — a short (1–2 line) persistent summary of the calibration answer, kept at the top of the Career Profile so the interview stays adapted and can resume without re-asking.
-- **`[TO COMPLETE]`** — placeholder text marking a core section that hasn't been filled in yet. Used for incremental saving and resuming.
-- **New Build / Resume Draft / Re-Run** — the three modes `cv-profiler` dispatches into, decided by whether the file exists and whether it contains `[TO COMPLETE]`.
+- **`[TO COMPLETE]`** — placeholder marking a core section that is **empty** (not filled in yet). Used for incremental saving and resuming.
+- **`[TO CONFIRM]`** — marker on a section **seeded from an imported CV**: it holds extracted content that still **awaits the user's confirmation** (shown for review, not asked from scratch). Both markers are shared contract tokens read by `cv-tailor` too.
+- **New Build / Resume Draft / Re-Run** — the three modes `cv-profiler` dispatches into, decided by whether the file exists and whether it contains a draft marker (`[TO COMPLETE]` or `[TO CONFIRM]`).
+
+### Import & review
+- **Import** — seeding a Career Profile from an existing CV the user already has (extracted verbatim), instead of from a blank interview. Two on-ramps: **Import → New** (no profile) and **Import → Enrich** (reconcile into an existing profile).
+- **Review** — the shared **content-gap-noticing** pass (weak/unquantified bullets, vague positioning, unevidenced skills, profile-internal consistency) that **flags and asks**, never rewrites. Run after an import and as an on-request **audit**.
+- **Audit** — Review run **on-request** over an existing profile (a Re-Run intent), never automatically.
 
 ### Cross-cutting
 - **Zero fabrication** — nothing is invented, estimated, or embellished; all facts come from the user.

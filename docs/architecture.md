@@ -6,18 +6,20 @@ distributed as agent skills, not as a standalone application.
 ## The pipeline
 
 ```
-                 guided interview                 profile + job posting
-   You  ───────────────────────────▶  cv-profiler ───────────▶  Career Profile
-                                                                     │
-   Job posting  ──────────────────────────────────────────────────▶ │
-                                                                     ▼
-                                                                 cv-tailor ──▶  CV (+ cover letter)
+        guided interview  ─┐
+        existing CV (import)─┼──▶  cv-profiler ───────────▶  Career Profile
+                            ─┘   (interview · import · review)          │
+   Job posting  ──────────────────────────────────────────────────────▶ │
+                                                                         ▼
+                                                                     cv-tailor ──▶  CV (+ cover letter)
 ```
 
-- **`cv-profiler`** interviews the user and produces/maintains the **Career Profile** — one structured Markdown document that is the single source of truth. It saves incrementally and can resume an interrupted session.
+- **`cv-profiler`** produces/maintains the **Career Profile** — one structured Markdown document that is the single source of truth. It builds the profile from a guided **interview**, from an **imported CV** (extracted verbatim, then confirmed), or a mix; it can **review** existing content (flag gaps and weaknesses); it saves incrementally and can resume an interrupted session.
 - **`cv-tailor`** reads the Career Profile — and, optionally, a job posting — and generates a CV drawing only from the profile: tailored to the role when a posting is given, otherwise a complete general CV.
 
 The Career Profile is the **contract** between the two skills: `cv-tailor` locates content by the section names and conventions that `cv-profiler` writes. That contract is specified in [`career-profile.md`](career-profile.md).
+
+**`cv-profiler` is the only skill that reads a raw CV** — as a one-time *source* it extracts, then drops as an authority. `cv-tailor` never reads a raw CV; its sole input is the Career Profile. So the profile stays the single source of truth: an imported CV flows *into* it, never around it.
 
 ## Source of truth, not a database
 

@@ -3,9 +3,11 @@ name: cv-profiler
 description: >-
   Career Profile builder — a guided, multilingual interview that creates or updates the
   single Markdown document holding a person's whole career. Use when the user wants to
-  build their career/CV profile, resume or expand an existing one, or set up their career
-  record before generating a CV. Pairs with cv-tailor, which turns the profile (with an
-  optional job posting) into a CV.
+  build, resume, or expand their Career Profile; turn an existing CV/résumé into a profile
+  (import); or review/audit their profile or a CV they already have for content gaps and
+  weaknesses. This is the skill for any starting point that is a CV, résumé, or career
+  facts — not a finished CV you want generated. Pairs with cv-tailor, which turns the
+  profile (with an optional job posting) into a CV.
 ---
 
 # cv-profiler
@@ -52,6 +54,10 @@ Follow these at every step. They override any instinct to be fast or agreeable.
 - **Multilingual.** Interview in the language the user writes in. The profile's own
   language is chosen explicitly (Phase 0) and may differ from the conversation language.
   These instructions are in English; your interaction is not.
+- **Speak plainly.** Everything you say to the user is concrete and simple — **one question
+  or point at a time**, no checklist dumps, no jargon, no walls of options. A non-expert
+  should understand every question and summary on first read. This governs all your
+  output: interview questions, review flags, and what you show when saving or finishing.
 
 ## Where the profile lives
 
@@ -63,22 +69,36 @@ current directory to detect an existing profile before anything else.**
 
 ## Step 1 — Dispatch: choose the session mode
 
-Decide the mode **purely from the file**, with no validation pass. This is settled before
-you ask a single interview question:
+Settle the session mode before you ask a single interview question. It is decided **from
+the file state**, with no validation pass — plus one light pre-step: notice whether the
+user has an existing CV to import.
 
-- **No profile file → New Build.** Start from Phase 0.
-- **File contains the text `[TO COMPLETE]` → Resume Draft.** Read the whole file, recover
-  the profile note, tell the user what's already captured, and continue from the first
-  `[TO COMPLETE]` section. Never re-ask what's already answered.
-- **File with no `[TO COMPLETE]` → Re-Run.** A complete profile to enrich or update.
-  Follow [`references/re-run.md`](references/re-run.md) for old-format migration and for
+**Pre-step — a CV to import?** While reading the working directory, if you spot a file that
+looks like a CV (see [`references/import.md`](references/import.md)) — or the user hands you
+one — make **one soft offer** to seed from it. Never extract on your own initiative. This
+only chooses an *on-ramp*; the file-state rule below still sets the mode.
+
+- **No profile file → New Build.** Start from Phase 0. If the user accepts the CV offer,
+  this becomes **Import → New** — seed the profile from the CV first, then interview
+  ([`references/import.md`](references/import.md)).
+- **File contains `[TO COMPLETE]` or `[TO CONFIRM]` → Resume Draft.** Read the whole file,
+  recover the profile note, tell the user what's already captured, and continue from the
+  first unfinished section. Never re-ask what's already answered. Handle the two markers
+  differently: a **`[TO COMPLETE]`** section is empty — ask from scratch; a **`[TO CONFIRM]`**
+  section already holds content extracted from an imported CV — **show it and ask the user
+  to confirm or correct it**, never re-ask as if blank. Remove each marker once its section
+  is filled / confirmed.
+- **File with neither marker → Re-Run.** A complete profile to enrich or update. Within
+  Re-Run the *intent* follows the user's request — plain enrich, an on-request **audit**, or
+  **Import → Enrich** if the CV offer is accepted. Follow
+  [`references/re-run.md`](references/re-run.md) for those intents, old-format migration, and
   keeping duplicated facts in sync.
 
-A complete profile a user hand-edited to reintroduce `[TO COMPLETE]` is correctly treated
+A complete profile a user hand-edited to reintroduce a draft marker is correctly treated
 as a draft again.
 
-**Done when:** you have named the mode to yourself and, for Resume/Re-Run, read the whole
-existing file.
+**Done when:** you have named the mode (and any import on-ramp) to yourself and, for
+Resume/Re-Run, read the whole existing file.
 
 ---
 
@@ -264,6 +284,16 @@ writing, not a validation pass.
   before storing detail and offer a neutral version or omission.
 - **Remember the outcome** (documented or declined) so a resumed session doesn't re-ask.
 
+### The review muscle — systematic, on imported or existing content
+
+The gap noticing above is *soft, in-flow* observation while interviewing. There is also a
+**systematic** version — the same flag-and-ask discipline run as a deliberate pass over
+content that already exists: after seeding a profile from an **imported CV**, and when the
+user asks to **audit an existing profile**. Both use one shared definition —
+[`references/review.md`](references/review.md). It reviews **content and profile-internal
+consistency only**; it flags and asks, never rewrites or invents; CV-*document* formatting
+(ATS/layout) belongs to `cv-tailor`, not here.
+
 ### Languages — ask everyone
 
 Ask every user for their languages and a **self-assessed** level (CEFR A1–C2, or
@@ -284,8 +314,9 @@ target market expects. All optional, raised only when context warrants, never by
 - **Market-expected personal fields.** Where a target market customarily expects them,
   offer optional fields: photo, date of birth, nationality, marital status, and a
   data-processing consent line.
-- **A photo can't live in Markdown.** Store a **path or note** to the image; the image
-  itself is handled at generation time by `cv-tailor`.
+- **A photo can't live in Markdown.** Store a **path or note** to the image. Whether it
+  actually appears is a **per-template** decision at generation time (the current CV template
+  is photo-less), so capture the path but don't promise it will show on the CV.
 
 ---
 
@@ -313,10 +344,12 @@ A 30–60 minute interview will be interrupted; losing the work is the worst fai
 - Mark unfinished **core** sections `[TO COMPLETE]`. Do **not** pre-stub conditional
   sections — they appear only once proposed and accepted, so nothing marks a section that
   may never exist.
-- Remove a section's `[TO COMPLETE]` once it holds real content.
+- Remove a section's `[TO COMPLETE]` once it holds real content the user has given. (When
+  *seeding* from an imported CV, extracted-but-unconfirmed content is marked `[TO CONFIRM]`
+  instead — see [`references/import.md`](references/import.md) — not left unmarked.)
 
-The presence or absence of `[TO COMPLETE]` is exactly what Step 1 reads to choose the
-mode — keep it accurate.
+The presence or absence of a draft marker (`[TO COMPLETE]` or `[TO CONFIRM]`) is exactly
+what Step 1 reads to choose the mode — keep it accurate.
 
 ---
 
@@ -338,8 +371,9 @@ Consistency comes from holding these while writing, not from any automated check
 
 ## Finishing
 
-**Done when every core section holds real content and no `[TO COMPLETE]` marker remains
-on any core section.** Then:
+**Done when every core section holds real content and no draft marker (`[TO COMPLETE]` or
+`[TO CONFIRM]`) remains anywhere in the file** — including any conditional section seeded
+from an import, since dispatch re-triggers on a marker found anywhere. Then:
 
 - Derive the aggregate sections (Professional Summaries, Key Achievements & Metrics,
   Skills / Competencies) from Work Experience if not already done. **Introduce no number

@@ -7,6 +7,43 @@ semantic versioning.
 
 ## [Unreleased]
 
+Work in progress: **import & review an existing CV** in `cv-profiler` (see
+`docs/decisions.md` §11).
+
+### Added
+- **Draft-readiness contract** (`docs/career-profile.md`) — two shared markers describe a
+  section's state: `[TO COMPLETE]` (empty) and the new `[TO CONFIRM]` (content seeded from
+  an imported CV, awaiting confirmation). Both are read by `cv-tailor`, and a profile with
+  either marker present dispatches to Resume Draft.
+- **Shared review muscle** (`cv-profiler` `references/review.md`) — content-gap-noticing
+  (weak/unquantified bullets, vague positioning, unevidenced skills, profile-internal
+  consistency) that flags and asks, never rewrites. Invoked after an import and as an
+  **on-request Re-Run audit** of an existing profile. CV-document formatting (ATS/layout)
+  stays with `cv-tailor`; posting-coverage delegates to its match report.
+- **Import an existing CV** (`cv-profiler` `references/import.md` + Step 1 dispatch) — seed a
+  Career Profile from a CV, then review and interview to confirm/fill. Two on-ramps:
+  **Import → New** (no profile) and **Import → Enrich** (reconcile into an existing profile,
+  dedup, flag conflicts, never silent-merge). A CV in the working directory triggers **one
+  soft offer**, never an auto-extract. `cv-profiler` becomes the only raw-CV reader; the
+  profile stays the single source of truth.
+- **CV extraction** — verbatim text-layer via `pdftotext -layout` / `pandoc` (preferred over
+  reading by sight), with the same detect → offer → propose-install dependency flow as
+  `cv-tailor`; scanned PDFs read best-effort with an explicit flag; all tooling local (no
+  cloud OCR). Seeded sections are marked `[TO CONFIRM]`; provenance recorded in a separate
+  HTML comment.
+
+### Changed
+- **`cv-tailor` draft guard** (`cv-tailor` SKILL.md Steps 1 & 7) — when handed an
+  incomplete profile it now skips `[TO COMPLETE]` sections, uses `[TO CONFIRM]` content with
+  an "unconfirmed — review it" caveat, and never renders either literal marker into the CV.
+- **Plain-communication guideline** (`docs/principles.md` + both skill `SKILL.md`s) — all
+  user-facing output stays concrete and simple: one question or point at a time, no
+  checklist dumps or jargon. Surfaced by the import/review end-to-end test.
+
+### Fixed
+- **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile
+  fed to `cv-tailor` would have rendered the literal `[TO COMPLETE]` string into the CV.
+
 ## [1.0.0] - 2026-07-05
 
 First public release. Both skills, the CV / cover-letter templates, and the four
