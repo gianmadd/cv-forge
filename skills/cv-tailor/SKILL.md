@@ -56,6 +56,9 @@ Follow these at every step. They override any instinct to be fast or agreeable.
   contains the user's personal data and never seeks metrics or facts** to put in the CV.
 - **Adapt to the field.** Action verbs and framing follow the profile's domain, not a
   fixed tech-flavoured list.
+- **Speak plainly.** Everything you say to the user is concrete and simple — **one point at
+  a time**, no jargon, no walls of options. The match report, gap notices, and compile
+  instructions should be clear to a non-expert on first read.
 
 ## Step 1 — Gather inputs and set the mode
 

@@ -36,6 +36,9 @@ Work in progress: **import & review an existing CV** in `cv-profiler` (see
 - **`cv-tailor` draft guard** (`cv-tailor` SKILL.md Steps 1 & 7) — when handed an
   incomplete profile it now skips `[TO COMPLETE]` sections, uses `[TO CONFIRM]` content with
   an "unconfirmed — review it" caveat, and never renders either literal marker into the CV.
+- **Plain-communication guideline** (`docs/principles.md` + both skill `SKILL.md`s) — all
+  user-facing output stays concrete and simple: one question or point at a time, no
+  checklist dumps or jargon. Surfaced by the import/review end-to-end test.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile

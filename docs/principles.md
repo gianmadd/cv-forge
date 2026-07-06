@@ -28,6 +28,14 @@ lives in each `SKILL.md`, and the reasoning behind these choices is in
 - The **generated CV's language** is chosen at generation time; `cv-tailor` renders in that language, maps job-posting keywords across languages, and follows that language's CV-writing conventions.
 - Skill prompts themselves are written in English for portability.
 
+## Plain communication
+
+- The skills talk to the user in **concrete, simple, effective** language — **one question
+  or point at a time**, no checklist dumps, no jargon, no walls of options. A non-expert
+  should understand every question, flag, and summary on first read. This applies to *all*
+  user-facing output of both skills (interview questions, review flags, match reports,
+  compile instructions), not just the interview.
+
 ## Privacy
 
 - The Career Profile contains personal information and stays **entirely on the user's machine**.
