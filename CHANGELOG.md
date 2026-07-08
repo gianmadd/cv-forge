@@ -31,6 +31,12 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   `cv-tailor`; scanned PDFs read best-effort with an explicit flag; all tooling local (no
   cloud OCR). Seeded sections are marked `[TO CONFIRM]`; provenance recorded in a separate
   HTML comment.
+- **Per-position application folders** (`cv-tailor` Step 6 + `references/output-format.md`) —
+  each tailored run is saved under `applications/<company>-<role>/`: the job posting
+  **verbatim** (`posting.md`, so the link is never needed twice — re-runs read it back), the
+  CV as `cv.tex` (submit source) plus a readable `cv.md` reference copy, each headed by a
+  provenance block (profile / template / posting / language / date). General mode is
+  unchanged. The Career Profile stays the single source of truth; these are derivatives.
 
 ### Changed
 - **`cv-tailor` draft guard** (`cv-tailor` SKILL.md Steps 1 & 7) — when handed an

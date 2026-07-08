@@ -15,7 +15,7 @@ distributed as agent skills, not as a standalone application.
 ```
 
 - **`cv-profiler`** produces/maintains the **Career Profile** — one structured Markdown document that is the single source of truth. It builds the profile from a guided **interview**, from an **imported CV** (extracted verbatim, then confirmed), or a mix; it can **review** existing content (flag gaps and weaknesses); it saves incrementally and can resume an interrupted session.
-- **`cv-tailor`** reads the Career Profile — and, optionally, a job posting — and generates a CV drawing only from the profile: tailored to the role when a posting is given, otherwise a complete general CV.
+- **`cv-tailor`** reads the Career Profile — and, optionally, a job posting — and generates a CV drawing only from the profile: tailored to the role when a posting is given, otherwise a complete general CV. Each tailored run persists in its own `applications/<company>-<role>/` folder (the posting saved verbatim, the CV as `.tex` + a readable `.md`, and a provenance header), so a position can be reopened or regenerated without re-fetching anything.
 
 The Career Profile is the **contract** between the two skills: `cv-tailor` locates content by the section names and conventions that `cv-profiler` writes. That contract is specified in [`career-profile.md`](career-profile.md).
 
