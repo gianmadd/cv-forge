@@ -78,6 +78,19 @@ Only optional, low-priority follow-ups remain:
 
 ## Deferred / open questions
 
+- **Use-case flow polish beyond the on-ramp (design questions from a reproduction).** A cold
+  end-to-end run of "CV + posting, no profile yet" confirmed the model and pipeline are
+  correct — the three-way match report *does* surface at `cv-tailor` Step 3 — and the on-ramp
+  orientation/routing gaps it exposed are now fixed (see §Done / `CHANGELOG.md`). Three deeper
+  choices are deliberately left open, each a real design decision, not polish:
+  - *Surface likely gaps earlier.* Today the "what this role needs that you don't have" signal
+    lands only at `cv-tailor` Step 3, after the whole profile is built. Previewing it sooner
+    (e.g. a light coverage peek right after an import when a posting is already in hand) would
+    help, but changes the flow and risks pre-judging a profile that isn't finished.
+  - *Collapse the two confirm gates.* Confirming `[TO CONFIRM]` content in `cv-profiler` and
+    then seeing it again in `cv-tailor`'s match report reads as repetitive on the fast path.
+  - *Output-language guidance.* When the posting's language differs from the target market
+    (e.g. an English ad for a role in Milano), nothing guides the choice of the CV's language.
 - **Format/ATS critique of an _external_ CV (watch — deliberately not built).** Import &
   review deliberately scope review to *content*; a Career Profile has no document-layout to
   critique, and `cv-tailor` reads only the profile, so no one critiques an external CV's

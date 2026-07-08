@@ -73,3 +73,10 @@ layer is faithful; a visual read re-types the content and can hallucinate.
 **Review-only is just the natural stop point.** Every import runs extract → seed → review,
 then **offers** to continue into the interview. If the user only wanted a critique, deliver
 the flags and stop — the seeded draft (with its markers) stays on disk, resumable later.
+
+**Generate-now is another natural stop.** If the user wants a CV immediately — most often
+when they handed over a CV *and* a job posting together — they need not finish the interview
+first: point them to `cv-tailor` on the seeded draft. Its draft guard uses `[TO CONFIRM]`
+content with an "unconfirmed — review it" caveat and skips still-empty sections, so a tailored
+CV comes out now and the profile can be confirmed and filled later. Say this plainly so the
+user knows the fast path exists and what its caveat means.

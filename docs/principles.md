@@ -35,6 +35,10 @@ lives in each `SKILL.md`, and the reasoning behind these choices is in
   should understand every question, flag, and summary on first read. This applies to *all*
   user-facing output of both skills (interview questions, review flags, match reports,
   compile instructions), not just the interview.
+- **Orient before diving in.** On a first run especially, tell the user in a sentence or two
+  where the process is heading — `cv-profiler` builds a reusable Career Profile, then
+  `cv-tailor` turns it into a tailored CV — so a "make me a CV" request that begins by
+  building a profile reads as progress toward their goal, not a detour.
 
 ## Privacy
 
