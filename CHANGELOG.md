@@ -36,9 +36,12 @@ persistence in `cv-tailor` (see `docs/decisions.md` §11).
 - **Per-position application folders** (`cv-tailor` Step 6 + `references/output-format.md`) —
   each tailored run is saved under `applications/<company>-<role>/`: the job posting
   **verbatim** (`posting.md`, so the link is never needed twice — re-runs read it back), the
-  CV as `cv.tex` (submit source) plus a readable `cv.md` reference copy, each headed by a
-  provenance block (profile / template / posting / language / date). General mode is
-  unchanged. The Career Profile stays the single source of truth; these are derivatives.
+  CV as a readable `cv.md` — the **canonical selected content**, written first — rendered into
+  the `cv.tex` submit source, each headed by a provenance block (profile / template / posting /
+  language / date). Writing `cv.md` first (the `.tex` renders it faithfully) makes the readable
+  copy exist by construction, and Step 7 verifies both that it exists and that `cv.tex` matches
+  it. General mode is unchanged. The Career Profile stays the single source of truth; these are
+  derivatives.
 
 ### Changed
 - **`cv-tailor` draft guard** (`cv-tailor` SKILL.md Steps 1 & 7) — when handed an

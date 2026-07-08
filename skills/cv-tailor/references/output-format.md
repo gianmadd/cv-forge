@@ -14,17 +14,19 @@ e.g. `applications/novametrics-senior-data-analyst/`) and write:
 - **`posting.md`** — the posting **verbatim**: the pasted text as-is, or the full fetched
   contents of the URL. Never paraphrase or trim it. This is why the user needn't supply the
   link again — on a later run for the same position, read the posting from here.
-- **`cv.tex`** — the filled CV template (the submit source; see below).
-- **`cv.md`** — the *same selected content* rendered as clean Markdown (headings, one block
-  per role, bullets), **no LaTeX escaping**. It is a human-readable reference/persistence
-  copy, **not** a submit format — the `.tex` (compiled to PDF) is what gets sent. Keep the two
-  in step: same facts, same selection, same language.
-- **`cover-letter.tex` / `cover-letter.md`** — only if the user asks.
+- **`cv.md`** — the selected content rendered as clean Markdown (headings, one block per role,
+  bullets), **no LaTeX escaping**. This is the **canonical content for the application**,
+  written **first**: the `.tex` is rendered from it. Human-readable and the reference of
+  record, but **not** a submit format — the `.tex` (compiled to PDF) is what gets sent.
+- **`cv.tex`** — the CV template filled **from `cv.md`** (the submit source; see below). It
+  renders the same content into LaTeX with escaping applied; keep it faithful to `cv.md` —
+  same facts, same selection, same order, same language.
+- **`cover-letter.md` / `cover-letter.tex`** — only if the user asks (same md-then-tex order).
 
 In **general** mode there is no position: write the CV (`.tex`, and a `.md` copy) to the
 user's output location, with no `applications/` folder.
 
-**Provenance header.** Head each **generated** file — `cv.tex`, `cv.md`, and the cover letter
+**Provenance header.** Head each **generated** file — `cv.md`, `cv.tex`, and the cover letter
 — with where it came from, so "regenerate" or "tweak this one" is a zero-question operation
 (`posting.md` is saved verbatim and carries **no** header):
 
@@ -40,21 +42,26 @@ data and stay **local**, like the profile.
 
 ## How to produce the output
 
-1. **Write the filled `.tex` as a new file** — `cv.tex` in the application folder above (or
-   the user's output location in general mode) — using the template as your starting text;
-   do not edit the template in the skill folder. Don't rely on `cp`: an installed template
-   can be read-only, and a plain copy keeps that mode, so filling it would fail with a
-   permission error. Reading the template and writing a fresh output file sidesteps this
-   regardless of how the skill was installed. For a cover letter, do the same into
-   `cover-letter.tex`. Then produce the readable `cv.md` (and `cover-letter.md`) from the same
-   selected content.
-2. **Set the language.** Change the `babel` option (`\usepackage[english]{babel}`) to the
+1. **Write `cv.md` first — it is the canonical content.** In the application folder above (or
+   the user's output location in general mode), write the selected, structured content as clean
+   Markdown. This is where you commit to *what appears and in what order*; get it right here,
+   because the `.tex` is a rendering of it. For a cover letter, write `cover-letter.md` the same
+   way.
+2. **Render `cv.tex` from `cv.md`.** Write the filled `.tex` as a **new** file — `cv.tex` in the
+   same folder — using the template as your starting text; do not edit the template in the skill
+   folder. Don't rely on `cp`: an installed template can be read-only, and a plain copy keeps
+   that mode, so filling it would fail with a permission error. Reading the template and writing
+   a fresh output file sidesteps this regardless of how the skill was installed. Transfer the
+   `cv.md` content into the template's structure and apply LaTeX escaping (below); the `.tex`
+   must not add, drop, or reorder anything relative to `cv.md`. For a cover letter, do the same
+   into `cover-letter.tex`.
+3. **Set the language.** Change the `babel` option (`\usepackage[english]{babel}`) to the
    output language: `italian`, `french`, `ngerman`, `spanish`, `portuguese`, …
-3. **Replace every `<<PLACEHOLDER>>`** with content selected from the profile, in the
+4. **Replace every `<<PLACEHOLDER>>`** with the corresponding `cv.md` content, in the
    output language. Leave no `<<...>>` behind. Add or remove `\entry` blocks, bullets, and
-   whole `\section`s to match what you selected for this job.
-4. **Escape LaTeX special characters in every value you insert.** Profile text routinely
-   contains characters that break `pdflatex` or render wrong. Escape them as you fill:
+   whole `\section`s to match what `cv.md` contains for this job.
+5. **Escape LaTeX special characters in every value you insert.** The `cv.md` content
+   routinely contains characters that break `pdflatex` or render wrong. Escape them as you fill:
 
    | Char | Write as | | Char | Write as |
    | --- | --- | --- | --- | --- |
@@ -81,7 +88,7 @@ data and stay **local**, like the profile.
    `¤` → `\textcurrency`; and for maths-like symbols `±` → `$\pm$`, `×` → `$\times$`,
    `№` → `No.`. So `90.000 €` → `90.000~\texteuro`. When unsure a symbol will render,
    fall back to the word ("euro").
-5. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
+6. **Do not compile silently in the dark.** Hand the user the filled `.tex` and either
    compile it (see below) or tell them how.
 
 ## Section mapping (profile → template)

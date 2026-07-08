@@ -7,7 +7,7 @@ all docs use these words with these meanings.
 - **`cv-profiler`** — the first skill. A guided interview that builds and maintains the Career Profile.
 - **`cv-tailor`** — the second skill. Reads a Career Profile — and, optionally, a job posting — and produces a CV (and optionally a cover letter): tailored to that role when a posting is given, otherwise a complete general CV.
 - **Job posting** — the description of a specific role a user is applying for; the **optional** input that `cv-tailor` tailors against. With one, `cv-tailor` runs in **tailored** mode; without one, in **general** mode (a baseline CV from the profile's own positioning).
-- **Application folder** — the per-position folder `cv-tailor` creates in tailored mode, `applications/<company>-<role>/`, holding the posting saved **verbatim** (`posting.md`), the tailored CV (`cv.tex` to submit + a readable `cv.md`), and a provenance header — so a position can be reopened or regenerated without re-fetching anything. The files are derivatives; the Career Profile remains the single source of truth.
+- **Application folder** — the per-position folder `cv-tailor` creates in tailored mode, `applications/<company>-<role>/`, holding the posting saved **verbatim** (`posting.md`), the tailored CV (a readable `cv.md` — the canonical selected content — rendered into the `cv.tex` submit source), and a provenance header — so a position can be reopened or regenerated without re-fetching anything. The files are derivatives; the Career Profile remains the single source of truth.
 
 ### Career Profile structure
 - **Core section** — one of the fixed sections present in every Career Profile (see `docs/career-profile.md`).

@@ -177,22 +177,30 @@ role — lowercase, hyphens) and write into it:
 
 - **`posting.md`** — the job posting **verbatim** (the pasted text, or the fetched contents of
   the URL), so the user never has to supply the link again.
-- **`cv.tex`** — the tailored CV, filled from the `pdflatex` template (the source you submit).
-- **`cv.md`** — the same tailored content as **readable Markdown**: a reference/persistence
-  copy, **not** a submit format (the `.tex`/PDF is what you send).
-- a **cover letter** (`cover-letter.tex` + `.md`) **only if the user asks**.
+- **`cv.md`** — the tailored CV as **readable Markdown**: the **canonical selected content**
+  for this application, **written first**. It is what you select, structure, and get right;
+  the `.tex` is rendered *from it*. It is **not** a submit format.
+- **`cv.tex`** — that same `cv.md` content **rendered into** the `pdflatex` template, with
+  LaTeX special characters escaped: the source you submit. It must stay faithful to `cv.md` —
+  same facts, same selection, same order, same language; only the LaTeX form is added.
+- a **cover letter** (`cover-letter.md` + `.tex`, in the same md-then-tex order) **only if the
+  user asks**.
 
-Head each **generated** file (`cv.tex`, `cv.md`, and the cover letter) with a short
+Head each **generated** file (`cv.md`, `cv.tex`, and the cover letter) with a short
 **provenance** block (source profile, template, posting, output language, date); `posting.md`
 is the posting as-is and carries **no** header. In **general** mode there is no position —
-write the CV (`.tex` + `.md`) to the user's output location as before, with the same
+write the CV (`.md` + `.tex`) to the user's output location as before, with the same
 provenance header.
 
-Fill the template (never editing it in place) following
-[`references/output-format.md`](references/output-format.md): replace every `<<PLACEHOLDER>>`,
-set the output language, add/remove sections to match your selection, and **escape LaTeX
-special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
-an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Compiling to PDF is a separate step:
+**Write `cv.md` first, then render `cv.tex` from it.** `cv.md` holds the finished selection
+in plain, readable Markdown — this is where you commit to what appears and in what order.
+Then produce `cv.tex` by filling the template from that Markdown following
+[`references/output-format.md`](references/output-format.md): read the template (never editing
+it in place), replace every `<<PLACEHOLDER>>` with the `cv.md` content, set the output
+language, add/remove sections to match, and **escape LaTeX special characters**
+(`& % $ # _ ~ ^ \ { }`) as you insert — text with an `AT&T`, `40%`, or `C#` breaks
+compilation otherwise. Because the `.tex` is a rendering of `cv.md`, the two never diverge;
+if you change one, change the other. Compiling to PDF is a separate step:
 **detect the toolchain, then offer — never compile, and never install anything, silently.**
 
 - **Offer both routes and explain each** — **Overleaf** (upload the `.tex`, recompile,
@@ -212,10 +220,11 @@ an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Compiling to PDF is a se
 See [`references/output-format.md`](references/output-format.md) for the exact detect →
 offer → self-heal flow and the template-scoped install.
 
-**Done when:** in tailored mode the position folder holds `posting.md`, `cv.tex`, and `cv.md`
-(plus the cover letter if asked), each with its provenance header; the `.tex` is in the chosen
-language with no `<<...>>` left and all special characters escaped. The content-integrity gate
-is Step 7.
+**Done when:** in tailored mode the position folder holds `posting.md`, `cv.md`, and `cv.tex`
+(plus the cover letter if asked), each generated file with its provenance header; `cv.md` was
+written first and `cv.tex` renders it faithfully — same facts, selection, order, and language —
+in the chosen language with no `<<...>>` left and all special characters escaped. The
+content-integrity gate is Step 7.
 
 ## Step 7 — Before you deliver: self-check
 
@@ -234,6 +243,9 @@ final zero-fabrication gate, not a formality:
   is used.
 - **Gaps reported** — in tailored mode, the Step 3 match report was shown and genuine gaps
   were named, not papered over.
+- **`cv.md` written, and `cv.tex` matches it** — the canonical `cv.md` exists (never skipped),
+  and the `.tex` is a faithful rendering of it: same facts, same selection, same order, same
+  language, differing only in LaTeX form.
 - **Clean render** — all `<<...>>` replaced, all LaTeX special characters escaped, correct
   output language and localised section names.
 

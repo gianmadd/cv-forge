@@ -237,14 +237,26 @@ interaction and output are multilingual.
 - **Each tailored run persists in its own application folder.** `cv-tailor` writes per
   position to `applications/<company>-<role>/` beside the profile: the posting saved
   **verbatim** (`posting.md`, so the link is never needed twice — on a re-run it is read back
-  from there), the CV as `cv.tex` (the submit source) **and** a readable `cv.md` reference
-  copy, plus a provenance header (profile / template / posting / language / date) on each
-  file. *Why:* persistence makes "regenerate" and "tweak this one" zero-question and keeps
+  from there), the CV as a readable `cv.md` **and** the `cv.tex` submit source, plus a
+  provenance header (profile / template / posting / language / date) on each generated file.
+  *Why:* persistence makes "regenerate" and "tweak this one" zero-question and keeps
   applications auditable, while the Career Profile stays the single source of truth — these
-  are derivatives, not a second profile. The readable `cv.md` does **not** reopen the
-  "Markdown output excluded" decision below: that excludes `.md` as a *submit* format; this
-  `.md` is a local reference/persistence copy, never the artifact you send. In general mode
-  (no posting) there is no folder — the CV is written to the user's output location as before.
+  are derivatives, not a second profile. In general mode (no posting) there is no folder —
+  the CV is written to the user's output location as before.
+- **Within an application, `cv.md` is the canonical content and `cv.tex` is rendered from
+  it — not two parallel siblings of the profile.** `cv-tailor` writes `cv.md` **first**
+  (the finished selection in plain Markdown: what appears, in what order), then renders
+  `cv.tex` from it by filling the template and applying LaTeX escaping. The `.tex` must stay
+  faithful to `cv.md` — same facts, selection, order, and language, differing only in LaTeX
+  form. *Why:* (1) it matches the mental model that the Markdown is the source of truth the
+  `.tex` derives from, giving a reviewable content artifact before the LaTeX mechanics; and
+  (2) it fixes a reliability bug — when the `.tex` was written first and `cv.md` was a "then,
+  if there's time" afterthought subordinated at every step, the running skill routinely
+  skipped `cv.md` entirely (nothing in Step 7 checked it existed). Writing `cv.md` first makes
+  it exist **by construction**, and Step 7 now verifies both that it exists and that `cv.tex`
+  matches it. This does **not** reopen "Markdown output excluded" below: that excludes `.md`
+  as a *submit* format; `cv.md` here is the canonical local content, never the artifact you
+  send — the `.tex`/PDF is.
 - **Local compilation stays minimal, and its dependencies are scoped to the chosen
   template.** What a local install must provide is exactly the current template's package
   set, and the **authoritative list is the template's own `--- Template dependencies ---`
