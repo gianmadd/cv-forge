@@ -5,9 +5,9 @@ description: >-
   cover letter), using only what the profile contains. Given a job posting it tailors the
   CV to that role; without one it produces a general CV from the profile's own
   positioning. Use when the user already has a Career Profile and wants to generate,
-  tailor, or export a CV or cover letter — the CV it produces is ATS-checked before
-  delivery. If the user only has a raw CV and no profile yet, that is cv-profiler's import
-  job, not this skill. Reads the profile that cv-profiler builds.
+  tailor, or export a CV or cover letter. If the user only has a raw CV and no profile
+  yet, that is cv-profiler's import job, not this skill. Pairs with cv-profiler, which
+  builds the profile this reads.
 ---
 
 # cv-tailor
@@ -170,13 +170,13 @@ never compile, and never install anything, silently.**
   download — no install; the safe default, especially for a non-technical user) or **local
   compilation**.
 - **If a local `pdflatex` is present**, offer to compile and hand over the PDF.
-- **If a package is missing** — a `File 'X.sty' not found`, a font error
-  (`I can't find file '...'` / `Metric (TFM) file not found`), which does *not* say "File
-  not found", or a babel error (`Unknown option '<language>'`), which names no file at all —
-  don't give up and don't install behind the user's back: identify the package (via
-  `tlmgr search --file`, or for babel directly by name as `babel-<language>`) and
+- **If a package is missing**, don't give up and don't install behind the user's back:
+  identify it (`tlmgr search --file`, or a babel language by name as `babel-<language>`) and
   **propose the install command for them to approve** — so they can choose to download it
-  and compile locally — then retry. This self-heal is offer-based at every step.
+  and compile locally — then retry. Missing fonts and babel languages surface as errors that
+  name no `.sty` file; the exact forms and how to map each live in
+  [`references/output-format.md`](references/output-format.md). This self-heal is offer-based
+  at every step.
 - The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't compile it. Its
   package list lives in the template's own `--- Template dependencies ---` header.
 

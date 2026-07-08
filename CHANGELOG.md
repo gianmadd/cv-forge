@@ -39,10 +39,22 @@ in `cv-profiler` (see `docs/decisions.md` §11).
 - **Plain-communication guideline** (`docs/principles.md` + both skill `SKILL.md`s) — all
   user-facing output stays concrete and simple: one question or point at a time, no
   checklist dumps or jargon. Surfaced by the import/review end-to-end test.
+- **Editorial quality pass over both skills** (`writing-great-skills` gate) — tightened both
+  frontmatter `description`s (one trigger per branch, symmetric cross-skill reach clauses),
+  collapsed a duplicated "one point at a time / no checklist dumps" line in `cv-profiler`'s
+  interview (the Speak-plainly non-negotiable already owns it), and trimmed `cv-tailor`
+  Step 6's self-heal bullet to its behaviour plus a pointer (the three `pdflatex` error forms
+  live in full in `references/output-format.md`, no longer restated). No behaviour or
+  contract change.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile
   fed to `cv-tailor` would have rendered the literal `[TO COMPLETE]` string into the CV.
+- **Dead cross-reference in two `cv-profiler` references** — `import.md` and `review.md`
+  cited the durations/counts guard as living in `docs/principles.md`, which the installer
+  does not ship with the skill (`docs/decisions.md` §10), so the pointer was dead in the
+  installed skill. Retargeted to the zero-fabrication rule in `cv-profiler`'s `SKILL.md`,
+  present at runtime.
 
 ## [1.0.0] - 2026-07-05
 

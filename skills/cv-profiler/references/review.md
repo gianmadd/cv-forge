@@ -39,9 +39,9 @@ vague or unsupported, frame the flag as **an offer to strengthen with a real det
 inflated / unsupported"). Reuse the rule already in `SKILL.md`: lead with the stronger
 phrasing, offer it once, then respect the user's decision — no lecture.
 
-**Durations and counts** follow the shared guard (`principles.md`): never decompose a
+**Durations and counts** follow the zero-fabrication rule in `SKILL.md`: never decompose a
 user-stated total into per-role figures, never aggregate distinct roles into a single "X
-years as Y". Reference that rule; don't invent a softer version of it.
+years as Y". Apply it as written; don't invent a softer version.
 
 ## On a Re-Run audit specifically
 
