@@ -58,18 +58,23 @@ What's decided, what's left to build, and what's deliberately deferred.
   See [`decisions.md`](decisions.md) §11. A `writing-great-skills` editorial quality pass has
   since gone over both skills — descriptions tightened, a duplicated line and an
   over-disclosed self-heal block trimmed, and a dead `docs/principles.md` cross-reference in
-  two references fixed (no behaviour or contract change). Optional post-merge follow-ups are
-  tracked under §To build.
+  two references fixed (no behaviour or contract change).
+- **Pre-1.1 verification of the import edge.** An independent cold-agent reproduction of the
+  "CV + posting, no profile yet" flow confirmed it works end to end — the three-way match
+  report surfaces at `cv-tailor` Step 3 and the CV compiles — and drove the on-ramp
+  orientation/routing polish above. A **graded zero-fabrication eval** on the import edge (two
+  adversarial CVs — a decomposition-bait total and a fabrication-heavy posting — run cold, then
+  scored by an independent grader) came back **PASS**: no invented figure, seniority, skill, or
+  language; the "15+ years / 10 in leadership" total was preserved as a quote, not decomposed,
+  and a demanding posting produced honest gaps, not fabricated matches. The one near-miss it
+  caught — inferring a company's sector from its name — is closed by a small extraction guard
+  in `references/import.md`.
 
 ## To build
 
-Only optional, low-priority follow-ups remain:
+One optional, low-priority follow-up remains:
 
-1. **Graded eval + independent cold-agent run of import & review.** A graded
-   extraction/inflated-claims eval on the import edge, plus one independent cold-agent run of
-   the full import → seed → review → generate flow. Non-blocking: the feature is verified
-   end-to-end and merged; these only harden the newest edge.
-2. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
+1. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
    the shared installer also symlinks the skills into other agents (Gemini CLI, GitHub
    Copilot, OpenClaw, …). Run the full pipeline on each as capacity allows and fix any
    agent-specific quirks (skill discovery, invocation, multi-turn interview, file I/O), rather
@@ -81,16 +86,16 @@ Only optional, low-priority follow-ups remain:
 - **Use-case flow polish beyond the on-ramp (design questions from a reproduction).** A cold
   end-to-end run of "CV + posting, no profile yet" confirmed the model and pipeline are
   correct — the three-way match report *does* surface at `cv-tailor` Step 3 — and the on-ramp
-  orientation/routing gaps it exposed are now fixed (see §Done / `CHANGELOG.md`). Three deeper
-  choices are deliberately left open, each a real design decision, not polish:
+  orientation/routing gaps it exposed are now fixed (see §Done / `CHANGELOG.md`), and
+  output-language guidance was added (`cv-tailor` Step 1: default to the market's language,
+  ask when the posting's language diverges). Two deeper choices are deliberately left open,
+  each a real design decision, not polish:
   - *Surface likely gaps earlier.* Today the "what this role needs that you don't have" signal
     lands only at `cv-tailor` Step 3, after the whole profile is built. Previewing it sooner
     (e.g. a light coverage peek right after an import when a posting is already in hand) would
     help, but changes the flow and risks pre-judging a profile that isn't finished.
   - *Collapse the two confirm gates.* Confirming `[TO CONFIRM]` content in `cv-profiler` and
     then seeing it again in `cv-tailor`'s match report reads as repetitive on the fast path.
-  - *Output-language guidance.* When the posting's language differs from the target market
-    (e.g. an English ad for a role in Milano), nothing guides the choice of the CV's language.
 - **Format/ATS critique of an _external_ CV (watch — deliberately not built).** Import &
   review deliberately scope review to *content*; a Career Profile has no document-layout to
   critique, and `cv-tailor` reads only the profile, so no one critiques an external CV's
