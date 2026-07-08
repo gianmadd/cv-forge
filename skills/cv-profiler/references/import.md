@@ -41,6 +41,10 @@ layer is faithful; a visual read re-types the content and can hallucinate.
 - **Keep all tooling local** — never send the document to a cloud OCR/parsing service
   (privacy).
 - **Illegible spots** → `[ILLEGIBLE]`, never filled.
+- **Extract only what's on the page — don't infer attributes that aren't stated.** In
+  particular, don't read a company's industry or sector out of its *name*: an employer called
+  "CaffèTorino Srl" does not state a "coffee sector", still less "coffee roasting". If the CV
+  doesn't say what a company does, don't write it.
 - **Not actually a CV** (a job posting, a cover letter) → flag it and ask, don't seed nonsense.
 - **Durations and counts** follow the zero-fabrication rule in `SKILL.md`: extract what's
   stated; never decompose a stated total into per-role figures, never aggregate roles.

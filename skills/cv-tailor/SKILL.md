@@ -80,8 +80,11 @@ Confirm you have, asking only for what's missing:
 2. **The job posting** — pasted text or a path/URL. *(Optional.)* If given, run in
    **tailored** mode; if the user doesn't have one, run in **general** mode — never force
    them to invent a posting.
-3. **The output language** — chosen now; it may differ from the profile's language. You
-   render into this language.
+3. **The output language** — chosen now; it may differ from the profile's language. Default
+   to the language the **target market** customarily expects for a CV; if the posting is
+   written in a different language than that market uses (e.g. an English-language ad for a
+   role based in Italy), **don't guess — ask the user**, offering the market default. You
+   render into the chosen language.
 4. **The target market** — the country/market the CV is aimed at; it decides which
    personal fields are appropriate (below).
 

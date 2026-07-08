@@ -56,6 +56,13 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   `references/import.md`. `cv-tailor` gained a body-level redirect for "raw CV, no profile
   yet" (previously only in its description). Surfaced by a cold end-to-end reproduction; no
   contract change.
+- **Output-language guidance** (`cv-tailor` Step 1) — default the CV's language to what the
+  target market customarily expects, and when the posting's language differs from that market
+  (e.g. an English ad for a role in Italy), ask the user rather than guessing.
+- **Extraction guard: don't infer a company's sector from its name** (`references/import.md`)
+  — a graded zero-fabrication eval of the import edge (two adversarial CVs, independently
+  graded, PASS) caught its only near-miss, an employer's industry inferred from its name;
+  extraction now takes only stated attributes.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile
