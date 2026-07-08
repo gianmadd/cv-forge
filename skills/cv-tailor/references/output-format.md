@@ -95,6 +95,10 @@ data and stay **local**, like the profile.
 | `Skills` (`tabularx`) | Skills / Competencies, filtered to the posting |
 | `Languages` (commented out) | uncomment **only** if the profile lists more than a native language |
 
+**Every dated section is ordered most recent first** — reverse-chronological, by end date,
+with ongoing / `Present` entries at the top. This holds for Experience, Education, Projects,
+Publications, and Key Achievements alike, not only Experience.
+
 Honour every inline `> Agent Note:` on the content it governs, and include nothing from
 `Archived / Excluded from CV`.
 

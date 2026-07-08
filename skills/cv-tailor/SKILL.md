@@ -141,6 +141,10 @@ or a genuine gap, and the tally has been shown to the user.
     Positioning**, its most general **Professional Summary**, and **Notes for CV
     Customization**; lead with the strongest, most broadly relevant experience.
 - Omit what's irrelevant — the profile is a superset; a CV is not.
+- **Reverse-chronological order.** Within *every* dated section — Work Experience, Education &
+  Training, Projects, Publications, Key Achievements, and any dated conditional section — list
+  entries **most recent first** (by end date; ongoing / `Present` entries at the top). Keep it
+  consistent across the whole CV.
 - Frame achievements with **domain-adaptive action verbs** drawn from the profile's
   field.
 - In tailored mode, place mapped keywords in context (in the relevant role or skills

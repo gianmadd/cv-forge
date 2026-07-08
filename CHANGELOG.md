@@ -69,6 +69,10 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   — a graded zero-fabrication eval of the import edge (two adversarial CVs, independently
   graded, PASS) caught its only near-miss, an employer's industry inferred from its name;
   extraction now takes only stated attributes.
+- **Reverse-chronological order across the whole CV** (`cv-tailor` Step 4 +
+  `references/output-format.md`) — every dated section (Work Experience, Education, Projects,
+  Publications, Key Achievements, any dated conditional) lists entries most recent first, by
+  end date, with ongoing entries at the top — not only the Experience section.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile
