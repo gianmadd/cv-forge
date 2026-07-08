@@ -19,7 +19,7 @@ Job hunting has two hidden hard parts:
 - **Getting past the machines.** Applications are increasingly read first by automated, AI-powered screening (ATS). A CV that parses cleanly — right structure, right keywords, no layout traps — is hard to get right, and getting it wrong quietly sinks strong candidates.
 - **Organizing your own story.** Pulling every role, result, skill, and qualification into one coherent picture is genuinely hard to do alone — especially across a long or varied career. Most people never have it all in one place.
 
-`cv-forge` handles both: it interviews you to build that single record, then turns it into clean, ATS-readable CVs tailored to each job — using only what you actually told it.
+`cv-forge` handles both: it builds that single record — from a guided interview, an existing CV you already have, or both — then turns it into clean, ATS-readable CVs tailored to each job, using only what you actually told it.
 
 ---
 
@@ -35,7 +35,7 @@ npx skills@latest add gianmadd/cv-forge -s '*'
 
 Then, in your agent (e.g. Claude Code):
 
-1. **`/cv-profiler`** — answer the guided interview to build your **Career Profile**.
+1. **`/cv-profiler`** — build your **Career Profile**: answer the guided interview, or hand it an existing CV to **import** (and, any time, ask it to **review** a profile for gaps). Start from scratch, from a CV, or a mix.
 2. **`/cv-tailor`** — hand it that profile (and a job posting, if you have one) to generate a CV.
 
 ---
@@ -45,15 +45,18 @@ Then, in your agent (e.g. Claude Code):
 Two skills, one pipeline. The **Career Profile** you build once is the single source of truth every CV is generated from:
 
 ```
-      interview                    profile  (+ optional job posting)
-You ─────────────▶ cv-profiler ──▶ Career Profile ──▶ cv-tailor ──▶ CV (+ cover letter)
+   interview ───┐                        (+ optional job posting)
+   existing CV ─┼─▶ cv-profiler ──▶ Career Profile ──▶ cv-tailor ──▶ CV (+ cover letter)
+   (import)  ───┘
 ```
 
 ### 1. [`cv-profiler`](skills/cv-profiler/SKILL.md) — build your Career Profile
 
-A guided interview that captures your whole career in one structured document: roles, achievements and metrics, skills, education, languages, and more. Build it once and keep it.
+A guided interview — or an existing CV you import — that captures your whole career in one structured document: roles, achievements and metrics, skills, education, languages, and more. Build it once and keep it.
 
 - Adapts its questions to your profession — works for **any** field, not just tech.
+- **Start from a CV you already have:** import it and the profile is seeded from it (extracted faithfully, then you confirm) — no retyping.
+- **Review on request:** ask it to check your profile (or a CV) and it flags weak or unquantified bullets, vague positioning, and unevidenced skills — always asking, never rewriting.
 - Saves as it goes, so you can stop and resume anytime.
 - Notices things worth clarifying (gaps, overlapping roles, transferable skills) and asks with tact — it never assumes or fills in blanks for you.
 
@@ -64,6 +67,7 @@ Give it your profile — and, optionally, a job posting — and it produces a co
 - **With a job posting:** tailored to the role, with the right experience and keywords surfaced.
 - **Without one:** a complete, high-quality general CV from your profile's own positioning — not a draft.
 - Renders in the language you choose and compiles to a clean PDF (Overleaf, or locally with a guided setup).
+- **Keeps each application:** every tailored run is saved in its own folder with the job posting and the CV, so you can revisit or regenerate it later without hunting down the link again.
 - Never fabricates: if it isn't in your profile, it doesn't appear.
 
 ---
@@ -110,7 +114,7 @@ Your Career Profile holds personal information and stays **entirely on your mach
 
 ## Status
 
-**v1.0.0 — first public release.** Both skills, the CV / cover-letter templates, and four range-spanning example profiles are in place and verified end-to-end (profile → CV → PDF, plus an independently-graded interview eval of `cv-profiler`). See [`CHANGELOG.md`](CHANGELOG.md) for what shipped and [`docs/roadmap.md`](docs/roadmap.md) for what's next.
+**v1.1.0.** Adds **import & review** to `cv-profiler` (start from an existing CV; review a profile on request) plus per-application persistence, output-language guidance, and reverse-chronological ordering in `cv-tailor` — on the v1.0.0 foundation (both skills, the CV / cover-letter templates, and four range-spanning example profiles, verified end-to-end profile → CV → PDF). The import path and its zero-fabrication were checked with an independently-graded eval. See [`CHANGELOG.md`](CHANGELOG.md) for the full list and [`docs/roadmap.md`](docs/roadmap.md) for what's next.
 
 ---
 
