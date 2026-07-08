@@ -64,6 +64,11 @@ Follow these at every step. They override any instinct to be fast or agreeable.
 
 Confirm you have, asking only for what's missing:
 
+- **No profile yet, only a raw CV?** Then the entry point is `cv-profiler`'s import, not this
+  skill — you never read a raw CV. Say so plainly and hand off ("I'll first turn your CV into
+  your Career Profile, then generate the tailored CV from it"); don't stall or improvise. Once
+  the profile exists — even as a `[TO CONFIRM]` draft — come back here.
+
 1. **The Career Profile** — its file path. Read it fully. *(Required.)*
    - **Draft guard.** A profile may still be a draft — it can carry `[TO COMPLETE]`
      (empty section) or `[TO CONFIRM]` (content seeded from an imported CV, not yet

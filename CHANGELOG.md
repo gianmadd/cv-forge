@@ -46,6 +46,16 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   Step 6's self-heal bullet to its behaviour plus a pointer (the three `pdflatex` error forms
   live in full in `references/output-format.md`, no longer restated). No behaviour or
   contract change.
+- **On-ramp orientation & routing** (both `SKILL.md`s + `references/import.md`) — a first-run
+  user is now told up front, plainly, that a Career Profile is built first and `cv-tailor`
+  then tailors a CV from it, framed as progress rather than a detour (no more "asked for a CV,
+  silently got an interview"). When a CV and a job posting arrive **together**, the opening
+  acknowledges the posting and offers a plain choice — a **quick path** (draft from the CV and
+  generate a tailored CV now from the `[TO CONFIRM]` draft via `cv-tailor`'s guard, confirm
+  later) or the **thorough path** (complete the profile first); the fast path is detailed in
+  `references/import.md`. `cv-tailor` gained a body-level redirect for "raw CV, no profile
+  yet" (previously only in its description). Surfaced by a cold end-to-end reproduction; no
+  contract change.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile

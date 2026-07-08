@@ -103,7 +103,20 @@ Resume/Re-Run, read the whole existing file.
 
 ## Step 2 — Phase 0: calibration, consent, language
 
-Do this once per profile, before any section questions.
+**Orient the user first** (new builds and imports — skip for Resume/Re-Run, where they
+already know the tool). Before any question, say in one or two plain sentences what's about
+to happen and why, so a first-time user isn't thrown when a "make me a CV" request starts by
+building something else. Frame it as progress toward their goal, not a detour: you're
+building their **Career Profile** — a reusable master record of their whole career, kept on
+their machine — and once it exists, `cv-tailor` turns it into a CV tailored to any posting.
+If they brought a CV to import, add that you'll start from it so they don't retype anything.
+If they *also* handed over a job posting, **acknowledge it** — don't leave it unmentioned —
+and offer the choice plainly: the **quick path** (draft the profile from their CV and have
+`cv-tailor` generate a tailored CV right away, marked unconfirmed and refined later) or the
+**thorough path** (complete the profile first). See the fast path in
+[`references/import.md`](references/import.md).
+
+Then, once per profile and before any section questions:
 
 1. **Privacy notice (one time).** State plainly that the profile is stored locally in
    clear text, that nothing is sent anywhere except web searches the user approves, and
