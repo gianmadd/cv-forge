@@ -42,8 +42,8 @@ layer is faithful; a visual read re-types the content and can hallucinate.
   (privacy).
 - **Illegible spots** → `[ILLEGIBLE]`, never filled.
 - **Not actually a CV** (a job posting, a cover letter) → flag it and ask, don't seed nonsense.
-- **Durations and counts** follow the shared guard (`principles.md`): extract what's stated;
-  never decompose a stated total into per-role figures, never aggregate roles.
+- **Durations and counts** follow the zero-fabrication rule in `SKILL.md`: extract what's
+  stated; never decompose a stated total into per-role figures, never aggregate roles.
 
 ## Seeding the profile
 

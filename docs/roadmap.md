@@ -55,14 +55,21 @@ What's decided, what's left to build, and what's deliberately deferred.
   best-effort+flag, local-only); seeded content is marked **`[TO CONFIRM]`** and `cv-tailor`
   gained a draft guard so an imported profile can be generated immediately. A **plain-
   communication** guideline was added to both skills. Verified end-to-end; merged via PR #1.
-  See [`decisions.md`](decisions.md) §11. Optional post-merge follow-ups: a graded eval + an
-  independent cold-agent run, and a `writing-great-skills` quality pass over both skills.
+  See [`decisions.md`](decisions.md) §11. A `writing-great-skills` editorial quality pass has
+  since gone over both skills — descriptions tightened, a duplicated line and an
+  over-disclosed self-heal block trimmed, and a dead `docs/principles.md` cross-reference in
+  two references fixed (no behaviour or contract change). Optional post-merge follow-ups are
+  tracked under §To build.
 
 ## To build
 
-One optional, low-priority follow-up remains:
+Only optional, low-priority follow-ups remain:
 
-1. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
+1. **Graded eval + independent cold-agent run of import & review.** A graded
+   extraction/inflated-claims eval on the import edge, plus one independent cold-agent run of
+   the full import → seed → review → generate flow. Non-blocking: the feature is verified
+   end-to-end and merged; these only harden the newest edge.
+2. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
    the shared installer also symlinks the skills into other agents (Gemini CLI, GitHub
    Copilot, OpenClaw, …). Run the full pipeline on each as capacity allows and fix any
    agent-specific quirks (skill discovery, invocation, multi-turn interview, file I/O), rather
@@ -78,9 +85,6 @@ One optional, low-priority follow-up remains:
   invariant that `cv-tailor` reads only the Career Profile** (never a raw document — see
   [`architecture.md`](architecture.md)) only if a real use case demands format critique of a
   CV the user won't regenerate. See [`decisions.md`](decisions.md) §11.
-- ~~**Broaden the example profiles' range.**~~ **Done** — the shipped few-shot is now four
-  range-spanning profiles (tradesperson · recent graduate · teacher · data analyst). See
-  §Done above and [`decisions.md`](decisions.md) §9.
 - **Let the user choose among several templates.** Ship more than one CV layout and let
   the user pick — ideally pointing them to a gallery/link where they can browse options,
   then generating into the chosen one. For now there is a single template; this is the
@@ -148,14 +152,12 @@ One optional, low-priority follow-up remains:
 - **Revisit the skill decomposition.** Check that two skills is still the right number as
   features land: that neither takes on too many responsibilities, and whether a more
   natural separation emerges. The load-bearing seam to preserve is the **Career Profile as
-  the contract** between build and generate. Watch `cv-profiler` for accretion once
-  *import & review* arrive (interview / import / review become distinct on-ramps); a
-  review-only skill is the main candidate third seam if its trigger and output diverge
-  enough to earn its own always-loaded description. Do not split `cv-tailor`'s
+  the contract** between build and generate. Now that *import & review* have landed,
+  `cv-profiler` carries three distinct on-ramps (interview / import / review) — watch it for
+  accretion; a review-only skill is the main candidate third seam if its trigger and output
+  diverge enough to earn its own always-loaded description. Do not split `cv-tailor`'s
   tailored/general/cover-letter *modes* into separate skills — they share the same
   profile-reading and rendering machinery, so splitting would only duplicate it.
-- **Other agents beyond Claude Code** — handled by the shared installer; only
-  *testing* remains, after the skills exist.
 
 ## Content produced
 

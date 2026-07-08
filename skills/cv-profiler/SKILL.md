@@ -3,11 +3,10 @@ name: cv-profiler
 description: >-
   Career Profile builder — a guided, multilingual interview that creates or updates the
   single Markdown document holding a person's whole career. Use when the user wants to
-  build, resume, or expand their Career Profile; turn an existing CV/résumé into a profile
-  (import); or review/audit their profile or a CV they already have for content gaps and
-  weaknesses. This is the skill for any starting point that is a CV, résumé, or career
-  facts — not a finished CV you want generated. Pairs with cv-tailor, which turns the
-  profile (with an optional job posting) into a CV.
+  build, resume, or expand their Career Profile; turn an existing CV/résumé into one
+  (import); or review/audit their profile or a CV for content gaps and weaknesses — any
+  starting point that is career facts rather than a finished CV to generate. Pairs with
+  cv-tailor, which turns the profile (with an optional job posting) into a CV.
 ---
 
 # cv-profiler
@@ -246,9 +245,8 @@ few-shot doesn't bias generation toward polished, quantified, white-collar caree
 Walk the core sections roughly in order, adapting to what the user brings up. Work
 Experience is the spine — spend the most care there.
 
-- **One topic at a time.** Focused questions; no checklist dumps.
-- **Probe once, then move on.** Raise each topic a single time; if there's nothing there,
-  drop it. Never badger.
+- **One topic at a time; probe once, then move on.** Raise each topic a single time; if
+  there's nothing there, drop it. Never badger.
 - **Reflect back facts, refine wording.** Write raw material up cleanly; add no fact the
   user didn't state.
 - **Save as you go** (see Incremental saving).
