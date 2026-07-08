@@ -79,7 +79,9 @@ Confirm you have, asking only for what's missing:
      invent content to fill a skipped section.
 2. **The job posting** — pasted text or a path/URL. *(Optional.)* If given, run in
    **tailored** mode; if the user doesn't have one, run in **general** mode — never force
-   them to invent a posting.
+   them to invent a posting. If you've tailored to this position before, its posting is saved
+   verbatim at `applications/<company>-<role>/posting.md` (Step 6) — read it from there rather
+   than asking for the link again.
 3. **The output language** — chosen now; it may differ from the profile's language. Default
    to the language the **target market** customarily expects for a CV; if the posting is
    written in a different language than that market uses (e.g. an English-language ad for a
@@ -139,6 +141,10 @@ or a genuine gap, and the tally has been shown to the user.
     Positioning**, its most general **Professional Summary**, and **Notes for CV
     Customization**; lead with the strongest, most broadly relevant experience.
 - Omit what's irrelevant — the profile is a superset; a CV is not.
+- **Reverse-chronological order.** Within *every* dated section — Work Experience, Education &
+  Training, Projects, Publications, Key Achievements, and any dated conditional section — list
+  entries **most recent first** (by end date; ongoing / `Present` entries at the top). Keep it
+  consistent across the whole CV.
 - Frame achievements with **domain-adaptive action verbs** drawn from the profile's
   field.
 - In tailored mode, place mapped keywords in context (in the relevant role or skills
@@ -165,14 +171,29 @@ or a genuine gap, and the tally has been shown to the user.
 
 ## Step 6 — Produce the output
 
-Fill the `pdflatex` template from `templates/`, writing the result as a new `.tex` in the
-user's output location (never editing the template in place), following
+Give every application its own folder so nothing has to be re-fetched later. In **tailored**
+mode, create `applications/<company>-<role>/` beside the Career Profile (slugify company and
+role — lowercase, hyphens) and write into it:
+
+- **`posting.md`** — the job posting **verbatim** (the pasted text, or the fetched contents of
+  the URL), so the user never has to supply the link again.
+- **`cv.tex`** — the tailored CV, filled from the `pdflatex` template (the source you submit).
+- **`cv.md`** — the same tailored content as **readable Markdown**: a reference/persistence
+  copy, **not** a submit format (the `.tex`/PDF is what you send).
+- a **cover letter** (`cover-letter.tex` + `.md`) **only if the user asks**.
+
+Head each **generated** file (`cv.tex`, `cv.md`, and the cover letter) with a short
+**provenance** block (source profile, template, posting, output language, date); `posting.md`
+is the posting as-is and carries **no** header. In **general** mode there is no position —
+write the CV (`.tex` + `.md`) to the user's output location as before, with the same
+provenance header.
+
+Fill the template (never editing it in place) following
 [`references/output-format.md`](references/output-format.md): replace every `<<PLACEHOLDER>>`,
 set the output language, add/remove sections to match your selection, and **escape LaTeX
 special characters** (`& % $ # _ ~ ^ \ { }`) in every value you insert — profile text with
-an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Produce a **cover letter only if
-the user asks**. Compiling to PDF is a separate step: **detect the toolchain, then offer —
-never compile, and never install anything, silently.**
+an `AT&T`, `40%`, or `C#` breaks compilation otherwise. Compiling to PDF is a separate step:
+**detect the toolchain, then offer — never compile, and never install anything, silently.**
 
 - **Offer both routes and explain each** — **Overleaf** (upload the `.tex`, recompile,
   download — no install; the safe default, especially for a non-technical user) or **local
@@ -191,8 +212,10 @@ never compile, and never install anything, silently.**
 See [`references/output-format.md`](references/output-format.md) for the exact detect →
 offer → self-heal flow and the template-scoped install.
 
-**Done when:** the filled `.tex` is written in the chosen language, no `<<...>>` remains,
-and all special characters are escaped. The content-integrity gate is Step 7.
+**Done when:** in tailored mode the position folder holds `posting.md`, `cv.tex`, and `cv.md`
+(plus the cover letter if asked), each with its provenance header; the `.tex` is in the chosen
+language with no `<<...>>` left and all special characters escaped. The content-integrity gate
+is Step 7.
 
 ## Step 7 — Before you deliver: self-check
 

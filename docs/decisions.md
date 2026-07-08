@@ -234,6 +234,17 @@ interaction and output are multilingual.
   over the finished PDF directly — it does not compile silently. *Why:* the skill runs on the user's machine and must not force a heavy TeX
   install; the source it emits compiles anywhere, Overleaf included, and the audience is
   often non-technical, so the choice is offered with instructions rather than assumed.
+- **Each tailored run persists in its own application folder.** `cv-tailor` writes per
+  position to `applications/<company>-<role>/` beside the profile: the posting saved
+  **verbatim** (`posting.md`, so the link is never needed twice — on a re-run it is read back
+  from there), the CV as `cv.tex` (the submit source) **and** a readable `cv.md` reference
+  copy, plus a provenance header (profile / template / posting / language / date) on each
+  file. *Why:* persistence makes "regenerate" and "tweak this one" zero-question and keeps
+  applications auditable, while the Career Profile stays the single source of truth — these
+  are derivatives, not a second profile. The readable `cv.md` does **not** reopen the
+  "Markdown output excluded" decision below: that excludes `.md` as a *submit* format; this
+  `.md` is a local reference/persistence copy, never the artifact you send. In general mode
+  (no posting) there is no folder — the CV is written to the user's output location as before.
 - **Local compilation stays minimal, and its dependencies are scoped to the chosen
   template.** What a local install must provide is exactly the current template's package
   set, and the **authoritative list is the template's own `--- Template dependencies ---`

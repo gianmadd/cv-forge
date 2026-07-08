@@ -69,6 +69,12 @@ What's decided, what's left to build, and what's deliberately deferred.
   and a demanding posting produced honest gaps, not fabricated matches. The one near-miss it
   caught — inferring a company's sector from its name — is closed by a small extraction guard
   in `references/import.md`.
+- **Per-position application folders (`cv-tailor`).** Each tailored run persists in
+  `applications/<company>-<role>/`: the posting saved **verbatim** (`posting.md`, captured
+  once and reused so the link is never needed twice), the CV as `cv.tex` plus a readable
+  `cv.md`, and a provenance header (profile / template / posting / language / date) on each
+  file. The Career Profile stays the single source of truth; these are derivatives. See
+  [`decisions.md`](decisions.md) §10.
 
 ## To build
 
@@ -113,7 +119,9 @@ One optional, low-priority follow-up remains:
 - **More generation options.** Enhancements to `cv-tailor` output, once the core is
   stable:
   - *Iterate on a generated CV* — tweak an already-produced CV ("shorten to one page",
-    "lead with leadership", "drop the 2016 role") without regenerating from scratch.
+    "lead with leadership", "drop the 2016 role") without regenerating from scratch. The
+    per-position application folder now persists each CV (`.tex` + `.md`), which is the
+    substrate this needs.
   - *Length / format targets* — one-page vs two-page vs a long-form academic CV
     (publications-heavy). Today there is no length control.
   - *Batch* — one profile + N postings → N tailored CVs for an active job search.
@@ -144,13 +152,13 @@ One optional, low-priority follow-up remains:
     `Notes for CV Customization` already covers part of this in prose. **Decided post-v1:**
     the v1 contract is frozen on the binary model (see `decisions.md` §10); this taxonomy is
     a later, Re-Run-migratable change, not a v1 blocker.
-  - *Corrections log + output lineage header.* A persistent "never re-introduce this error"
-    ledger that survives regeneration (a fabrication ratchet), plus a provenance stamp on
-    each generated CV (source profile / template / posting / version) so "tweak this one"
-    is a zero-question op and applications are auditable. **Tension/cost:** small and
-    principle-aligned; the open question is *where the log lives* — in the profile (touches
-    the contract and `cv-profiler`) or as `cv-tailor`-side state. Pairs with *iterate on a
-    generated CV* above.
+  - *Corrections log (+ output lineage header — done).* The **output-lineage half is now
+    shipped**: every generated file carries a provenance header (profile / template / posting
+    / language / date), see [`decisions.md`](decisions.md) §10. What remains open is the
+    persistent "never re-introduce this error" ledger that survives regeneration (a
+    fabrication ratchet). **Tension/cost:** small and principle-aligned; the open question is
+    *where the log lives* — in the profile (touches the contract and `cv-profiler`) or as
+    `cv-tailor`-side state. Pairs with *iterate on a generated CV* above.
   - *Optional multi-persona critique stage.* After generating, an optional pass that
     reviews the CV through several reader lenses (ATS / recruiter / HR / hiring manager /
     domain expert) and returns ranked, concrete fixes — coaching, not fabrication.

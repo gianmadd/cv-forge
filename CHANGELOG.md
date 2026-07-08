@@ -31,6 +31,12 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   `cv-tailor`; scanned PDFs read best-effort with an explicit flag; all tooling local (no
   cloud OCR). Seeded sections are marked `[TO CONFIRM]`; provenance recorded in a separate
   HTML comment.
+- **Per-position application folders** (`cv-tailor` Step 6 + `references/output-format.md`) —
+  each tailored run is saved under `applications/<company>-<role>/`: the job posting
+  **verbatim** (`posting.md`, so the link is never needed twice — re-runs read it back), the
+  CV as `cv.tex` (submit source) plus a readable `cv.md` reference copy, each headed by a
+  provenance block (profile / template / posting / language / date). General mode is
+  unchanged. The Career Profile stays the single source of truth; these are derivatives.
 
 ### Changed
 - **`cv-tailor` draft guard** (`cv-tailor` SKILL.md Steps 1 & 7) — when handed an
@@ -63,6 +69,10 @@ in `cv-profiler` (see `docs/decisions.md` §11).
   — a graded zero-fabrication eval of the import edge (two adversarial CVs, independently
   graded, PASS) caught its only near-miss, an employer's industry inferred from its name;
   extraction now takes only stated attributes.
+- **Reverse-chronological order across the whole CV** (`cv-tailor` Step 4 +
+  `references/output-format.md`) — every dated section (Work Experience, Education, Projects,
+  Publications, Key Achievements, any dated conditional) lists entries most recent first, by
+  end date, with ongoing entries at the top — not only the Experience section.
 
 ### Fixed
 - **Latent marker leak in `cv-tailor`** — before the draft guard, a still-drafted profile
