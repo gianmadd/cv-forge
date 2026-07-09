@@ -7,6 +7,32 @@ semantic versioning.
 
 ## [Unreleased]
 
+### Fixed
+- **`curve` template: raw `\\` inside `\entry`/`\text` corrupts the whole rubric's layout**
+  (`templates/curve/cv.tex`, `templates/curve/education.tex`) — every `\entry`/`\text` lands
+  as a `longtable` row cell; a literal `\\` used to force a second line (e.g. a thesis/GPA
+  line under a degree) ends the table row instead, which silently breaks `tabularx`'s
+  column-width measurement for the *entire* rubric file — every other entry in that section
+  starts wrapping one word per line, not just the edited one. `cv.tex` now carries an explicit
+  warning against this, and `education.tex`'s skeleton shows the correct two-line form using
+  `\newline`. Not `single-column`-specific: that template's `\entry` isn't `longtable`-based
+  and was never affected.
+- **`curve` template: dropped the `\title{Curriculum Vitae}` / `\maketitle` banner**
+  (`templates/curve/cv.tex`) — rendered as a giant centered heading between the header and
+  the first rubric, present in neither the upstream Overleaf template nor `single-column`.
+  Pure redundant noise (the reader already knows it's a CV); removed for consistency between
+  the two templates.
+
+### Changed
+- **Dates always render with an abbreviated, capitalised month** (`cv-tailor` Step 5) —
+  `Mar 2024`, not `March 2024`, and never a bare year-only range when the profile has a month
+  (this had silently dropped in one generated CV's Education section while Experience kept
+  full month names). The abbreviation is always capitalised, even in languages (Italian,
+  French) whose own orthography would lowercase a month name — a deliberate exception to
+  "no English rules translated verbatim," kept for visual consistency with the rest of the
+  CV. Not template-specific: applied once when `cv.md` is written, so every template
+  inherits it automatically.
+
 ### Added
 - **Iterate on a generated CV** (`cv-tailor` Steps 1/4/6/7 +
   `references/output-format.md`) — tweak an already-produced CV ("shorten to one page",

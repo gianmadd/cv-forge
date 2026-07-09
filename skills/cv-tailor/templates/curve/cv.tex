@@ -17,6 +17,14 @@
 %% as any other template. summary.tex and languages.tex ship here as ready examples
 %% for the Professional Summary and the conditional Languages section.
 %%
+%% NEVER use a raw \\ inside \entry{...} or \text{...} content, in ANY rubric file, to
+%% force a line break (e.g. a thesis/GPA line under a degree). Every \entry/\text lands
+%% as a cell of a longtable row (see curve.cls) — a literal \\ there ends the table row
+%% instead of breaking the line, silently corrupting the tabularx column-width
+%% measurement for the WHOLE rubric file (every other entry in that section starts
+%% wrapping one word per line, not just the one you edited). Use \newline instead —
+%% see education.tex for a worked example.
+%%
 %% Nothing here is invented: every filled value traces to the Career Profile.
 %%
 %% --- Template dependencies (cv-tailor reads this to install & self-heal a local build) ---
@@ -72,13 +80,13 @@
 \photo[r]{<<PHOTO PATH FROM PROFILE>>}
 \photoscale{0.13}
 \end{fullonly}
-\title{Curriculum Vitae}
-% "Curriculum Vitae" reads the same in English/Italian/French/Spanish/Portuguese;
-% translate it for languages where it doesn't (e.g. German: "Lebenslauf").
+% No \title/\maketitle: the upstream template goes straight from the header into the
+% first rubric — a giant "Curriculum Vitae" banner is redundant noise the reader
+% doesn't need, and single-column has no equivalent either. Keep both templates
+% consistent on this.
 
 \begin{document}
 \makeheaders[c]
-\maketitle
 
 \makerubric{summary}
 \makerubric{employment}

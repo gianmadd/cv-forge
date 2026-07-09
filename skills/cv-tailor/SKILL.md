@@ -185,6 +185,17 @@ or a genuine gap, and the tally has been shown to the user.
   English rules translated verbatim. This is rendering, not fabrication.
 - **Localised section names.** Use the target language's conventional CV section names;
   when more than one convention exists, ask the user which they prefer.
+- **Dates: abbreviated month, every time, always capitalised.** Render every date as
+  abbreviated-month + year (e.g. `Mar 2024`, `Nov 2025 – Present`) — never the month spelled
+  out in full, and never a bare year-only range for an entry whose profile dates include a
+  month (this applies to Education exactly as much as Experience). Use the output language's
+  own standard abbreviation (English `Jan`–`Dec`; Italian `Gen`–`Dic`; French `Janv.`–`Déc.`;
+  etc.), but **always capitalise the abbreviation even where the language's own orthography
+  would lowercase it** (Italian/French month names are lowercase common nouns) — a deliberate
+  exception to "no English rules translated verbatim," kept for visual consistency with the
+  rest of the CV. Apply consistently across every dated section. This is a rendering
+  convention applied when writing `cv.md` — not a template concern, and independent of
+  however the Career Profile itself formats dates.
 - **Languages section** appears only when the profile lists more than a native language.
 - **Market-appropriate personal fields.** Include optional fields (photo, date of birth,
   nationality, marital status, a data-processing consent line) **only** where the target
