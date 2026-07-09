@@ -66,6 +66,8 @@ Give it your profile — and, optionally, a job posting — and it produces a co
 
 - **With a job posting:** tailored to the role, with the right experience and keywords surfaced.
 - **Without one:** a complete, high-quality general CV from your profile's own positioning — not a draft.
+- **Pick your layout:** choose between CV templates (a single-column classic, or a two-part
+  header layout with a photo slot) — it asks which before generating.
 - Renders in the language you choose and compiles to a clean PDF (Overleaf, or locally with a guided setup).
 - **Keeps each application:** every tailored run is saved in its own folder with the job posting and the CV, so you can revisit or regenerate it later without hunting down the link again.
 - Never fabricates: if it isn't in your profile, it doesn't appear.
@@ -120,7 +122,7 @@ Your Career Profile holds personal information and stays **entirely on your mach
 
 ## Credits
 
-The CV and cover-letter templates' visual style is adapted from Michael Lustfield's CV template, used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).
+The single-column CV and cover-letter templates' visual style is adapted from Michael Lustfield's CV template, used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). The `curve` CV template is adapted from LianTze Lim's ["A Customised CurVe CV"](https://www.overleaf.com/latex/templates/a-customised-curve-cv/mvmbhkwsnmwv) Overleaf template, used under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and built on Didier Verna's [`CurVe`](https://ctan.org/pkg/curve) LaTeX class, distributed under the [LPPL](https://www.latex-project.org/lppl/).
 
 ## License
 

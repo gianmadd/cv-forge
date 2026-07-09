@@ -1,0 +1,91 @@
+%% cv-forge — CurVe CV template (two-column header, optional photo)
+%%
+%% Engine: pdflatex only (see dependency note below — this template's XeLaTeX/LuaLaTeX
+%% branch, inherited from upstream, is untested and NOT the supported build path here).
+%% Adapted from LianTze Lim's "A Customised CurVe CV" (Overleaf gallery template,
+%% CC-BY-4.0), itself built on Didier Verna's CurVe class.
+%%
+%% Structural difference from the single-column template: CurVe requires every
+%% section ("rubric") to live in its OWN file — \makerubric{NAME} pulls in NAME.tex.
+%% cv-tailor fills <<PLACEHOLDER>>s in EVERY file of this folder that has one (this
+%% file plus each rubric file below), and copies settings.sty verbatim (never edit
+%% it — it holds only style definitions, no profile content).
+%%
+%% To add a CV section beyond employment/education/skills: create <name>.tex in this
+%% same folder (copy the shape of employment.tex/education.tex) and add a matching
+%% \makerubric{<name>} line below, in the same reverse-chronological / selected order
+%% as any other template. summary.tex and languages.tex ship here as ready examples
+%% for the Professional Summary and the conditional Languages section.
+%%
+%% Nothing here is invented: every filled value traces to the Career Profile.
+%%
+%% --- Template dependencies (cv-tailor reads this to install & self-heal a local build) ---
+%% Engine: pdflatex (NOT xetex/tectonic — see the ATS note below).
+%% tlmgr packages (template-scoped), verified by a real local compile:
+%%   curve carlisle filehook fontawesome5 cochineal fontaxes xstring cabin
+%%   inconsolata relsize silence comment pgf iftex upquote hyperref geometry
+%%   xcolor graphicx url
+%% Per-language (add at generation): babel-<output-language>
+%% Notes:
+%%   - "carlisle" is David Carlisle's small-packages bundle: it ships BOTH
+%%     ltxtable.sty (curve's own rubric-splitting mechanism) and scalefnt.sty
+%%     (a cochineal dependency) — one tlmgr package, two required files.
+%%   - "inconsolata" ships zi4.sty (the monospace variant this template loads);
+%%     "fontaxes" and "xstring" are cochineal's own transitive deps, NOT
+%%     auto-pulled by tlmgr, same situation as cormorantgaramond's deps in the
+%%     single-column template — list them explicitly or the install fails mid-build.
+%%   - "pgf" ships both tikz.sty and pgffor.sty (two files, one package).
+%%   - "iftex" ships ifxetex.sty/ifluatex.sty.
+%%   - "upquote" is required by curve itself (via url/verbatim handling), not obvious
+%%     from any \usepackage line in this folder.
+%%   - graphicx, url, hyperref, geometry, xcolor are commonly already present in any
+%%     TeX Live install, but are listed because settings.sty requires them explicitly.
+%%   - When in doubt, `tlmgr search --file '/NAME.sty'` maps any file to its package.
+
+\documentclass[a4paper,skipsamekey,11pt,english]{curve}
+% Not evaluated on the supported pdflatex path; kept only so an upstream XeLaTeX/
+% LuaLaTeX run (unsupported here) still has somewhere to hook in Chinese, per upstream.
+% \usepackage{ctex}
+
+\usepackage{settings}
+
+% ATS readability: map glyphs to Unicode so copy/parse yields real text, not
+% gibberish. pdfTeX-only primitive — this is why the engine must stay pdflatex.
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\includecomment{fullonly}
+% cv-tailor: switch to \excludecomment{fullonly} instead when the profile has no
+% photo, or the target market doesn't expect one on a CV (see Step 5 of SKILL.md).
+
+% ---- Header: identity + contact --------------------------------------------
+\leftheader{%
+  {\LARGE\bfseries\sffamily <<FULL NAME>>}\\[2pt]
+  {\large <<TARGET ROLE / TITLE>>}\\[4pt]
+  \makefield{\faEnvelope[regular]}{\href{mailto:<<EMAIL>>}{\texttt{<<EMAIL>>}}}
+  \makefield{\faPhone}{<<PHONE>>}
+  \makefield{\faLinkedin}{\href{https://linkedin.com/in/<<LINKEDIN>>}{\texttt{<<LINKEDIN>>}}}
+  % Add \makefield{\faGlobe}{...} for a portfolio/site URL only if the profile has one.
+}
+\rightheader{~}
+\begin{fullonly}
+\photo[r]{<<PHOTO PATH FROM PROFILE>>}
+\photoscale{0.13}
+\end{fullonly}
+\title{Curriculum Vitae}
+% "Curriculum Vitae" reads the same in English/Italian/French/Spanish/Portuguese;
+% translate it for languages where it doesn't (e.g. German: "Lebenslauf").
+
+\begin{document}
+\makeheaders[c]
+\maketitle
+
+\makerubric{summary}
+\makerubric{employment}
+\makerubric{education}
+\makerubric{skills}
+% \makerubric{languages}
+% ^ uncomment (and keep languages.tex) only when the profile lists more than a
+%   native language.
+
+\end{document}

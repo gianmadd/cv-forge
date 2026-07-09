@@ -89,9 +89,14 @@ Confirm you have, asking only for what's missing:
    render into the chosen language.
 4. **The target market** — the country/market the CV is aimed at; it decides which
    personal fields are appropriate (below).
+5. **The CV template** — list the layouts available in `templates/` (one subfolder each);
+   name each with a one-line style description and its dependency weight (light / heavier),
+   drawn from that template's own header comment. Ask the user to pick; if they have no
+   preference, default to `single-column`. Each template is a self-contained folder with its
+   own fill and dependency rules — see [`references/output-format.md`](references/output-format.md).
 
-**Done when:** the profile is read, the output language and target market are known, and
-the mode (tailored / general) is set.
+**Done when:** the profile is read, the output language and target market are known, the
+mode (tailored / general) is set, and a template is chosen.
 
 ## Step 2 — Read the profile by its contract
 
@@ -162,10 +167,11 @@ or a genuine gap, and the tally has been shown to the user.
 - **Market-appropriate personal fields.** Include optional fields (photo, date of birth,
   nationality, marital status, a data-processing consent line) **only** where the target
   market customarily expects them and the profile provides them. A **photo** is a
-  **per-template capability**: it is rendered only if the chosen template provides a photo
-  slot. The current single-column template has **none**, so a photo path in the profile is
-  simply not placed — don't improvise `graphicx`/`\includegraphics` outside the template's
-  dependency manifest. The other fields are plain text and always renderable.
+  **per-template capability**: place it only if the chosen template provides a photo slot,
+  and only then, following that template's own fill notes — `single-column` has none, so a
+  photo path in the profile is simply not placed there; `curve` has one. Never improvise
+  `graphicx`/`\includegraphics` outside a template's own dependency manifest. The other
+  fields are plain text and always renderable, in any template.
 - If you need a language/market convention you're unsure of, a web search is allowed —
   for conventions only, never for the user's facts or metrics.
 
@@ -180,28 +186,39 @@ role — lowercase, hyphens) and write into it:
 - **`cv.md`** — the tailored CV as **readable Markdown**: the **canonical selected content**
   for this application, **written first**. It is what you select, structure, and get right;
   the `.tex` is rendered *from it*. It is **not** a submit format.
-- **`cv.tex`** — that same `cv.md` content **rendered into** the `pdflatex` template, with
-  LaTeX special characters escaped: the source you submit. It must stay faithful to `cv.md` —
-  same facts, same selection, same order, same language; only the LaTeX form is added.
+- **`cv.tex`** (**+ any other file the chosen template needs**) — that same `cv.md` content
+  **rendered into** the chosen `pdflatex` template, with LaTeX special characters escaped:
+  the source you submit. Some templates are one file (`single-column`); others require
+  several — e.g. `curve` fills `cv.tex` plus one file per section (`employment.tex`,
+  `education.tex`, …) — and also ship static files (e.g. `settings.sty`) that carry **no**
+  profile content and are copied **verbatim, unmodified** into the application folder. Every
+  rendered `.tex` file must stay faithful to `cv.md` — same facts, same selection, same
+  order, same language; only the LaTeX form is added.
 - a **cover letter** (`cover-letter.md` + `.tex`, in the same md-then-tex order) **only if the
-  user asks**.
+  user asks** — always rendered from the `single-column` cover-letter template regardless of
+  which CV template was chosen (cover letters are not per-CV-template yet).
 
-Head each **generated** file (`cv.md`, `cv.tex`, and the cover letter) with a short
-**provenance** block (source profile, template, posting, output language, date); `posting.md`
-is the posting as-is and carries **no** header. In **general** mode there is no position —
-write the CV (`.md` + `.tex`) to the user's output location as before, with the same
-provenance header.
+Head each **generated** `.tex`/`.md` file (`cv.md`, every rendered `.tex` file from the
+chosen template, and the cover letter) with a short **provenance** block (source profile,
+template, posting, output language, date); a template's static files (e.g. `settings.sty`)
+and `posting.md` carry **no** header — the former isn't generated *from* the profile, the
+latter is the posting as-is. In **general** mode there is no position — write the CV
+(`.md` + the chosen template's files) to the user's output location as before, with the
+same provenance header.
 
-**Write `cv.md` first, then render `cv.tex` from it.** `cv.md` holds the finished selection
-in plain, readable Markdown — this is where you commit to what appears and in what order.
-Then produce `cv.tex` by filling the template from that Markdown following
-[`references/output-format.md`](references/output-format.md): read the template (never editing
-it in place), replace every `<<PLACEHOLDER>>` with the `cv.md` content, set the output
-language, add/remove sections to match, and **escape LaTeX special characters**
+**Write `cv.md` first, then render the chosen template from it.** `cv.md` holds the finished
+selection in plain, readable Markdown — this is where you commit to what appears and in what
+order. Then fill the chosen template following
+[`references/output-format.md`](references/output-format.md): read every file in that
+template's folder (never editing them in place), replace every `<<PLACEHOLDER>>` in every
+file that has one with the `cv.md` content, copy every file that has none verbatim, set the
+output language, add/remove sections to match (for a multi-file template, adding a section
+means adding a new rubric-shaped file **and** the line that references it — see the chosen
+template's own comments), and **escape LaTeX special characters**
 (`& % $ # _ ~ ^ \ { }`) as you insert — text with an `AT&T`, `40%`, or `C#` breaks
-compilation otherwise. Because the `.tex` is a rendering of `cv.md`, the two never diverge;
-if you change one, change the other. Compiling to PDF is a separate step:
-**detect the toolchain, then offer — never compile, and never install anything, silently.**
+compilation otherwise. Because every rendered file is a rendering of `cv.md`, none of them
+ever diverge from it; if you change `cv.md`, change them all. Compiling to PDF is a separate
+step: **detect the toolchain, then offer — never compile, and never install anything, silently.**
 
 - **Offer both routes and explain each** — **Overleaf** (upload the `.tex`, recompile,
   download — no install; the safe default, especially for a non-technical user) or **local
@@ -214,17 +231,18 @@ if you change one, change the other. Compiling to PDF is a separate step:
   name no `.sty` file; the exact forms and how to map each live in
   [`references/output-format.md`](references/output-format.md). This self-heal is offer-based
   at every step.
-- The template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't compile it. Its
-  package list lives in the template's own `--- Template dependencies ---` header.
+- Every template targets `pdflatex`; a XeTeX-only tool such as Tectonic won't compile any of
+  them. Each template's package list lives in its own `--- Template dependencies ---` header
+  (on its main file), and is scoped to that template alone.
 
 See [`references/output-format.md`](references/output-format.md) for the exact detect →
 offer → self-heal flow and the template-scoped install.
 
-**Done when:** in tailored mode the position folder holds `posting.md`, `cv.md`, and `cv.tex`
-(plus the cover letter if asked), each generated file with its provenance header; `cv.md` was
-written first and `cv.tex` renders it faithfully — same facts, selection, order, and language —
-in the chosen language with no `<<...>>` left and all special characters escaped. The
-content-integrity gate is Step 7.
+**Done when:** in tailored mode the position folder holds `posting.md`, `cv.md`, every file
+the chosen template renders (plus the cover letter if asked), each generated file with its
+provenance header; `cv.md` was written first and every rendered file matches it faithfully —
+same facts, selection, order, and language — in the chosen language with no `<<...>>` left
+and all special characters escaped. The content-integrity gate is Step 7.
 
 ## Step 7 — Before you deliver: self-check
 
@@ -243,9 +261,11 @@ final zero-fabrication gate, not a formality:
   is used.
 - **Gaps reported** — in tailored mode, the Step 3 match report was shown and genuine gaps
   were named, not papered over.
-- **`cv.md` written, and `cv.tex` matches it** — the canonical `cv.md` exists (never skipped),
-  and the `.tex` is a faithful rendering of it: same facts, same selection, same order, same
-  language, differing only in LaTeX form.
+- **`cv.md` written, and every rendered template file matches it** — the canonical `cv.md`
+  exists (never skipped), and each `.tex` file the chosen template produces is a faithful
+  rendering of it: same facts, same selection, same order, same language, differing only in
+  LaTeX form. For a multi-file template, every section in `cv.md` has a corresponding rubric
+  file, and no template static file (e.g. `settings.sty`) was altered.
 - **Clean render** — all `<<...>>` replaced, all LaTeX special characters escaped, correct
   output language and localised section names.
 

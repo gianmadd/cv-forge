@@ -7,6 +7,20 @@ semantic versioning.
 
 ## [Unreleased]
 
+### Added
+- **Multiple CV templates, user-chosen** (`cv-tailor` Step 1 + `references/output-format.md`)
+  — a second layout, `curve` (adapted from LianTze Lim's "A Customised CurVe CV" Overleaf
+  template, CC-BY-4.0, built on Didier Verna's `CurVe` class), joins `single-column`; the
+  user picks in Step 1, defaulting to `single-column`. Each template is a self-contained
+  `templates/<name>/` folder with its own dependency manifest; the fill mechanism
+  generalized from "one file" to "fill every file with a placeholder, copy every static file
+  verbatim," since `curve` structurally requires one file per CV section. `curve` is also the
+  first template with a photo slot. The import drops upstream's `biblatex`/`biber`
+  publications support, `simpleicons` X/Twitter icon, and decorative entry-prefix glyph (an
+  ATS-extraction cost for no content value); the cover letter stays `single-column`-only
+  regardless of the chosen CV template. See `docs/decisions.md` §10. A stale cross-reference
+  in `cv-profiler` (claiming "the current CV template is photo-less") is fixed accordingly.
+
 ## [1.1.0] - 2026-07-08
 
 Headline: **import & review an existing CV** in `cv-profiler`, plus per-application

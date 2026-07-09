@@ -326,8 +326,9 @@ target market expects. All optional, raised only when context warrants, never by
   offer optional fields: photo, date of birth, nationality, marital status, and a
   data-processing consent line.
 - **A photo can't live in Markdown.** Store a **path or note** to the image. Whether it
-  actually appears is a **per-template** decision at generation time (the current CV template
-  is photo-less), so capture the path but don't promise it will show on the CV.
+  actually appears is a **per-template** decision at generation time — `cv-tailor` offers a
+  choice of CV templates, and not every one has a photo slot — so capture the path but don't
+  promise it will show on the CV.
 
 ---
 

@@ -107,10 +107,12 @@ interaction and output are multilingual.
   swap one bias for another; genuine internationalization is symmetric.
 - **Action verbs in the generator adapt to the domain** rather than a fixed
   tech-flavored list.
-- **The CV template stays a single neutral layout with minor tweaks** (neutral labels,
-  Projects made explicitly optional) rather than per-profile templates. *Why:* the
-  template structure is already largely neutral; the real output bias lived in verbs and
-  the example, and multiple templates would be premature over-engineering.
+- **No domain- or profile-specific template** (neutral labels, Projects made explicitly
+  optional) — a plumber and a data analyst render into the same layout options, never a
+  "trade CV" vs. a "tech CV." *Why:* the template structure is already largely neutral; the
+  real output bias lived in verbs and the example. (This is orthogonal to the **user-chosen**
+  aesthetic templates decided in §10 — that choice is the user's taste, never inferred from
+  the profile's domain.)
 
 ## 5. Multilingual output
 
@@ -303,8 +305,9 @@ interaction and output are multilingual.
   **nine core sections** + the conditional set, and the `PURPOSE`-marker / inline-`Agent
   Note` conventions. A **richer visibility taxonomy** (always / variant-specific / on-request
   / reference-only, enabling named CV variants) is deliberately **post-v1**: its real trigger
-  is named variants / multi-template, both deferred, and it would burden the interview with
-  per-item tagging. *Why it's low-risk to freeze:* the structure is proven (both skills
+  is named CV variants, still deferred (multi-template itself has since shipped — see below —
+  without needing this taxonomy), and it would burden the interview with per-item tagging.
+  *Why it's low-risk to freeze:* the structure is proven (both skills
   read/write it; verified end-to-end and across all three dispatch modes), and future
   evolution is **non-destructively migratable** on Re-Run via the alias map in
   `references/re-run.md` — so a later taxonomy is an additive, migratable change, not a break
@@ -317,11 +320,47 @@ interaction and output are multilingual.
 - **A photo is a per-template capability** — like dependencies, whether a CV can carry a
   photo is a property of the chosen template, not a universal feature. `cv-profiler` may
   still capture a photo path (the profile is a superset), but `cv-tailor` places a photo
-  only when the template provides a slot for one. The current single-column template is
-  deliberately **photo-less**; a photo-bearing layout is a later template choice (a
-  multi-template item in `roadmap.md`). *Why:* baking a photo slot into a template the many
-  markets that reject photos would then have to strip is worse than adding it to a template
-  built for photo-expecting markets.
+  only when the template provides a slot for one. The original single-column template is
+  deliberately **photo-less**; `curve` (below) is the first photo-bearing layout. *Why:*
+  baking a photo slot into a template the many markets that reject photos would then have to
+  strip is worse than adding it to a template built for photo-expecting markets.
+- **Multiple templates, one per subfolder of `templates/`, each self-contained.** `cv-tailor`
+  now offers a choice of CV layout (`single-column`, `curve`) instead of one fixed template;
+  the user picks in Step 1, defaulting to `single-column`. Each template is its own folder
+  under `skills/cv-tailor/templates/` carrying everything it needs: its main file (still
+  read for its `--- Template dependencies ---` manifest, per the mechanism above), any
+  supporting files, and — for a template built on a class with structural requirements of
+  its own — files that exist purely to satisfy that class. *Why a folder, not another flat
+  file:* the fill mechanism generalizes cleanly (below) without the two templates' files
+  ever colliding by name, and it's exactly the "dependencies travel with the template"
+  principle already decided above, now applied to the files themselves.
+  - **The single-file fill assumption generalizes to "every file in the folder."**
+    `cv-tailor` fills every file in the chosen template's folder that contains a
+    `<<PLACEHOLDER>>`, and copies verbatim every file that doesn't (a static style file).
+    *Why it had to generalize:* `curve` — built on Didier Verna's `CurVe` LaTeX class — has a
+    hard structural constraint (via the `LTXtable` package it depends on) that **each CV
+    section must live in its own file**; there is no single-file way to author it idiomatically.
+    A template can still be one file (`single-column` still is); the contract is now
+    "fill what has placeholders, copy what doesn't," which subsumes the one-file case rather
+    than replacing it.
+  - **The CurVe import was adapted, not ported verbatim, to stay inside the existing
+    architecture.** Three deliberate simplifications from the upstream Overleaf template
+    ("A Customised CurVe CV" by LianTze Lim, CC-BY-4.0, itself built on Verna's class):
+    no `biblatex`/`biber` for the publications list (rendered as a plain rubric instead,
+    like Experience) — *why:* a bibliography engine is a second build tool beyond `pdflatex`,
+    for a section few profiles use; no `simpleicons` X/Twitter icon — *why:* one more package
+    for a field the Career Profile's Contact Information doesn't even collect; and the cover
+    letter stays `single-column`-only regardless of which CV template is chosen — *why:*
+    authoring and maintaining a matching cover letter per CV template doubles that work for
+    every future template, for a document whose visual match to the CV is a nice-to-have, not
+    a requirement. All three are revisitable if a real need shows up.
+  - **The decorative entry-prefix glyph (upstream default: a bookmark icon before every
+    entry) is dropped, not carried over.** It added visual noise and, because a FontAwesome
+    icon has no real Unicode mapping, a stray character in every entry's *extracted* text —
+    the opposite of the ATS-readability this project holds itself to. *Why this one wasn't
+    kept as a "later" option like the others:* it's pure decoration with an ATS cost and no
+    corresponding content value, unlike publications support or the X icon, which are content
+    trade-offs.
 
 ## 11. Import & review (post-v1 feature)
 

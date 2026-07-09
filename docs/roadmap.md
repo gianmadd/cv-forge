@@ -75,12 +75,42 @@ What's decided, what's left to build, and what's deliberately deferred.
   `cv.md`, and a provenance header (profile / template / posting / language / date) on each
   file. The Career Profile stays the single source of truth; these are derivatives. See
   [`decisions.md`](decisions.md) §10.
+- **Multiple CV templates, user-chosen (`cv-tailor`).** A second layout, `curve` (adapted
+  from LianTze Lim's "A Customised CurVe CV" Overleaf template, CC-BY-4.0, built on Didier
+  Verna's `CurVe` class), joins the original `single-column` one; `cv-tailor` asks which to
+  use in Step 1 (defaulting to `single-column`), listing each by style and dependency weight
+  — kept deliberately text-only for now, no rendered preview gallery. Each template lives in
+  its own `templates/<name>/` folder and carries its own dependency manifest, unchanged from
+  before — what's new is that the single-file fill assumption generalized to "fill every file
+  with a placeholder, copy every static file verbatim," because `curve` structurally requires
+  one file per CV section. The import was adapted, not ported verbatim: no `biblatex`/`biber`
+  for publications (rendered as a plain rubric instead), no `simpleicons` X/Twitter icon, no
+  decorative entry-prefix glyph (an ATS-extraction cost for no content value), and the cover
+  letter stays `single-column`-only regardless of the chosen CV template. `curve` is also the
+  first template to use the photo slot the Career Profile could already carry but no template
+  rendered. Verified with a real local `pdflatex` compile (clean ATS text extraction, both
+  with and without a photo) before writing the instructions. See [`decisions.md`](decisions.md)
+  §10.
 
 ## To build
 
-One optional, low-priority follow-up remains:
+Ordered by readiness — the first already has its substrate in place.
 
-1. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
+1. **Iterate on a generated CV.** Tweak an already-produced CV ("shorten to one page",
+   "lead with leadership", "drop the 2016 role") without regenerating from scratch. The
+   per-position application folder already persists each CV (`.tex` + `.md`), which is the
+   substrate this needs. Pairs with the *corrections log* idea below.
+2. **Length / format targets.** One-page vs two-page vs a long-form academic CV
+   (publications-heavy). Today there is no length control; this touches `cv-tailor`'s
+   selection pass (Step 4).
+
+Low-priority follow-up:
+
+3. **A rendered preview gallery for template choice.** Today the template choice (above) is
+   a plain-text description of each layout; a visual preview (rendered sample PDFs/images
+   the user can browse before picking) would be nicer but needs its own design pass — where
+   the previews live, and how they're kept in sync as templates are added.
+4. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
    the shared installer also symlinks the skills into other agents (Gemini CLI, GitHub
    Copilot, OpenClaw, …). Run the full pipeline on each as capacity allows and fix any
    agent-specific quirks (skill discovery, invocation, multi-turn interview, file I/O), rather
@@ -89,13 +119,10 @@ One optional, low-priority follow-up remains:
 
 ## Deferred / open questions
 
-- **Use-case flow polish beyond the on-ramp (design questions from a reproduction).** A cold
-  end-to-end run of "CV + posting, no profile yet" confirmed the model and pipeline are
-  correct — the three-way match report *does* surface at `cv-tailor` Step 3 — and the on-ramp
-  orientation/routing gaps it exposed are now fixed (see §Done / `CHANGELOG.md`), and
-  output-language guidance was added (`cv-tailor` Step 1: default to the market's language,
-  ask when the posting's language diverges). Two deeper choices are deliberately left open,
-  each a real design decision, not polish:
+- **Use-case flow polish beyond the on-ramp.** Two design questions from the "CV + posting,
+  no profile yet" reproduction are deliberately left open — each a real design decision, not
+  polish. (The routing/orientation and output-language fixes that same reproduction surfaced
+  are done — see §Done / `CHANGELOG.md`.)
   - *Surface likely gaps earlier.* Today the "what this role needs that you don't have" signal
     lands only at `cv-tailor` Step 3, after the whole profile is built. Previewing it sooner
     (e.g. a light coverage peek right after an import when a posting is already in hand) would
@@ -109,21 +136,9 @@ One optional, low-priority follow-up remains:
   invariant that `cv-tailor` reads only the Career Profile** (never a raw document — see
   [`architecture.md`](architecture.md)) only if a real use case demands format critique of a
   CV the user won't regenerate. See [`decisions.md`](decisions.md) §11.
-- **Let the user choose among several templates.** Ship more than one CV layout and let
-  the user pick — ideally pointing them to a gallery/link where they can browse options,
-  then generating into the chosen one. For now there is a single template; this is the
-  path to multiple. **Each template carries its own dependency/install note**, since its
-  fonts and packages determine the minimal local install (see `decisions.md` §10) — a
-  lighter-dependency layout (default fonts, no icon package) is one axis of choice worth
-  offering.
 - **More generation options.** Enhancements to `cv-tailor` output, once the core is
-  stable:
-  - *Iterate on a generated CV* — tweak an already-produced CV ("shorten to one page",
-    "lead with leadership", "drop the 2016 role") without regenerating from scratch. The
-    per-position application folder now persists each CV (`.tex` + `.md`), which is the
-    substrate this needs.
-  - *Length / format targets* — one-page vs two-page vs a long-form academic CV
-    (publications-heavy). Today there is no length control.
+  stable. (*Iterate on a generated CV* and *length / format targets* have graduated to
+  §To build; *multiple templates* has since shipped — see §Done.)
   - *Batch* — one profile + N postings → N tailored CVs for an active job search.
   - *Keyword-gap / improvement report* — `cv-tailor` now ships the base signal: a
     three-way match report (covered / present-but-not-surfaced / genuine gap), see
@@ -148,7 +163,8 @@ One optional, low-priority follow-up remains:
     academic vs an industry CV) from one profile. **Tension/cost:** this changes the Career
     Profile — the contract between the two skills — so it touches `cv-profiler`,
     `cv-tailor` and `career-profile.md` together, and risks burdening the interview with
-    per-item tagging. Only worth it once named variants / multi-template land; note
+    per-item tagging. Only worth it once named CV variants become a real ask (multi-template
+    itself has already shipped without needing this — see §Done); note
     `Notes for CV Customization` already covers part of this in prose. **Decided post-v1:**
     the v1 contract is frozen on the binary model (see `decisions.md` §10); this taxonomy is
     a later, Re-Run-migratable change, not a v1 blocker.
