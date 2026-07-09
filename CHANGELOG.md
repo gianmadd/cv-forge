@@ -8,6 +8,33 @@ semantic versioning.
 ## [Unreleased]
 
 ### Added
+- **Iterate on a generated CV** (`cv-tailor` Steps 1/4/6/7 +
+  `references/output-format.md`) — tweak an already-produced CV ("shorten to one page",
+  "lead with leadership", "drop the 2016 role") without regenerating from scratch. Step 1
+  detects an existing `applications/<company>-<role>/cv.md` (tailored mode) or `general/cv.md`
+  (general mode) and offers regenerate-from-scratch vs iterate; an iteration may pull new
+  content from the profile (not just reword what's there), overwrites `cv.md`/the rendered
+  template files/the cover letter in place (no version history), and always re-runs the Step 3
+  match report and Step 7 self-check afterward. Out of scope: switching template, output
+  language, or tailored/general mode. See `docs/decisions.md` §12.
+- **Length / format targets** (`cv-tailor` Steps 1/4/6/7 + `references/output-format.md`) —
+  a length target (one page / two pages / long-form, no constraint) is asked explicitly in
+  Step 1 and applied in Step 4's selection. Verified for real when a local `pdflatex` compile
+  is available — the page count comes straight from the compile log
+  (`Output written on cv.pdf (N pages, ...)`, no new dependency) — with a bounded
+  trim-and-recompile loop; falls back to a per-template heuristic estimate, explicitly
+  flagged as unverified, when only Overleaf is used. A length target never silently drops
+  content the match report marked "covered" — that needs the user's confirmation first. See
+  `docs/decisions.md` §12.
+- **Output folder reorganization** (`cv-tailor` Step 6 + `references/output-format.md`) —
+  surfaced while testing the two features above. General mode gets its own `general/` folder
+  beside the profile (singular, mirroring `applications/<company>-<role>/`, revising the
+  original "no folder" choice), and every run's LaTeX inputs plus compile byproducts (`cv.tex`
+  and any other template file, the compiled PDF, transient `.aux`/`.log`/`.out` files) now
+  live in a `tex/` subfolder rather than loose beside `cv.md` — only the human-readable
+  `cv.md`/`posting.md`/`cover-letter.md` sit at the top level. Cleaning the compile's
+  transient files after every local compile is now mandatory, not an "or" alternative. See
+  `docs/decisions.md` §12.
 - **Multiple CV templates, user-chosen** (`cv-tailor` Step 1 + `references/output-format.md`)
   — a second layout, `curve` (adapted from LianTze Lim's "A Customised CurVe CV" Overleaf
   template, CC-BY-4.0, built on Didier Verna's `CurVe` class), joins `single-column`; the

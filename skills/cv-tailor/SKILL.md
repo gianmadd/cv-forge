@@ -82,6 +82,15 @@ Confirm you have, asking only for what's missing:
    them to invent a posting. If you've tailored to this position before, its posting is saved
    verbatim at `applications/<company>-<role>/posting.md` (Step 6) — read it from there rather
    than asking for the link again.
+   - **Regenerate vs iterate.** If the relevant output already exists —
+     `applications/<company>-<role>/cv.md` in tailored mode, or `general/cv.md` beside the
+     profile in general mode — say so and offer a choice: **regenerate** it from scratch (a
+     full run through the steps below) or **iterate** on what's already there (a targeted
+     change — "shorten to one page," "lead with leadership," "drop the 2016 role" — applied to
+     the existing `cv.md` and re-rendered, pulling from the profile if needed). Skip the offer
+     if the user already said which they want. The iterate flow is detailed in
+     [`references/output-format.md`](references/output-format.md); the rest of this skill
+     describes the regenerate path, which the iterate path also follows for its re-render.
 3. **The output language** — chosen now; it may differ from the profile's language. Default
    to the language the **target market** customarily expects for a CV; if the posting is
    written in a different language than that market uses (e.g. an English-language ad for a
@@ -94,9 +103,15 @@ Confirm you have, asking only for what's missing:
    drawn from that template's own header comment. Ask the user to pick; if they have no
    preference, default to `single-column`. Each template is a self-contained folder with its
    own fill and dependency rules — see [`references/output-format.md`](references/output-format.md).
+6. **The length target** — ask directly: **one page**, **two pages**, or **long-form** with
+   no page constraint (e.g. a publications-heavy academic CV). Default to "no preference" if
+   the user doesn't care. This shapes Step 4's selection and, when a local compile is
+   available, is checked for real against the compiled page count in Step 6 — see
+   [`references/output-format.md`](references/output-format.md).
 
 **Done when:** the profile is read, the output language and target market are known, the
-mode (tailored / general) is set, and a template is chosen.
+mode (tailored / general) and the regenerate/iterate dispatch are set, and a template and a
+length target are chosen.
 
 ## Step 2 — Read the profile by its contract
 
@@ -156,6 +171,13 @@ or a genuine gap, and the tally has been shown to the user.
   entry) — never stuff or hide them.
 - Apply every inline **Agent Note** to the content it governs; include nothing from
   **Archived / Excluded from CV**.
+- **Respect the length target, if one is set.** Trim by the same relevance logic already
+  used to choose what's in — cut what's least aligned with the posting/positioning first,
+  then the oldest, never by truncating an entry's facts mid-sentence. A **long-form** target
+  means no trimming for length is needed at all.
+- **Coverage wins over length.** Before cutting content that Step 3's match report marked
+  **covered**, stop, tell the user plainly what would be lost, and get their confirmation
+  first — never let a length target silently turn a covered requirement into a gap.
 
 ## Step 5 — Render in the output language
 
@@ -177,34 +199,54 @@ or a genuine gap, and the tally has been shown to the user.
 
 ## Step 6 — Produce the output
 
-Give every application its own folder so nothing has to be re-fetched later. In **tailored**
-mode, create `applications/<company>-<role>/` beside the Career Profile (slugify company and
-role — lowercase, hyphens) and write into it:
+**Iterating on an existing application.** If Step 1 dispatched to **iterate**, don't
+regenerate from scratch: read the existing `cv.md` (and profile and posting), apply the
+requested change — re-selecting from the profile if it calls for new content, never just
+rewording — overwrite `cv.md` and every rendered template file (and the cover letter, if
+present) in place, then **always re-run Step 3's match report (tailored mode) and Step 7's
+self-check** before finishing, so a dropped role or requirement never silently turns
+"covered" into a gap. See [`references/output-format.md`](references/output-format.md) for
+the detailed flow. Everything below describes producing the output the first time
+(regenerate path); the iterate path reuses the same rendering mechanics for its delta.
 
-- **`posting.md`** — the job posting **verbatim** (the pasted text, or the fetched contents of
-  the URL), so the user never has to supply the link again.
-- **`cv.md`** — the tailored CV as **readable Markdown**: the **canonical selected content**
-  for this application, **written first**. It is what you select, structure, and get right;
-  the `.tex` is rendered *from it*. It is **not** a submit format.
-- **`cv.tex`** (**+ any other file the chosen template needs**) — that same `cv.md` content
-  **rendered into** the chosen `pdflatex` template, with LaTeX special characters escaped:
-  the source you submit. Some templates are one file (`single-column`); others require
-  several — e.g. `curve` fills `cv.tex` plus one file per section (`employment.tex`,
-  `education.tex`, …) — and also ship static files (e.g. `settings.sty`) that carry **no**
-  profile content and are copied **verbatim, unmodified** into the application folder. Every
-  rendered `.tex` file must stay faithful to `cv.md` — same facts, same selection, same
-  order, same language; only the LaTeX form is added.
-- a **cover letter** (`cover-letter.md` + `.tex`, in the same md-then-tex order) **only if the
-  user asks** — always rendered from the `single-column` cover-letter template regardless of
-  which CV template was chosen (cover letters are not per-CV-template yet).
+Give every run its own folder so nothing has to be re-fetched later, and so iteration always
+has a stable place to find what's already there. Beside the Career Profile, create:
+
+- **`applications/<company>-<role>/`** (slugify company and role — lowercase, hyphens) in
+  **tailored** mode, one per position; or
+- **`general/`** in **general** mode — a single folder, not one per position, since there's
+  one general CV.
+
+and write into it:
+
+- **`posting.md`** — **tailored mode only.** The job posting **verbatim** (the pasted text, or
+  the fetched contents of the URL), so the user never has to supply the link again. General
+  mode has no posting, so this file doesn't exist there.
+- **`cv.md`** — the CV as **readable Markdown**: the **canonical selected content** for this
+  run, **written first**. It is what you select, structure, and get right; the `.tex` is
+  rendered *from it*. It is **not** a submit format.
+- **`tex/`** — a subfolder for everything LaTeX, so a multi-file template's inputs (and a
+  local compile's byproducts) never spill loose next to the readable `cv.md`: **`cv.tex`**
+  (**+ any other file the chosen template needs**), that same `cv.md` content **rendered
+  into** the chosen `pdflatex` template, with LaTeX special characters escaped — the source
+  you submit. Some templates are one file (`single-column`); others require several — e.g.
+  `curve` fills `cv.tex` plus one file per section (`employment.tex`, `education.tex`, …) —
+  and also ship static files (e.g. `settings.sty`) that carry **no** profile content and are
+  copied **verbatim, unmodified** into `tex/`. Every rendered `.tex` file must stay faithful
+  to `cv.md` — same facts, same selection, same order, same language; only the LaTeX form is
+  added. `tex/` is also where the compiled PDF lands, and where any transient `.aux`/`.log`/
+  `.out` file must be cleaned up after compiling (never left lying around).
+- a **cover letter** — `cover-letter.md` at the top level (beside `cv.md`) and
+  `cover-letter.tex` in `tex/` (beside `cv.tex`) — **only if the user asks** — always
+  rendered from the `single-column` cover-letter template regardless of which CV template
+  was chosen (cover letters are not per-CV-template yet).
 
 Head each **generated** `.tex`/`.md` file (`cv.md`, every rendered `.tex` file from the
 chosen template, and the cover letter) with a short **provenance** block (source profile,
-template, posting, output language, date); a template's static files (e.g. `settings.sty`)
-and `posting.md` carry **no** header — the former isn't generated *from* the profile, the
-latter is the posting as-is. In **general** mode there is no position — write the CV
-(`.md` + the chosen template's files) to the user's output location as before, with the
-same provenance header.
+template, posting, output language, date, and the length target when one is set — omit the
+posting field entirely in general mode, there is none); a template's static files (e.g.
+`settings.sty`) and `posting.md` carry **no** header — the former isn't generated *from* the
+profile, the latter is the posting as-is.
 
 **Write `cv.md` first, then render the chosen template from it.** `cv.md` holds the finished
 selection in plain, readable Markdown — this is where you commit to what appears and in what
@@ -223,7 +265,15 @@ step: **detect the toolchain, then offer — never compile, and never install an
 - **Offer both routes and explain each** — **Overleaf** (upload the `.tex`, recompile,
   download — no install; the safe default, especially for a non-technical user) or **local
   compilation**.
-- **If a local `pdflatex` is present**, offer to compile and hand over the PDF.
+- **If a local `pdflatex` is present**, offer to compile and hand over the PDF. Compile
+  inside the run's `tex/` subfolder, and **always clean the transient `.aux`/`.log`/`.out`
+  files afterward** (success or failure) — never leave them for the user to find.
+- **If a length target is set and the compile is local**, check the real page count from
+  the compile log — `pdflatex` reports it directly (`Output written on cv.pdf (N pages,
+  ...)`), no extra tool needed. If it exceeds the target, trim per Step 4's rule and
+  recompile, bounded to a few rounds like the package self-heal below. If only Overleaf is
+  used (no local compile), say plainly that the page count is an unverified estimate, not a
+  guarantee — Overleaf itself remains a perfectly fine route.
 - **If a package is missing**, don't give up and don't install behind the user's back:
   identify it (`tlmgr search --file`, or a babel language by name as `babel-<language>`) and
   **propose the install command for them to approve** — so they can choose to download it
@@ -238,11 +288,13 @@ step: **detect the toolchain, then offer — never compile, and never install an
 See [`references/output-format.md`](references/output-format.md) for the exact detect →
 offer → self-heal flow and the template-scoped install.
 
-**Done when:** in tailored mode the position folder holds `posting.md`, `cv.md`, every file
-the chosen template renders (plus the cover letter if asked), each generated file with its
-provenance header; `cv.md` was written first and every rendered file matches it faithfully —
+**Done when:** the position folder (tailored mode) or `general/` folder (general mode) holds
+`cv.md` (plus `posting.md` in tailored mode) and every file the chosen template renders (plus
+the cover letter if asked), each generated file with its provenance header; `cv.md` was
+written first and every rendered file matches it faithfully —
 same facts, selection, order, and language — in the chosen language with no `<<...>>` left
-and all special characters escaped. The content-integrity gate is Step 7.
+and all special characters escaped; a set length target was met (or flagged unverified), and
+an iterate run re-ran Step 3 and Step 7. The content-integrity gate is Step 7.
 
 ## Step 7 — Before you deliver: self-check
 
@@ -268,5 +320,11 @@ final zero-fabrication gate, not a formality:
   file, and no template static file (e.g. `settings.sty`) was altered.
 - **Clean render** — all `<<...>>` replaced, all LaTeX special characters escaped, correct
   output language and localised section names.
+- **Length target respected** — met (confirmed by a real compile) or, when only Overleaf
+  was used, explicitly flagged to the user as an unverified estimate rather than claimed as
+  fact.
+- **No covered requirement silently dropped** — any content cut to fit a length target was
+  confirmed with the user first, never assumed; on an iterate run, Step 3 and Step 7 were
+  both re-run against the changed content.
 
 If any item fails, fix it before delivering.

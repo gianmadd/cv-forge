@@ -243,8 +243,11 @@ interaction and output are multilingual.
   provenance header (profile / template / posting / language / date) on each generated file.
   *Why:* persistence makes "regenerate" and "tweak this one" zero-question and keeps
   applications auditable, while the Career Profile stays the single source of truth — these
-  are derivatives, not a second profile. In general mode (no posting) there is no folder —
-  the CV is written to the user's output location as before.
+  are derivatives, not a second profile. **General mode also gets its own folder,
+  `general/`, beside the profile** (singular — one general CV, not one per position),
+  **revising** the original choice here of no folder / "the user's output location" — see §12
+  for why (the iterate dispatch needs a stable place to check for an existing general CV, and
+  the original choice was quietly producing loose files at the profile's location).
 - **Within an application, `cv.md` is the canonical content and `cv.tex` is rendered from
   it — not two parallel siblings of the profile.** `cv-tailor` writes `cv.md` **first**
   (the finished selection in plain Markdown: what appears, in what order), then renders
@@ -429,3 +432,71 @@ independent lenses — boundary/ownership, user mental-model, contract integrity
   (imported / declined) is recorded in the provenance HTML comment *once a profile exists*.
   Before a profile exists there's nowhere to record it and re-offering next session is
   acceptable — not worth a dotfile (clutter, fragile across agents, a second state store).
+
+## 12. Iteration & length targets
+
+Two roadmap items, both entirely inside `cv-tailor` — no `cv-profiler` change, no Career
+Profile contract change:
+
+- **Regenerate vs iterate is a Step 1 dispatch, mirroring `cv-profiler`'s three-way
+  pattern.** Finding an existing `applications/<company>-<role>/cv.md` (tailored mode) or
+  `general/cv.md` (general mode), `cv-tailor` offers a choice — regenerate from scratch, or
+  iterate on what's there — skipping the offer if the user already said which. *Why offered,
+  not inferred:* consistent with the detect → offer discipline already used everywhere else
+  in this skill (compiling, self-heal); the skill never silently picks a path for the user.
+- **An iteration may pull new content from the profile, not just reword `cv.md`.** The
+  profile is the superset `cv.md` was originally selected from, so "add my 2019
+  certification" or "lead with leadership" are legitimate iterations, not out of scope. *Why:*
+  restricting iteration to text-level edits would make it a worse editor than just opening
+  the file by hand; the value is re-selecting from the same source of truth without
+  re-running the whole skill.
+- **Overwrite, not versioning.** An iteration overwrites `cv.md`, every rendered template
+  file, and the cover letter in place — no history file, no `cv-v2.md`. *Why:* matches the
+  "no structured data layer, no extra state" baseline that runs through this whole document;
+  a persistent history is the *corrections log* idea in `roadmap.md` (deferred, and a
+  different, larger commitment), not a side effect of this feature.
+- **Every iteration re-runs Step 3's match report (tailored mode) and Step 7's self-check.**
+  A dropped role or requirement must never silently turn "covered" into a gap. *Why:* the
+  self-check alone verifies fidelity/fabrication, not coverage — only re-running Step 3
+  catches a regression the self-check wouldn't.
+- **Iteration scope excludes template, output language, and tailored/general mode.**
+  Changing any of those is a full regenerate (a fresh Step 1), not an iteration. *Why:* they
+  change the rendering mechanics themselves (placeholders, escaping, file structure), not the
+  selected content — conflating them with content tweaks would turn "iterate" into a second,
+  redundant generation path.
+- **Length targets are asked explicitly in Step 1** — one page, two pages, or long-form (no
+  constraint) — not inferred or left implicit. *Why:* it's common enough (academic CVs
+  especially) to earn a direct question rather than only reacting to it after the fact via
+  iteration.
+- **Length is verified by compiling when possible, not just estimated.** With a local
+  `pdflatex` available, `cv-tailor` reads the real page count straight from the compile log
+  (`Output written on cv.pdf (N pages, ...)`) — no new dependency — and trims/recompiles in a
+  bounded loop until it fits. Without a local compile (Overleaf only), it falls back to a
+  per-template heuristic and says plainly that the count is an estimate, not verified. *Why:*
+  a page count is a fact about the compiled PDF, not the Markdown selection; guessing and
+  presenting it as fact would be a quiet accuracy regression, and Overleaf-only users
+  shouldn't be blocked, just told the honest limit of what can be checked without a local
+  toolchain.
+- **Coverage wins over length.** If hitting a length target would cut content the match
+  report marked "covered," `cv-tailor` stops, names what would be lost, and asks before
+  cutting — a page constraint never silently downgrades a covered requirement. *Why:*
+  consistent with the "no silent failure" principle behind the match report itself (§7) — an
+  aesthetic constraint shouldn't be allowed to quietly undo a transparency guarantee.
+- **General mode gains its own `general/` folder, revising §10's original "no folder"
+  choice.** A single folder beside the profile (not one per position, since general mode has
+  one CV), holding the same file set as an application folder minus `posting.md`. *Why now:*
+  the original "no folder" choice pre-dated any need to locate a "current" general CV; the
+  iterate dispatch above needs exactly that, and the alternative — writing loose files
+  straight into the profile's working directory — is also just a worse outcome on its own
+  (surfaced directly by a user testing the iterate/length-target changes).
+- **Every run's LaTeX inputs and compile byproducts live in their own `tex/` subfolder, not
+  loose beside `cv.md`.** `cv.tex` (+ any other file a multi-file template needs, e.g.
+  `curve`'s per-section files and `settings.sty`), the compiled PDF, and any transient
+  `.aux`/`.log`/`.out` file all go in `tex/`; only the human-readable `cv.md` (and
+  `posting.md`/`cover-letter.md` in tailored mode) sit at the top level of the application/
+  `general/` folder. Cleaning the compile's transient files after every local compile —
+  success or failure — is now stated as **mandatory**, not an "or" alternative to leaving
+  them. *Why:* a multi-file template (`curve` alone writes six-plus files) made the flat
+  layout hard to scan, and stray `.aux`/`.log`/`.out` files were observed lingering after a
+  real compile; grouping everything LaTeX into one subfolder fixes both at once without
+  touching what's canonical (`cv.md` stays exactly where it was).

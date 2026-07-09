@@ -91,26 +91,43 @@ What's decided, what's left to build, and what's deliberately deferred.
   rendered. Verified with a real local `pdflatex` compile (clean ATS text extraction, both
   with and without a photo) before writing the instructions. See [`decisions.md`](decisions.md)
   §10.
+- **Iterate on a generated CV (`cv-tailor`).** Tweak an already-produced CV ("shorten to
+  one page", "lead with leadership", "drop the 2016 role") without regenerating from
+  scratch, built on the per-position application folder that already persisted each CV
+  (`.tex` + `.md`). Step 1 detects an existing `applications/<company>-<role>/cv.md` and
+  offers regenerate-from-scratch vs iterate; an iteration may pull new content from the
+  profile (not just reword what's there), overwrites in place (no version history), and
+  always re-runs the match report and self-check afterward so a dropped role or requirement
+  is never silently miscounted. Out of scope: switching template, output language, or
+  tailored/general mode — those go through a full regenerate. See
+  [`decisions.md`](decisions.md) §12.
+- **Length / format targets (`cv-tailor`).** One page, two pages, or long-form (no
+  constraint — e.g. a publications-heavy academic CV), asked explicitly in Step 1 and
+  applied in Step 4's selection. Verified for real when a local `pdflatex` compile is
+  available — the page count comes straight from the compile log, no new dependency — with
+  a bounded trim-and-recompile loop; falls back to a per-template heuristic estimate,
+  explicitly flagged as unverified, when only Overleaf is used. A length target never
+  silently drops content the match report marked "covered" — that requires the user's
+  confirmation first. See [`decisions.md`](decisions.md) §12.
+- **Output folder reorganization (`cv-tailor`).** Surfaced while testing the two features
+  above: general mode gets its own `general/` folder beside the profile (singular, mirroring
+  `applications/<company>-<role>/` but revising the original "no folder" choice — see
+  [`decisions.md`](decisions.md) §10/§12), and every run's LaTeX inputs plus compile
+  byproducts (`cv.tex` and any other template file, the PDF, transient `.aux`/`.log`/`.out`
+  files) now live in their own `tex/` subfolder rather than loose beside `cv.md` — only the
+  human-readable `cv.md`/`posting.md`/`cover-letter.md` sit at the top level. Cleaning the
+  compile's transient files after every local compile is now mandatory, not optional. See
+  [`decisions.md`](decisions.md) §12.
 
 ## To build
 
-Ordered by readiness — the first already has its substrate in place.
+Both low-priority follow-ups, not currently blocking anything:
 
-1. **Iterate on a generated CV.** Tweak an already-produced CV ("shorten to one page",
-   "lead with leadership", "drop the 2016 role") without regenerating from scratch. The
-   per-position application folder already persists each CV (`.tex` + `.md`), which is the
-   substrate this needs. Pairs with the *corrections log* idea below.
-2. **Length / format targets.** One-page vs two-page vs a long-form academic CV
-   (publications-heavy). Today there is no length control; this touches `cv-tailor`'s
-   selection pass (Step 4).
-
-Low-priority follow-up:
-
-3. **A rendered preview gallery for template choice.** Today the template choice (above) is
+1. **A rendered preview gallery for template choice.** Today the template choice (above) is
    a plain-text description of each layout; a visual preview (rendered sample PDFs/images
    the user can browse before picking) would be nicer but needs its own design pass — where
    the previews live, and how they're kept in sync as templates are added.
-4. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
+2. **Incremental checks on other agents.** Claude Code is the verified, first-class target;
    the shared installer also symlinks the skills into other agents (Gemini CLI, GitHub
    Copilot, OpenClaw, …). Run the full pipeline on each as capacity allows and fix any
    agent-specific quirks (skill discovery, invocation, multi-turn interview, file I/O), rather
@@ -137,8 +154,8 @@ Low-priority follow-up:
   [`architecture.md`](architecture.md)) only if a real use case demands format critique of a
   CV the user won't regenerate. See [`decisions.md`](decisions.md) §11.
 - **More generation options.** Enhancements to `cv-tailor` output, once the core is
-  stable. (*Iterate on a generated CV* and *length / format targets* have graduated to
-  §To build; *multiple templates* has since shipped — see §Done.)
+  stable. (*Iterate on a generated CV*, *length / format targets*, and *multiple templates*
+  have since shipped — see §Done.)
   - *Batch* — one profile + N postings → N tailored CVs for an active job search.
   - *Keyword-gap / improvement report* — `cv-tailor` now ships the base signal: a
     three-way match report (covered / present-but-not-surfaced / genuine gap), see
@@ -172,9 +189,11 @@ Low-priority follow-up:
     shipped**: every generated file carries a provenance header (profile / template / posting
     / language / date), see [`decisions.md`](decisions.md) §10. What remains open is the
     persistent "never re-introduce this error" ledger that survives regeneration (a
-    fabrication ratchet). **Tension/cost:** small and principle-aligned; the open question is
-    *where the log lives* — in the profile (touches the contract and `cv-profiler`) or as
-    `cv-tailor`-side state. Pairs with *iterate on a generated CV* above.
+    fabrication ratchet) — distinct from the overwrite-based *iterate on a generated CV*
+    that has since shipped (§Done, `decisions.md` §12), which has no history mechanism of its
+    own. **Tension/cost:** small and principle-aligned; the open question is *where the log
+    lives* — in the profile (touches the contract and `cv-profiler`) or as `cv-tailor`-side
+    state.
   - *Optional multi-persona critique stage.* After generating, an optional pass that
     reviews the CV through several reader lenses (ATS / recruiter / HR / hiring manager /
     domain expert) and returns ranked, concrete fixes — coaching, not fabrication.
