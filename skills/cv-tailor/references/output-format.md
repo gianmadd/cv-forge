@@ -118,7 +118,9 @@ change the rendering mechanics themselves, not the selected content.
    is a rendering of it. For a cover letter, write `cover-letter.md` the same way.
 2. **Render the chosen template's files from `cv.md`.** For every file in the chosen
    template's folder: if it contains a `<<PLACEHOLDER>>`, fill it and write it as a **new**
-   file of the same name in that folder's `tex/` subfolder; if it doesn't (a static file like
+   file of the same name in that folder's `tex/` subfolder — with one rename: `single-column`'s
+   main file is `resume.tex`, but its rendered output is always `tex/cv.tex` (`curve`'s main file
+   is already `cv.tex`, and its rubric files keep their names); if it doesn't (a static file like
    `settings.sty`), copy it verbatim into `tex/`. Never edit anything in the skill's own `templates/`
    folder. Don't rely on `cp` for the files you fill: an installed template can be read-only,
    and a plain copy keeps that mode, so filling it would fail with a permission error. Reading
@@ -127,8 +129,12 @@ change the rendering mechanics themselves, not the selected content.
    each file's structure and apply LaTeX escaping (below); together, the rendered files must
    not add, drop, or reorder anything relative to `cv.md`. For a cover letter, do the same into
    `cover-letter.tex` (always from `single-column`, one file).
-3. **Set the language.** Change the `babel` option (`\usepackage[english]{babel}`) to the
-   output language: `italian`, `french`, `ngerman`, `spanish`, `portuguese`, …
+3. **Set the language** to `italian`, `french`, `ngerman`, `spanish`, `portuguese`, … The
+   mechanism differs by template: for `single-column` (and `cover-letter`), change the `babel`
+   option — `\usepackage[english]{babel}`; for `curve` there is no such line (babel is loaded
+   without an option in `settings.sty`), so change the `english` option in the class line
+   instead — `\documentclass[a4paper,skipsamekey,11pt,english]{curve}` in `cv.tex`. Each main
+   file marks the spot with a `% <<-- set to the output language` comment.
 4. **Replace every `<<PLACEHOLDER>>`**, in every file that has one, with the corresponding
    `cv.md` content, in the output language. Leave no `<<...>>` behind. Add or remove entries,
    bullets, and whole sections to match what `cv.md` contains for this job — for a
@@ -298,7 +304,7 @@ install a template's dependencies:
     babel-<language>`.
   - `curve`: `tlmgr install curve carlisle filehook fontawesome5 cochineal fontaxes xstring
     cabin inconsolata relsize silence comment pgf iftex upquote hyperref geometry xcolor
-    babel-<language>`.
+    graphicx url babel-<language>`.
 
   Two things the manifests encode that you can't get by reading `\usepackage` lines alone:
   transitive deps that tlmgr does **not** auto-pull (`cormorantgaramond`'s

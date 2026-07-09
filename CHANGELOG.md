@@ -8,6 +8,14 @@ semantic versioning.
 ## [Unreleased]
 
 ### Fixed
+- **`cv-tailor` render docs corrected three ways** (`references/output-format.md`,
+  `templates/curve/cv.tex`) — the render rule said to write each filled file "of the same
+  name", which for `single-column` (source `resume.tex`) contradicted the output name
+  `cv.tex` used everywhere else; the "set the language" step pointed only at a
+  `\usepackage[english]{babel}` line that doesn't exist in `curve` (whose language is a
+  `\documentclass` option); and `curve`'s `tlmgr` install list omitted `graphicx`/`url` from
+  its own package manifest. Stated the `resume.tex → cv.tex` rename, made the language step
+  template-aware (plus a matching marker comment on `curve/cv.tex`), and completed the list.
 - **`curve` template: raw `\\` inside `\entry`/`\text` corrupts the whole rubric's layout**
   (`templates/curve/cv.tex`, `templates/curve/education.tex`) — every `\entry`/`\text` lands
   as a `longtable` row cell; a literal `\\` used to force a second line (e.g. a thesis/GPA
